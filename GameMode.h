@@ -17,8 +17,11 @@ class GameMode{
         GameMode();
         GameMode(string modeName);
         void initialize();
-        int calculateScore(vector<Card*> remainingCards);
+        // int calculateScore(vector<Card*> remainingCards);
         string getDescription();
+        string getModeName();
+        int getWinningScore();
+        void getAllowStacking();
 };
 
 #endif
