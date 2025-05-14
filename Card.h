@@ -12,6 +12,7 @@ Color color;
 CardType type;
 public:
 Card(Color color, CardType type);
+Card();
 Color get_Color() const;
 CardType get_CardType() const;
 void set_Color(Color newColor);

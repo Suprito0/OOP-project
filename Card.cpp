@@ -5,6 +5,11 @@ Card::Card(Color color, CardType type){
     this->type=type;
 }
 
+Card::Card(){
+    color = None; 
+    type = Number;
+}
+
 Color Card::get_Color() const {
     return color;
 }

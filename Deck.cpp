@@ -17,7 +17,8 @@ void Deck::initialize(){
     discardPile.clear();
     // UNO standard colors
     std::vector<Color> colors = {Red, Green, Blue, Yellow};
-    // 1. Number Cards (0-9) 
+    // 1. Number Cards (0-9)     
+    //for (Color color : colors) : range-based for loop 
     for (Color color : colors) {
         // One 0 per color
         cards.push_back(new NumberCard(color, 0));
