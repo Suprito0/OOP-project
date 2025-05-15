@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Card* Player::playTurn(Card* topCard, Color currentColor){}
+Card* Player::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){}
 
 void Player::addCardToHand(Card* card) {
     hand.push_back(card);

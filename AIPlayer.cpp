@@ -1,0 +1,78 @@
+#include "AIPlayer.h"
+
+Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){
+    Card* AICard = strategicCardSelection();
+
+    if (AICard != nullptr) {   // AI plays a wild card if it has one
+        discard->addToDiscardPile(AICard);
+        removeCardFromHand(AICard);
+        chooseOptimalColor();
+    } else {
+        if (hasValidMove(topCard, currentColor)) {   // Plays a valid card if it has one
+            for (Card* card : hand) {
+                if (card->get_Color() == currentColor) {
+                    discard->addToDiscardPile(card);
+                    removeCardFromHand(card);
+                    break;   // Break out of the loop once a card is picked
+                }
+            }
+        } else {   // Otherwise draws a card
+            Card* newCard = draw->drawCard();
+            addCardToHand(newCard);
+        }
+    }
+}
+
+Card* AIPlayer::strategicCardSelection(){
+    for (Card* card : hand) {   // Chooses a wild if it has one
+        if (card->get_Color() == None) {
+            return card;
+        }
+    }
+    return nullptr;
+}
+
+Color AIPlayer::chooseOptimalColor(){
+    int countRed, countGreen, countBlue, countYellow = 0;
+    Color currentColour;
+
+    for (Card* card : hand) {
+        currentColour = card->get_Color();
+        switch (currentColour) {
+            case Red:
+                countRed++;
+                break;
+            case Green:
+                countGreen++;
+                break;
+            case Blue:
+                countBlue++;
+                break;
+            case Yellow:
+                countYellow++;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    Color optimalColour = Red;
+    int maxCount = countRed;
+
+    if (countGreen > maxCount) {
+        maxCount = countGreen;
+        optimalColour = Green;
+    }
+
+    if (countBlue > maxCount) {
+        maxCount = countBlue;
+        optimalColour = Blue;
+    }
+
+    if (countYellow > maxCount) {
+        maxCount = countYellow;
+        optimalColour = Yellow;
+    }
+
+    return optimalColour;
+}
