@@ -7,18 +7,20 @@ Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* di
         discard->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         chooseOptimalColor();
+        return AICard;
     } else {
         if (hasValidMove(topCard, currentColor)) {   // Plays a valid card if it has one
             for (Card* card : hand) {
                 if (card->get_Color() == currentColor) {
                     discard->addToDiscardPile(card);
                     removeCardFromHand(card);
-                    break;   // Break out of the loop once a card is picked
+                    return card;
                 }
             }
         } else {   // Otherwise draws a card
             Card* newCard = draw->drawCard();
             addCardToHand(newCard);
+            return nullptr;
         }
     }
 }
