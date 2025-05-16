@@ -7,14 +7,16 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck*
 
     if (hasValidMove(topCard, currentColor) == true) {   // Check if there is a valid move
         Card* playCard = nullptr;
+
         while (true) {
             playCard = selectCard();
+
             if (playCard->canPlayOn(topCard)) {
                 discard->addToDiscardPile(playCard);
                 removeCardFromHand(playCard);
                 return playCard;
         } else {
-            std::cout << "Invalid choice. Try again." << std::endl;   // Loops while card selected cannot be played
+            std::cout << "That can't be played! Try again." << std::endl;   // Loops while card selected cannot be played
         }
     }
 } else {
@@ -27,6 +29,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck*
 
 void HumanPlayer::displayHand(){
     int numCards = hand.size();
+
     for (size_t i = 0; i < numCards; i++) {
         std::cout << "Card " << i+1 << " :" << hand[i]->get_Color() << " " << hand[i]->get_CardType() << " | ";
     }
@@ -46,7 +49,6 @@ Card* HumanPlayer::selectCard(){
     }
     
     p_selectedCard = hand[selectedCard-1];
-
     return p_selectedCard;
 }
 
