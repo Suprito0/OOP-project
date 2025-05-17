@@ -1,7 +1,6 @@
 #ifndef ACTIONCARD_H
 #define ACTIONCARD_H
 #include "Card.h"
-enum ActionType { Skip, Reverse, Draw_Two, Wild, Wild_Draw_Four };
 
 class ActionCard : public Card {
  protected:
@@ -13,6 +12,8 @@ class ActionCard : public Card {
   bool canPlayOn(Card* topCard) override;
   void play(Game* game) override;
   std::string toString() override;
+  int get_number();
+  ActionType get_ActionType();
 };
 
 #endif  // ACTIONCARD_H

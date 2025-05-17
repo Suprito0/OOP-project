@@ -131,3 +131,7 @@ std::string ActionCard::toString() {
 
   return colorStr + " " + actionStr;
 }
+
+int ActionCard::get_number(){ return 99;}
+
+ActionType ActionCard::get_ActionType(){ return this->get_ActionType();}

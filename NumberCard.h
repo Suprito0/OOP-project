@@ -12,7 +12,8 @@ class NumberCard : public Card {
   bool canPlayOn(Card* topCard) override;
   void play(Game* game) override;
   std::string toString() override;
-  // int get_number();
+  int get_number();
+  ActionType get_ActionType();
 };
 
 #endif  // NUMBERCARD_H

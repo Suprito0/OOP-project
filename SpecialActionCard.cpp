@@ -125,3 +125,7 @@ std::string SpecialActionCard::toString() {
 
   return colorStr + " Special " + actionStr;
 }
+
+ActionType SpecialActionCard::get_ActionType(){
+  return this->selectedAction;
+}

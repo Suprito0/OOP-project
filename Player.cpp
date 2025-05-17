@@ -1,8 +1,8 @@
 #include "Player.h"
 
-Player::Player(){
-    this->name = 'Player';
-}
+// Player::Player(){
+//     this->name = 'Player';
+// }
 
 Player::Player(string name){
     this->name = name;
@@ -24,7 +24,7 @@ void Player::removeCardFromHand(Card* card){
 
 bool Player::hasValidMove(Card* topCard, Color currentColor){
     for (Card* card : hand) {
-        if (topCard->get_Color() == currentColor) {
+        if (topCard->get_Color() == currentColor || card->canPlayOn(topCard)) {
             return true;
         }
     }

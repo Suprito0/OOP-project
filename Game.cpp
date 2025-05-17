@@ -29,38 +29,36 @@ void Game::initialize(string playerName, GameMode* mode){
     this->currentCard = this->deck->get_TopDiscard();
 }
 void Game::start(){
-    int i = 0;
-    while (i == 0){
-        if (this->isClockwise){
-            for(int j = this->currentPlayerIndex; j<4 ;j ++){
-                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-                this->currentPlayerIndex++;
-                if (this->currentPlayerIndex >= 4){
-                    this->currentPlayerIndex = this->currentPlayerIndex - 4;
-                }
-                if (this->isClockwise == false){
-                    break;
-                }
-            }
-        } else {
-            for (int j = this->currentPlayerIndex; j>=0; j--){
-                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-            }
-        }
-    }
+    // int i = 0;
+    // while (i == 0){
+    //     if (this->isClockwise){
+    //         for(int j = this->currentPlayerIndex; j<4 ;j ++){
+    //             players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
+    //             this->currentPlayerIndex++;
+    //             if (this->currentPlayerIndex >= 4){
+    //                 this->currentPlayerIndex = this->currentPlayerIndex - 4;
+    //             }
+    //             if (this->isClockwise == false){
+    //                 break;
+    //             }
+    //         }
+    //     } else {
+    //         for (int j = this->currentPlayerIndex; j>=0; j--){
+    //             players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
+    //         }
+    //     }
+    // }
 }
 // void Game::nextTurn();
 bool Game::isValidMove(Card* card){
-   if (card->get_Color() == None){
-    return true;
-   } else if (card->get_Color() == this->currentColor){
-    return true;
-   }else if ()
+   card->canPlayOn(this->currentCard);
 }
 void Game::playCard(Card* card){
     this->deck->addToDiscardPile(card);
 }
-void Game::drawCard();
+void Game::drawCard(){
+
+}
 bool Game::checkForWinner();
 void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection(){
@@ -73,7 +71,11 @@ void Game::reverseDirection(){
 void Game::skipNextPlayer(){
     this->currentPlayerIndex++;
 }
-void Game::forceDraw(int numCards);
+void Game::forceDraw(int numCards){
+    for (int i = 0; i < numCards; i++){
+        this->players[this->currentPlayerIndex]->addCardToHand(this->deck->drawCard());
+    }
+}
 void Game::changeColor(Color newColor){
     this->currentColor = newColor;
 }

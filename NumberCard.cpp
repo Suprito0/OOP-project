@@ -56,3 +56,7 @@ std::string NumberCard::toString() {
 
   return colorStr + " " + std::to_string(number);
 }
+
+int NumberCard::get_number(){ return this->number;}
+
+ActionType get_ActionType(){}
