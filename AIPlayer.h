@@ -7,7 +7,7 @@ class AIPlayer : public Player {
     public:
         AIPlayer();
         AIPlayer(string name);
-        Card* playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard);
+        Card* playTurn(Card* topCard, Color currentColor, Deck* decks);
         Card* strategicCardSelection();
         Color chooseOptimalColor();
 

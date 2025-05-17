@@ -5,11 +5,11 @@ AIPlayer::AIPlayer(){
 }
 AIPlayer::AIPlayer(string name): Player(name) {}
 
-Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){
+Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
     Card* AICard = strategicCardSelection();
 
     if (AICard != nullptr) {   // AI plays a wild card if it has one
-        discard->addToDiscardPile(AICard);
+        decks->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         chooseOptimalColor();
         return AICard;
@@ -17,13 +17,13 @@ Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* di
         if (hasValidMove(topCard, currentColor)) {   // Plays a valid card if it has one
             for (Card* card : hand) {
                 if (card->get_Color() == currentColor) {
-                    discard->addToDiscardPile(card);
+                    decks->addToDiscardPile(card);
                     removeCardFromHand(card);
                     return card;
                 }
             }
         } else {   // Otherwise draws a card
-            Card* newCard = draw->drawCard();
+            Card* newCard = decks->drawCard();
             addCardToHand(newCard);
             return nullptr;
         }

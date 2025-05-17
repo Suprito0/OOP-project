@@ -6,7 +6,7 @@ HumanPlayer::HumanPlayer(): Player() {}
 
 HumanPlayer::HumanPlayer(string name): Player(name){}
 
-Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){
+Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
     displayHand();   // Show hand
 
     if (hasValidMove(topCard, currentColor) == true) {   // Check if there is a valid move
@@ -16,19 +16,19 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck*
             playCard = selectCard();
 
             if (playCard->canPlayOn(topCard)) {
-                discard->addToDiscardPile(playCard);
+                decks->addToDiscardPile(playCard);
                 removeCardFromHand(playCard);
                 return playCard;
-        } else {
-            std::cout << "That can't be played! Try again." << std::endl;   // Loops while card selected cannot be played
+            } else {
+                std::cout << "That can't be played! Try again." << std::endl;   // Loops while card selected cannot be played
+            }
         }
-    }
-} else {
+    } else {
         std::cout << "You have no playable cards! Drawing card." << std::endl;
-        Card* newCard = draw->drawCard();
+        Card* newCard = decks->drawCard();
         addCardToHand(newCard);
         return nullptr;
-}
+    }
 }
 
 void HumanPlayer::displayHand(){

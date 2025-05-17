@@ -16,7 +16,7 @@ class Player {
     public:
         Player();
         Player(string name);
-        virtual Card* playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard) = 0;
+        virtual Card* playTurn(Card* topCard, Color currentColor, Deck* decks) = 0;
         void addCardToHand(Card* card);
         void removeCardFromHand(Card* card);
         bool hasValidMove(Card* topCard, Color currentColor);
