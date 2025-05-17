@@ -1,17 +1,25 @@
 #include"Game.h"
 #include "HumanPlayer.h"
+#include "AIPlayer.h"
 
-void Game::initialize(int numPlayers, GameMode* mode){
+void Game::initialize(string playerName, GameMode* mode){
     this->gameMode = mode;
     if (this->gameMode->getModeName() == "normal"){
-        Player* player1 = new HumanPlayer;
-        for(int i=0; i<numPlayers; i++){
-        this->players.push_back();
+        int botNum = 3;
+        string playerName;
+        cout << "Enter your name: " << endl;
+        cin >> playerName;
+        Player* player1 = new HumanPlayer(playerName);
+        this->players.push_back(player1);
+        for(int i=0; i<botNum; i++){
+            ostringstream botName;
+            botName << "Bot" << i+1;
+            players[i+1] = new AIPlayer(botName.str());
         }
     }
 }
 void Game::start(){
-    
+
 }
 void Game::nextTurn();
 bool Game::isValidMove(Card* card){

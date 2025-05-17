@@ -1,5 +1,10 @@
 #include "AIPlayer.h"
 
+AIPlayer::AIPlayer(){
+    this->name = 'Bot';
+}
+AIPlayer::AIPlayer(string name): Player(name) {}
+
 Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){
     Card* AICard = strategicCardSelection();
 

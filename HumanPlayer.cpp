@@ -2,6 +2,10 @@
 #include "Deck.h"
 #include <iostream>
 
+HumanPlayer::HumanPlayer(): Player() {}
+
+HumanPlayer::HumanPlayer(string name): Player(name){}
+
 Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){
     displayHand();   // Show hand
 

@@ -18,7 +18,8 @@ class Game{
         bool gameOver;
         int drawStack;
     public:
-        void initialize(int numPlayers, GameMode* mode);
+        // void initialize(int numPlayers, GameMode* mode);
+        void initialize(string playerName, GameMode* mode);
         void start();
         void nextTurn();
         bool isValidMove(Card* card);

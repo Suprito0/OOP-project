@@ -1,5 +1,13 @@
 #include "Player.h"
 
+Player::Player(){
+    this->name = 'Player';
+}
+
+Player::Player(string name){
+    this->name = name;
+}
+
 // Card* Player::playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard){}
 
 void Player::addCardToHand(Card* card) {

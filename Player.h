@@ -3,15 +3,20 @@
 
 #include "Card.h"
 #include <vector>
+#include <sstream>
+
+using namespace std;
 
 class Player {
     protected:
-        std::vector<Card*> hand;
-        std::string name;
+        vector<Card*> hand;
+        string name;
         bool hasCalledUno;
 
     public:
-        virtual Card* playTurn(Card* topCard, Color currentColor) = 0;
+        Player();
+        Player(string name);
+        virtual Card* playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard) = 0;
         void addCardToHand(Card* card);
         void removeCardFromHand(Card* card);
         bool hasValidMove(Card* topCard, Color currentColor);
