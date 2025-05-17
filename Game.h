@@ -2,12 +2,13 @@
 #define GAME_H
 
 #include"GameMode.h"
+#include"Player.h"
 #include"Deck.h"
 #include"Card.h"
 
 class Game{
     protected:
-        // vector<Player*> players;
+        vector<Player*> players;
         Deck* deck;
         GameMode* gameMode;
         Card* currentCard;
@@ -29,8 +30,8 @@ class Game{
         void skipNextPlayer();
         void forceDraw(int numCards);
         void changeColor(Color newColor);
-        // Player* getCurrentPlayer();
-        // Player* getNextPlayer();
+        Player* getCurrentPlayer();
+        Player* getNextPlayer();
         void updateCurrentCard(Card* card);
         bool isGameOver();
         void endGame();
