@@ -1,22 +1,19 @@
 #include "Card.h"
 
-Card::Card(Color color, CardType type){
-    this->color=color;
-    this->type=type;
+Card::Card(Color color, CardType type) {
+  this->color = color;
+  this->type = type;
 }
 
-Color Card::get_Color() const {
-    return color;
+Card::Card() {
+  color = None;
+  type = Number;
 }
 
-CardType Card::get_CardType() const {
-    return type;
-}
+Color Card::get_Color() const { return color; }
 
-void Card::set_Color(Color newColor) {
-    color = newColor;
-}
+CardType Card::get_CardType() const { return type; }
 
-Card::~Card() {
+void Card::set_Color(Color newColor) { color = newColor; }
 
-}
+Card::~Card() {}
