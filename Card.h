@@ -21,6 +21,7 @@ class Card {
   virtual bool canPlayOn(Card* topCard) = 0;
   virtual void play(Game* game) = 0;
   virtual std::string toString() = 0;
+  // virtual int get_number() = 0;
   virtual ~Card();
 };
 
