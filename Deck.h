@@ -6,8 +6,8 @@
 
 class Deck {
  private:
-  std::vector<Card*> cards;
-  std::vector<Card*> discardPile;
+  vector<Card*> cards;
+  vector<Card*> discardPile;
 
  public:
   Deck();
@@ -16,6 +16,8 @@ class Deck {
   Card* drawCard();
   void addToDiscardPile(Card* card);
   Card* get_TopDiscard() const;
+  vector<Card*> get_cards();
+  vector<Card*> get_discardPile();
   void reshuffleIfNeeded();
   int get_DeckSize() const;
   int get_DiscardSize() const;

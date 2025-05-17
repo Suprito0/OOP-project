@@ -99,6 +99,10 @@ int Deck::get_DeckSize() const { return cards.size(); }
 
 int Deck::get_DiscardSize() const { return discardPile.size(); }
 
+vector<Card*> Deck::get_cards() {return cards;}
+
+vector<Card*> Deck::get_discardPile()  {return discardPile;}
+
 Deck::~Deck() {
   for (Card* card : cards) {
     delete card;

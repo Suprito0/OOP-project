@@ -3,7 +3,9 @@
 #include "AIPlayer.h"
 
 void Game::initialize(string playerName, GameMode* mode){
+    this->currentPlayerIndex = 0;
     this->gameMode = mode;
+    this->isClockwise = true;
     if (this->gameMode->getModeName() == "normal"){
         int botNum = 3;
         string playerName;
@@ -17,9 +19,26 @@ void Game::initialize(string playerName, GameMode* mode){
             players[i+1] = new AIPlayer(botName.str());
         }
     }
+    this->deck->initialize();
+    for(int i = 0; i < 7; i++){
+        for (int j = 0; j < 4; j++){
+            players[j]->addCardToHand(this->deck->drawCard());
+        }
+    }
+    this->deck->addToDiscardPile(this->deck->drawCard());
+    this->currentCard = this->deck->get_TopDiscard();
 }
 void Game::start(){
-
+    int i = 0;
+    while (i == 0){
+        if (isClockwise){
+            for(int j = this->currentPlayerIndex; j<4 ;j ++){
+                players[i]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck->get_cards())
+            }
+        } else {
+            for (int j = this->currentPlayerIndex; j>=0; j--)
+        }
+    }
 }
 void Game::nextTurn();
 bool Game::isValidMove(Card* card){
