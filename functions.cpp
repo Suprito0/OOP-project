@@ -1,3 +1,1 @@
 #include"Game.h"
-
-modeSet

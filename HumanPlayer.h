@@ -5,6 +5,8 @@
 
 class HumanPlayer : public Player {
     public:
+        HumanPlayer();
+        HumanPlayer();
         Card* playTurn(Card* topCard, Color currentColor) override;
         void displayHand();
         Card* selectCard();

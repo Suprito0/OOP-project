@@ -1,17 +1,17 @@
 #include"Game.h"
-#include "Player.h"
+#include "HumanPlayer.h"
 
 void Game::initialize(int numPlayers, GameMode* mode){
     this->gameMode = mode;
     if (this->gameMode->getModeName() == "normal"){
-        Player* player1 = new HumanPlayer();
+        Player* player1 = new HumanPlayer;
         for(int i=0; i<numPlayers; i++){
         this->players.push_back();
         }
     }
 }
 void Game::start(){
-
+    
 }
 void Game::nextTurn();
 bool Game::isValidMove(Card* card){
