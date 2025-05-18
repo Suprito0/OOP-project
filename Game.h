@@ -1,15 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include"ActionCard.h"
-#include"AIPlayer.h"
-#include"Card.h"
-#include"Deck.h"
-#include"GameMode.h"
-#include"HumanPlayer.h"
-#include"NumberCard.h"
-#include"Player.h"
-#include"SpecialActionCard.h"
+#include <vector>
+#include <string>
+using namespace std;
+
+class Card;
+class Player;
+class Deck;
+class GameMode;
 
 class Game{
     protected:

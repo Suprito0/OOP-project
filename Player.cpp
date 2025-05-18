@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Card.h"
+#include "Deck.h"
 
 // Player::Player(){
 //     this->name = 'Player';

@@ -1,4 +1,5 @@
 #include "HumanPlayer.h"
+#include "Card.h"
 #include "Deck.h"
 #include <iostream>
 

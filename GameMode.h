@@ -3,17 +3,11 @@
 
 //include libraries
 #include<iostream>
-#include<string.h>
-#include<vector> 
-#include"ActionCard.h"
-#include"AIPlayer.h"
-#include"Card.h"
-#include"Deck.h"
-#include"Game.h"
-#include"HumanPlayer.h"
-#include"NumberCard.h"
-#include"Player.h"
-#include"SpecialActionCard.h"
+#include<string>
+#include <vector>
+class Card;
+
+
 using namespace std;
 
 class GameMode{

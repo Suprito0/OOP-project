@@ -1,4 +1,5 @@
 #include "Card.h"
+#include "Game.h"
 
 Card::Card(Color color, CardType type) {
   this->color = color;

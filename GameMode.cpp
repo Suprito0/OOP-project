@@ -1,4 +1,5 @@
 #include"GameMode.h"
+#include "Card.h"
 
 GameMode::GameMode(){
     this->modeName = "normal";

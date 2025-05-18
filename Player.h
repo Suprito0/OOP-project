@@ -1,16 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include"ActionCard.h"
-#include"AIPlayer.h"
-#include"Card.h"
-#include"Deck.h"
-#include"Game.h"
-#include"GameMode.h"
-#include"HumanPlayer.h"
-#include"NumberCard.h"
-#include"SpecialActionCard.h"
+class Card;
+class Deck;
+enum Color;  
 #include <vector>
+#include <string>
 #include <sstream>
 
 using namespace std;

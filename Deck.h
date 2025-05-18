@@ -1,15 +1,7 @@
 #ifndef DECK_H
 #define DECK_H
 
-#include"ActionCard.h"
-#include"AIPlayer.h"
-#include"Card.h"
-#include"Game.h"
-#include"GameMode.h"
-#include"HumanPlayer.h"
-#include"NumberCard.h"
-#include"Player.h"
-#include"SpecialActionCard.h"
+class Card;
 #include <vector>
 
 class Deck {

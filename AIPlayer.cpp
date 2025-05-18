@@ -1,4 +1,6 @@
 #include "AIPlayer.h"
+#include "Card.h"
+#include "Deck.h"
 
 AIPlayer::AIPlayer(){
     this->name = "Bot";

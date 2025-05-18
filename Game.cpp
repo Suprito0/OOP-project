@@ -1,6 +1,9 @@
 #include"Game.h"
 #include "HumanPlayer.h"
 #include "AIPlayer.h"
+#include "Card.h"
+#include "Deck.h"
+#include "GameMode.h"
 
 void Game::initialize(string playerName, GameMode* mode){
     this->currentPlayerIndex = 0;
