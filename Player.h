@@ -1,7 +1,15 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Card.h"
+#include"ActionCard.h"
+#include"AIPlayer.h"
+#include"Card.h"
+#include"Deck.h"
+#include"Game.h"
+#include"GameMode.h"
+#include"HumanPlayer.h"
+#include"NumberCard.h"
+#include"SpecialActionCard.h"
 #include <vector>
 #include <sstream>
 
@@ -22,7 +30,7 @@ class Player {
         bool hasValidMove(Card* topCard, Color currentColor);
         void callUno();
         size_t getHandSize();
-
+        string getName();
 };
 
 #endif

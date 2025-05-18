@@ -1,6 +1,14 @@
 #ifndef NUMBERCARD_H
 #define NUMBERCARD_H
-#include "Card.h"
+#include"ActionCard.h"
+#include"AIPlayer.h"
+#include"Card.h"
+#include"Deck.h"
+#include"Game.h"
+#include"GameMode.h"
+#include"HumanPlayer.h"
+#include"Player.h"
+#include"SpecialActionCard.h"
 
 class NumberCard : public Card {
  private:

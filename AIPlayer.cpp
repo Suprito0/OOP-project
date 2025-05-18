@@ -1,7 +1,7 @@
 #include "AIPlayer.h"
 
 AIPlayer::AIPlayer(){
-    this->name = 'Bot';
+    this->name = "Bot";
 }
 AIPlayer::AIPlayer(string name): Player(name) {}
 

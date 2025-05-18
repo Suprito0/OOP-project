@@ -2,7 +2,15 @@
 #define CARD_H
 #include <string>
 
-#include "Game.h"
+#include"ActionCard.h"
+#include"AIPlayer.h"
+#include"Deck.h"
+#include"Game.h"
+#include"GameMode.h"
+#include"HumanPlayer.h"
+#include"NumberCard.h"
+#include"Player.h"
+#include"SpecialActionCard.h"
 
 enum Color { Red, Green, Blue, Yellow, None };
 enum CardType { Number, Action, Special_Action };

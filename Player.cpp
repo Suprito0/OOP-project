@@ -38,3 +38,7 @@ void Player::callUno(){
 size_t Player::getHandSize(){
     return hand.size();
 }
+
+string Player::getName(){
+    return this->name;
+}

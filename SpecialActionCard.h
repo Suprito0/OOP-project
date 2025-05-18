@@ -1,6 +1,14 @@
 #ifndef SPECIALACTIONCARD_H
 #define SPECIALACTIONCARD_H
-#include "ActionCard.h"
+#include"ActionCard.h"
+#include"AIPlayer.h"
+#include"Card.h"
+#include"Deck.h"
+#include"Game.h"
+#include"GameMode.h"
+#include"HumanPlayer.h"
+#include"NumberCard.h"
+#include"Player.h"
 
 class SpecialActionCard : public ActionCard {
  private:

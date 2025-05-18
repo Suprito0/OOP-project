@@ -1,6 +1,15 @@
 #ifndef ACTIONCARD_H
 #define ACTIONCARD_H
-#include "Card.h"
+
+#include"AIPlayer.h"
+#include"Card.h"
+#include"Deck.h"
+#include"Game.h"
+#include"GameMode.h"
+#include"HumanPlayer.h"
+#include"NumberCard.h"
+#include"Player.h"
+#include"SpecialActionCard.h"
 
 class ActionCard : public Card {
  protected:

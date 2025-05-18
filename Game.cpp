@@ -29,29 +29,46 @@ void Game::initialize(string playerName, GameMode* mode){
     this->currentCard = this->deck->get_TopDiscard();
 }
 void Game::start(){
-    // int i = 0;
-    // while (i == 0){
-    //     if (this->isClockwise){
-    //         for(int j = this->currentPlayerIndex; j<4 ;j ++){
-    //             players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-    //             this->currentPlayerIndex++;
-    //             if (this->currentPlayerIndex >= 4){
-    //                 this->currentPlayerIndex = this->currentPlayerIndex - 4;
-    //             }
-    //             if (this->isClockwise == false){
-    //                 break;
-    //             }
-    //         }
-    //     } else {
-    //         for (int j = this->currentPlayerIndex; j>=0; j--){
-    //             players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-    //         }
-    //     }
-    // }
+    int i = 0;
+    while (i == 0){
+        if (this->isClockwise){
+            for(int j = this->currentPlayerIndex; j<4 ;j ++){
+                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
+                this->currentPlayerIndex++;
+                if (checkForWinner()){
+                    break;
+                }
+                if (this->currentPlayerIndex >= 4){
+                    this->currentPlayerIndex = this->currentPlayerIndex - 4;
+                }
+                if (this->isClockwise == false){
+                    break;
+                }
+            }
+        } else {
+            for (int j = this->currentPlayerIndex; j>=0; j--){
+                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
+                this->currentPlayerIndex--;
+                if (checkForWinner()){
+                    break;
+                }
+                if (this->currentPlayerIndex <=0){
+                    this->currentPlayerIndex = this->currentPlayerIndex + 4;
+                }
+                if (this->isClockwise == false){
+                    break;
+                }
+            }
+        }
+        if (checkForWinner()){
+                    break;
+        }
+    }
+    cout << this->players[this->currentPlayerIndex]->getName() << endl;
 }
 // void Game::nextTurn();
 bool Game::isValidMove(Card* card){
-   card->canPlayOn(this->currentCard);
+    return card->canPlayOn(this->currentCard);
 }
 void Game::playCard(Card* card){
     this->deck->addToDiscardPile(card);
@@ -59,8 +76,10 @@ void Game::playCard(Card* card){
 void Game::drawCard(){
 
 }
-bool Game::checkForWinner();
-void Game::handleSpecialCard(Card* card);
+bool Game::checkForWinner(){
+    return (this->players[this->currentPlayerIndex]->getHandSize() == 0);
+}
+// void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection(){
     if(this->isClockwise){
         this->isClockwise = false;
@@ -88,4 +107,4 @@ void Game::updateCurrentCard(Card* card){
 bool Game::isGameOver(){
     return this->gameOver;
 }
-void Game::endGame();
+// void Game::endGame();
