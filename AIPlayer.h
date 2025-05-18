@@ -10,7 +10,7 @@ class AIPlayer : public Player {
     public:
         AIPlayer();
         AIPlayer(string name);
-        Card* playTurn(Card* topCard, Color currentColor, Deck* decks);
+        Card* playTurn(Card* topCard, Color currentColor, Deck* decks) override;
         Card* strategicCardSelection();
         Color chooseOptimalColor();
         int get_number();
