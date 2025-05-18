@@ -1,4 +1,11 @@
 #include "Game.h"
+#include "SpecialActionCard.h"
+#include "GameMode.h"
+#include "NumberCard.h"
+#include "AIPlayer.h"
+#include "HumanPlayer.h"
+#include "Deck.h"
+
 
 int main(){
     Game* game;
