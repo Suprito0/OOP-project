@@ -135,3 +135,14 @@ std::string ActionCard::toString() {
 int ActionCard::get_number(){ return 99;}
 
 ActionType ActionCard::get_ActionType(){ return this->get_ActionType();}
+
+string ActionCard::get_ActionTypeString(){
+  switch (action) {
+        case Skip: return "Skip";
+        case Reverse: return "Reverse";
+        case Draw_Two: return "Draw Two";
+        case Wild: return "Wild";
+        case Wild_Draw_Four: return "Wild Draw Four";
+        default: return "Unknown";
+    }
+}

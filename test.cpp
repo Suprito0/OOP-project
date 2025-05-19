@@ -8,13 +8,12 @@
 
 
 int main(){
-    Game* game;
     GameMode mode;
+    cout << mode.getModeName() <<endl;
+    Game game("suprito", &mode);
 
-    string playerName;
-    cout << "Input your name:" << endl;
-    cin >> playerName;
+    // cout << "Input your name:" << endl;
+    // cin >> playerName;
 
-    game->initialize(playerName, &mode);
-    game->start();
+    game.start();
 }

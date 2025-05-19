@@ -1,5 +1,4 @@
 #include "Deck.h"
-#include "ActionCard.h"
 #include "NumberCard.h"
 #include "SpecialActionCard.h"
 
@@ -48,6 +47,7 @@ void Deck::initialize() {
     cards.push_back(new SpecialActionCard(None));
   }
   shuffle();
+  
 }
 
 void Deck::shuffle() {

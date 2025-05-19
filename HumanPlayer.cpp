@@ -36,7 +36,7 @@ void HumanPlayer::displayHand(){
     int numCards = hand.size();
 
     for (size_t i = 0; i < numCards; i++) {
-        std::cout << "Card " << i+1 << " :" << hand[i]->get_Color() << " " << hand[i]->get_CardType() << " | ";
+        std::cout << "Card " << i+1 << " :" << hand[i]->get_ColorString() << " " << hand[i]->get_CardTypeString() << " | ";
     }
     std::cout << std::endl;
 }

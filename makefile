@@ -1,4 +1,4 @@
 git :
 	git add .
-	git commit -m "make some prog on game.cpp"
+	git commit -m "Mostly done. Still need to tweak the draw card and display topCard"
 	git push

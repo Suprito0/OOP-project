@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include"Enum.h"
 class Card;
 class Deck;
-enum Color;  
 #include <vector>
 #include <string>
 #include <sstream>

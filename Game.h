@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include"Enum.h"
 using namespace std;
 
 class Card;
@@ -23,7 +24,8 @@ class Game{
         int drawStack;
     public:
         // void initialize(int numPlayers, GameMode* mode);
-        void initialize(string playerName, GameMode* mode);
+        // void initialize(string playerName, GameMode* mode);
+        Game(string playerName, GameMode* mode);
         void start();
         void nextTurn();
         bool isValidMove(Card* card);

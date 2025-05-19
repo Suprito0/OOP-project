@@ -15,6 +15,7 @@ class ActionCard : public Card {
   std::string toString() override;
   int get_number();
   ActionType get_ActionType();
+  string get_ActionTypeString();
 };
 
 #endif  // ACTIONCARD_H

@@ -2,9 +2,9 @@
 #include "Card.h"
 #include "Deck.h"
 
-// Player::Player(){
-//     this->name = 'Player';
-// }
+Player::Player(){
+    this->name = "Player";
+}
 
 Player::Player(string name){
     this->name = name;

@@ -5,15 +5,18 @@
 #include "Deck.h"
 #include "GameMode.h"
 
-void Game::initialize(string playerName, GameMode* mode){
+Game::Game(string playerName, GameMode* mode){
+
+
+    this->deck = new Deck;
     this->currentPlayerIndex = 0;
     this->gameMode = mode;
     this->isClockwise = true;
     if (this->gameMode->getModeName() == "normal"){
         int botNum = 3;
-        string playerName;
-        cout << "Enter your name: " << endl;
-        cin >> playerName;
+        // string playerName;
+        // cout << "Enter your name: " << endl;
+        // cin >> playerName;
         Player* player1 = new HumanPlayer(playerName);
         this->players.push_back(player1);
         for(int i=0; i<botNum; i++){
@@ -22,10 +25,12 @@ void Game::initialize(string playerName, GameMode* mode){
             players[i+1] = new AIPlayer(botName.str());
         }
     }
-    this->deck->initialize();
+    
+    // this->deck->initialize();
     for(int i = 0; i < 7; i++){
         for (int j = 0; j < 4; j++){
             players[j]->addCardToHand(this->deck->drawCard());
+            
         }
     }
     this->deck->addToDiscardPile(this->deck->drawCard());

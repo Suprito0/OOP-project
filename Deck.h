@@ -2,9 +2,11 @@
 #define DECK_H
 
 class Card;
+#include"Enum.h"
 #include <vector>
+using std::vector;
 
-class Deck {
+class Deck { 
  private:
   vector<Card*> cards;
   vector<Card*> discardPile;

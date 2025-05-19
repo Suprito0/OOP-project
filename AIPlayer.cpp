@@ -7,30 +7,71 @@ AIPlayer::AIPlayer(){
 }
 AIPlayer::AIPlayer(string name): Player(name) {}
 
-Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
+// Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
+//     Card* AICard = strategicCardSelection();
+
+//     if (AICard != nullptr) {   // AI plays a wild card if it has one
+//         decks->addToDiscardPile(AICard);
+//         removeCardFromHand(AICard);
+//         chooseOptimalColor();
+//         return AICard;
+//     } else {
+//         if (hasValidMove(topCard, currentColor)) {   // Plays a valid card if it has one
+//             for (Card* card : hand) {
+//                 if (card->get_Color() == currentColor) {
+//                     decks->addToDiscardPile(card);
+//                     removeCardFromHand(card);
+//                     return card;
+//                 }
+//             }
+//         } else {   // Otherwise draws a card
+//             Card* newCard = decks->drawCard();
+//             addCardToHand(newCard);
+//             return nullptr;
+//         }
+//     }
+// }
+
+Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
+    if (!decks) {
+        std::cerr << "[ERROR] Deck pointer is null!" << std::endl;
+        return nullptr;
+    }
+
+    if (!topCard) {
+        std::cerr << "[ERROR] Top card is null!" << std::endl;
+        return nullptr;
+    }
+
     Card* AICard = strategicCardSelection();
 
-    if (AICard != nullptr) {   // AI plays a wild card if it has one
+    if (AICard != nullptr) {
         decks->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         chooseOptimalColor();
         return AICard;
-    } else {
-        if (hasValidMove(topCard, currentColor)) {   // Plays a valid card if it has one
-            for (Card* card : hand) {
-                if (card->get_Color() == currentColor) {
-                    decks->addToDiscardPile(card);
-                    removeCardFromHand(card);
-                    return card;
-                }
+    }
+
+    if (hasValidMove(topCard, currentColor)) {
+        for (Card* card : hand) {
+            if (card && card->get_Color() == currentColor) {
+                decks->addToDiscardPile(card);
+                removeCardFromHand(card);
+                return card;
             }
-        } else {   // Otherwise draws a card
-            Card* newCard = decks->drawCard();
-            addCardToHand(newCard);
-            return nullptr;
         }
     }
+
+    Card* newCard = decks->drawCard();
+    if (newCard) {
+        addCardToHand(newCard);
+    } else {
+        std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
+    }
+
+    return nullptr;
 }
+
 
 Card* AIPlayer::strategicCardSelection(){
     for (Card* card : hand) {   // Chooses a wild if it has one
