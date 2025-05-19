@@ -26,7 +26,7 @@ void Player::removeCardFromHand(Card* card){
 
 bool Player::hasValidMove(Card* topCard, Color currentColor){
     for (Card* card : hand) {
-        if (topCard->get_Color() == currentColor || card->canPlayOn(topCard)) {
+        if (card->canPlayOn(topCard)) {
             return true;
         }
     }

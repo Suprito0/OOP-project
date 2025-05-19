@@ -42,6 +42,7 @@ class Game{
         void updateCurrentCard(Card* card);
         bool isGameOver();
         void endGame();
+        void play();
 };
 
 #endif //GAME_H

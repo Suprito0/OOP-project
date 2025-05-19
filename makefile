@@ -1,4 +1,4 @@
 git :
 	git add .
-	git commit -m "Mostly done. Still need to tweak the draw card and display topCard"
+	git commit -m "'Fixed' HumanPlayer. need to tweal AIplayer"
 	git push

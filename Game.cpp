@@ -37,34 +37,35 @@ Game::Game(string playerName, GameMode* mode){
     this->currentCard = this->deck->get_TopDiscard();
 }
 void Game::start(){
-    int i = 0;
+    if(this->currentCard->get_CardTypeString() == "Skip"){
+        this->currentPlayerIndex++;
+    }
+    int i = 0, j = 0;
     while (i == 0){
         if (this->isClockwise){
-            for(int j = this->currentPlayerIndex; j<4 ;j ++){
-                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-                this->currentPlayerIndex++;
-                if (checkForWinner()){
+            while (j == 0){
+                play();
+                if (checkForWinner()){ break; }
+                if (this->isClockwise == false){
+                    this->currentPlayerIndex--;
                     break;
                 }
+                this->currentPlayerIndex++;
                 if (this->currentPlayerIndex >= 4){
                     this->currentPlayerIndex = this->currentPlayerIndex - 4;
                 }
-                if (this->isClockwise == false){
-                    break;
-                }
             }
         } else {
-            for (int j = this->currentPlayerIndex; j>=0; j--){
-                players[j]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
-                this->currentPlayerIndex--;
-                if (checkForWinner()){
+            while (j == 0){
+                play();
+                if (checkForWinner()){ break; }
+                if (this->isClockwise == false){
+                    this->currentPlayerIndex++;
                     break;
                 }
+                this->currentPlayerIndex--;
                 if (this->currentPlayerIndex <=0){
                     this->currentPlayerIndex = this->currentPlayerIndex + 4;
-                }
-                if (this->isClockwise == false){
-                    break;
                 }
             }
         }
@@ -114,5 +115,13 @@ void Game::updateCurrentCard(Card* card){
 
 bool Game::isGameOver(){
     return this->gameOver;
+}
+
+void Game::play(){
+    cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | " << endl;
+    Card* playedCard = players[this->currentPlayerIndex]->playTurn(this->currentCard, this->currentCard->get_Color(), this->deck);
+    if ( playedCard != nullptr){
+        this->currentCard = playedCard;
+    }
 }
 // void Game::endGame();
