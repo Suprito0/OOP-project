@@ -10,10 +10,16 @@
 int main(){
     GameMode mode;
     cout << mode.getModeName() <<endl;
-    Game game("suprito", &mode);
+    Game game("Suprito", &mode);
 
     // cout << "Input your name:" << endl;
     // cin >> playerName;
 
+    // game.getPlayer(0)->displayHand();
+    // game.getPlayer(1)->displayHand();
+    // game.getPlayer(2)->displayHand();
+    // game.getPlayer(3)->displayHand();
+
     game.start();
+    
 }

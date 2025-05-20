@@ -16,6 +16,7 @@ class ActionCard : public Card {
   int get_number();
   ActionType get_ActionType();
   string get_ActionTypeString();
+
 };
 
 #endif  // ACTIONCARD_H

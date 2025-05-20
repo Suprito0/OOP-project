@@ -39,6 +39,8 @@ class Game{
         void changeColor(Color newColor);
         Player* getCurrentPlayer();
         Player* getNextPlayer();
+        Player* getPreviousPlayer();
+        Player* getPlayer(int i);
         void updateCurrentCard(Card* card);
         bool isGameOver();
         void endGame();

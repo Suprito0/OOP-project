@@ -1,5 +1,6 @@
 #include "SpecialActionCard.h"
 #include "Game.h"
+#include "Player.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -38,6 +39,8 @@ ActionType SpecialActionCard::get_SelectedAction() const {
 void SpecialActionCard::play(Game* game) {
   std::cout << "Played Special Action Card: " << toString() << std::endl;
 
+  bool isHuman = game->getCurrentPlayer()->isHuman();
+
   switch (selectedAction) {
     case Skip:
       game->skipNextPlayer();
@@ -55,33 +58,68 @@ void SpecialActionCard::play(Game* game) {
   }
 
   // Ask player to choose a new color
-  int choice = -1;
-  while (choice < 0 || choice > 3) {
-    std::cout << "Choose a color:\n";
-    std::cout << "0. Red\n1. Green\n2. Blue\n3. Yellow\n> ";
-    std::cin >> choice;
+  if (isHuman)
+    {
+      // Ask player to choose a color
+      int choice = -1;
 
-    if (choice < 0 || choice > 3) {
-      std::cout << "Invalid choice. Please enter a number between 0 and 3.\n";
+      while (choice < 0 || choice > 3)
+      {
+        std::cout << "Choose a color:\n";
+        std::cout << "0. Red\n1. Green\n2. Blue\n3. Yellow\n> ";
+        std::cin >> choice;
+
+        if (choice < 0 || choice > 3)
+        {
+          std::cout
+              << "Invalid choice. Please enter a number between 0 and 3.\n";
+        }
+      }
+      game->changeColor(static_cast<Color>(choice));
+
+      // Show color confirmation
+      switch (choice)
+      {
+      case 0:
+        std::cout << "Color changed to Red.\n";
+        break;
+      case 1:
+        std::cout << "Color changed to Green.\n";
+        break;
+      case 2:
+        std::cout << "Color changed to Blue.\n";
+        break;
+      case 3:
+        std::cout << "Color changed to Yellow.\n";
+        break;
+      default:
+        std::cout << "Invalid choice.\n";
+        break;
+      }
     }
-  }
-
-  game->changeColor(static_cast<Color>(choice));
-
-  switch (choice) {
-    case 0:
-      std::cout << "Color changed to Red.\n";
-      break;
-    case 1:
-      std::cout << "Color changed to Green.\n";
-      break;
-    case 2:
-      std::cout << "Color changed to Blue.\n";
-      break;
-    case 3:
-      std::cout << "Color changed to Yellow.\n";
-      break;
-  }
+    else
+    {
+      Color choice = game->getCurrentPlayer()->chooseOptimalColor();
+      game->changeColor(choice);
+      switch (choice)
+      {
+      case Red:
+        std::cout << "Color changed to Red.\n";
+        break;
+      case Green:
+        std::cout << "Color changed to Green.\n";
+        break;
+      case Blue:
+        std::cout << "Color changed to Blue.\n";
+        break;
+      case Yellow:
+        std::cout << "Color changed to Yellow.\n";
+        break;
+      default:
+        std::cout << "Invalid choice.\n";
+        break;
+      }
+    }
 
   game->updateCurrentCard(this);
 }

@@ -21,7 +21,7 @@ string Card::get_ColorString(){
         case Green: return "Green";
         case Blue: return "Blue";
         case Yellow: return "Yellow";
-        case None: return "Wild";
+        case None: return "";
         default: return "Unknown";
     }
 }

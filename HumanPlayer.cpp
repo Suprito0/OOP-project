@@ -3,9 +3,9 @@
 #include "Deck.h"
 #include <iostream>
 
-HumanPlayer::HumanPlayer(): Player() {}
+HumanPlayer::HumanPlayer(): Player() {this->isItHuman = true;}
 
-HumanPlayer::HumanPlayer(string name): Player(name){}
+HumanPlayer::HumanPlayer(string name): Player(name){ this->isItHuman = true;}
 
 Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
     displayHand();   // Show hand
@@ -16,7 +16,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
         while (true) {
             playCard = selectCard();
 
-            if (playCard->canPlayOn(topCard)) {
+            if (playCard->canPlayOn(topCard) || playCard->get_Color() == currentColor) {
                 decks->addToDiscardPile(playCard);
                 removeCardFromHand(playCard);
                 return playCard;
@@ -32,14 +32,14 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
     }
 }
 
-void HumanPlayer::displayHand(){
-    int numCards = hand.size();
-
-    for (size_t i = 0; i < numCards; i++) {
-        std::cout << "Card " << i+1 << " :" << hand[i]->get_ColorString() << " " << hand[i]->get_CardTypeString() << " | ";
-    }
-    std::cout << std::endl;
-}
+// void HumanPlayer::displayHand(){
+//     int numCards = hand.size();
+//         cout << this->getName() << " : " ;
+//     for (size_t i = 0; i < numCards; i++) {
+//         std::cout << "Card " << i+1 << " :" << hand[i]->get_ColorString() << " " << hand[i]->get_CardTypeString() << " | ";
+//     }
+//     std::cout << std::endl;
+// }
 
 Card* HumanPlayer::selectCard(){
     int selectedCard = -1;
@@ -48,6 +48,12 @@ Card* HumanPlayer::selectCard(){
     while (selectedCard < 0 || selectedCard > hand.size()) {   // Loops if selected card is not within boundary
         std::cout << "What card would you like to play? Choose from Card 1-" << hand.size() << std::endl;
         std::cin >> selectedCard;
+        if (selectedCard == 0){
+            this->callUno(true);
+            cout << "You have called UNO!" << endl;
+            std::cout << "What card would you like to play? Choose from Card 1-" << hand.size() << std::endl;
+            std::cin >> selectedCard;
+        }
         if (std::cin.fail() || selectedCard < 0 || selectedCard > hand.size()) {
             std::cout << "Invalid input. Try again." << std::endl;
         }

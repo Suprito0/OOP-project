@@ -14,6 +14,7 @@ class Player {
     protected:
         vector<Card*> hand;
         string name;
+        bool isItHuman;  
         bool hasCalledUno;
 
     public:
@@ -23,9 +24,14 @@ class Player {
         void addCardToHand(Card* card);
         void removeCardFromHand(Card* card);
         bool hasValidMove(Card* topCard, Color currentColor);
-        void callUno();
+        void callUno(bool uno);
+        bool getUno();
         size_t getHandSize();
         string getName();
+        bool isHuman();
+        void displayHand();
+
+        Color chooseOptimalColor();
 };
 
 #endif

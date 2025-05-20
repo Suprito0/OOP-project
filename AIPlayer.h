@@ -11,9 +11,11 @@ class AIPlayer : public Player {
         AIPlayer();
         AIPlayer(string name);
         Card* playTurn(Card* topCard, Color currentColor, Deck* decks) override;
-        Card* strategicCardSelection();
+        Card* strategicCardSelection(Card* topCard, Color currentColor);
         Color chooseOptimalColor();
         int get_number();
+
+        // void displayHand();
 };
 
 #endif
