@@ -6,11 +6,15 @@
 #include "HumanPlayer.h"
 #include "Deck.h"
 
-
-int main(){
+int main()
+{
     GameMode mode;
-    cout << mode.getModeName() <<endl;
-    Game game("Suprito", &mode);
+    cout << mode.getModeName() << endl;
+
+    string playerName;
+        cout << "Enter your name: " << endl;
+        cin >> playerName;
+    Game game(playerName, &mode);
 
     // cout << "Input your name:" << endl;
     // cin >> playerName;
@@ -21,5 +25,4 @@ int main(){
     // game.getPlayer(3)->displayHand();
 
     game.start();
-    
 }

@@ -4,15 +4,16 @@
 #include <iostream>
 using namespace std;
 
-#include"Enum.h"
+#include "Enum.h"
 class Game;
 
-class Card {
- protected:
+class Card
+{
+protected:
   Color color;
   CardType type;
 
- public:
+public:
   Card(Color color, CardType type);
   Card();
   Color get_Color() const;
@@ -20,8 +21,8 @@ class Card {
   string get_ColorString();
   string get_CardTypeString();
   void set_Color(Color newColor);
-  virtual bool canPlayOn(Card* topCard) = 0;
-  virtual void play(Game* game) = 0;
+  virtual bool canPlayOn(Card *topCard) = 0;
+  virtual void play(Game *game) = 0;
   virtual std::string toString() = 0;
   virtual int get_number() = 0;
   virtual ActionType get_ActionType() = 0;
@@ -29,4 +30,4 @@ class Card {
   virtual ~Card();
 };
 
-#endif  // CARD_H
+#endif // CARD_H

@@ -20,9 +20,6 @@ Game::Game(string playerName, GameMode *mode)
     if (this->gameMode->getModeName() == "normal")
     {
         int botNum = 3;
-        // string playerName;
-        // cout << "Enter your name: " << endl;
-        // cin >> playerName;
         // cout << "Creating human player" << endl;
         Player *player1 = new HumanPlayer(playerName);
         this->players.push_back(player1);
@@ -114,7 +111,7 @@ void Game::start()
             break;
         }
     }
-    cout << "WINNER----------------------------------------------------- "<< this->players[this->currentPlayerIndex]->getName() << "------------------------------------------"<< endl;
+    cout << "WINNER----------------------------------------------------- " << this->players[this->currentPlayerIndex]->getName() << "------------------------------------------" << endl;
 }
 // void Game::nextTurn();
 bool Game::isValidMove(Card *card)
@@ -141,17 +138,24 @@ bool Game::checkForWinner()
         std::cerr << "[ERROR] Current player is nullptr." << std::endl;
         return false;
     }
-    if (p->getUno()){
-        if (p->getHandSize() == 0){
+    if (p->getUno())
+    {
+        if (p->getHandSize() == 0)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             p->callUno(false);
             p->addCardToHand(this->deck->drawCard());
             p->addCardToHand(this->deck->drawCard());
             return false;
         }
-    } else {
-        if (p->getHandSize() == 0){
+    }
+    else
+    {
+        if (p->getHandSize() == 0)
+        {
             p->addCardToHand(this->deck->drawCard());
             p->addCardToHand(this->deck->drawCard());
             return false;

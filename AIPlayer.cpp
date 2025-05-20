@@ -2,11 +2,12 @@
 #include "Card.h"
 #include "Deck.h"
 
-AIPlayer::AIPlayer(){
+AIPlayer::AIPlayer()
+{
     this->name = "Bot";
     this->isItHuman = false;
 }
-AIPlayer::AIPlayer(string name): Player(name) { this->isItHuman = false; }
+AIPlayer::AIPlayer(string name) : Player(name) { this->isItHuman = false; }
 
 // Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks){
 //     Card* AICard = strategicCardSelection();
@@ -33,34 +34,42 @@ AIPlayer::AIPlayer(string name): Player(name) { this->isItHuman = false; }
 //     }
 // }
 
-Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
-    if (!decks) {
+Card *AIPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
+{
+    if (!decks)
+    {
         std::cerr << "[ERROR] Deck pointer is null!" << std::endl;
         return nullptr;
     }
 
-    if (!topCard) {
+    if (!topCard)
+    {
         std::cerr << "[ERROR] Top card is null!" << std::endl;
         return nullptr;
     }
 
     cout << "Bot Selecting Card" << endl;
-    if (this->getHandSize() == 1){
+    if (this->getHandSize() == 1)
+    {
         cout << "Bot has called UNO" << endl;
         this->callUno(true);
     }
-    Card* AICard = strategicCardSelection(topCard, currentColor);
+    Card *AICard = strategicCardSelection(topCard, currentColor);
 
-    if (AICard != nullptr) {
+    if (AICard != nullptr)
+    {
         decks->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         // chooseOptimalColor();
         return AICard;
     }
 
-    if (hasValidMove(topCard, currentColor)) {
-        for (Card* card : hand) {
-            if (card && card->get_Color() == currentColor) {
+    if (hasValidMove(topCard, currentColor))
+    {
+        for (Card *card : hand)
+        {
+            if (card && card->get_Color() == currentColor)
+            {
                 decks->addToDiscardPile(card);
                 removeCardFromHand(card);
                 return card;
@@ -68,21 +77,26 @@ Card* AIPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
         }
     }
 
-    Card* newCard = decks->drawCard();
-    if (newCard) {
+    Card *newCard = decks->drawCard();
+    if (newCard)
+    {
         cout << "Bot drawing Card" << endl;
         addCardToHand(newCard);
-    } else {
+    }
+    else
+    {
         std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
     }
 
     return nullptr;
 }
 
-
-Card* AIPlayer::strategicCardSelection(Card* topCard, Color currentColor){
-    for (Card* card : hand) {   // Chooses a wild if it has one
-        if (card->canPlayOn(topCard) || card->get_Color() == currentColor) {
+Card *AIPlayer::strategicCardSelection(Card *topCard, Color currentColor)
+{
+    for (Card *card : hand)
+    { // Chooses a wild if it has one
+        if (card->canPlayOn(topCard) || card->get_Color() == currentColor)
+        {
             return card;
         }
     }
@@ -112,7 +126,7 @@ Card* AIPlayer::strategicCardSelection(Card* topCard, Color currentColor){
 //                 break;
 //         }
 //     }
-    
+
 //     Color optimalColour = Red;
 //     int maxCount = countRed;
 

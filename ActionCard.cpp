@@ -41,7 +41,7 @@ void ActionCard::play(Game *game)
     cout << " Skipped " << endl;
     break;
   case Reverse:
-      cout << " Reversing " << endl;
+    cout << " Reversing " << endl;
     game->reverseDirection();
     cout << " Reversed " << endl;
     break;
