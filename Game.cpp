@@ -277,7 +277,7 @@ void Game::play()
     cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | ";
 
-    // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     cout << " Current player index " << this->currentPlayerIndex << " | ";
     cout << " Current Color " << this->currentColor << endl;
 

@@ -12,8 +12,8 @@ int main()
     cout << mode.getModeName() << endl;
 
     string playerName;
-        cout << "Enter your name: " << endl;
-        cin >> playerName;
+    cout << "Enter your name: " << endl;
+    cin >> playerName;
     Game game(playerName, &mode);
 
     // cout << "Input your name:" << endl;
