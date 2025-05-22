@@ -1,17 +1,20 @@
 #ifndef SPECIALACTIONCARD_H
 #define SPECIALACTIONCARD_H
+
 #include "ActionCard.h"
 
-class SpecialActionCard : public ActionCard {
- private:
+class SpecialActionCard : public ActionCard
+{
+private:
   ActionType selectedAction;
 
- public:
+public:
   SpecialActionCard(Color color);
   void randAction();
   ActionType get_SelectedAction() const;
-  void play(Game* game) override;
+  void play(Game *game) override;
   std::string toString() override;
+  ActionType get_ActionType() override;
 };
 
-#endif  // SPECIALACTIONCARD_H
+#endif // SPECIALACTIONCARD_H

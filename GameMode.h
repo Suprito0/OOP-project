@@ -1,29 +1,31 @@
 #ifndef GAMEMODE_H
 #define GAMEMODE_H
 
-#include <string.h>
-
+// include libraries
 #include <iostream>
+#include <string>
 #include <vector>
+#include "Enum.h"
+class Card;
 
-#include "Card.h"
 using namespace std;
 
-class GameMode {
- protected:
-  string modeName, gameModeDescription;
-  int winningScore;
-  bool allowStacking;
+class GameMode
+{
+protected:
+    string modeName, gameModeDescription;
+    int winningScore;
+    bool allowStacking;
 
- public:
-  GameMode();
-  GameMode(string modeName);
-  void initialize();
-  size_t calculateScore(vector<Card*> remainingCards);
-  string getDescription();
-  string getModeName();
-  int getWinningScore();
-  void getAllowStacking();
+public:
+    GameMode();
+    GameMode(string modeName);
+    void initialize();
+    size_t calculateScore(vector<Card *> remainingCards);
+    string getDescription();
+    string getModeName();
+    int getWinningScore();
+    void getAllowStacking();
 };
 
-#endif  // GAMEMODE_H
+#endif
