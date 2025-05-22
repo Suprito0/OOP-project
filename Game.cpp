@@ -142,10 +142,12 @@ bool Game::checkForWinner()
     {
         if (p->getHandSize() == 0)
         {
+            cout << "UNO & 0 cards" << endl;
             return true;
         }
         else
         {
+            cout << "UNO & non-zero cards" << endl;
             p->callUno(false);
             p->addCardToHand(this->deck->drawCard());
             p->addCardToHand(this->deck->drawCard());
@@ -156,6 +158,7 @@ bool Game::checkForWinner()
     {
         if (p->getHandSize() == 0)
         {
+            cout << "No UNO & 0 cards" << endl;
             p->addCardToHand(this->deck->drawCard());
             p->addCardToHand(this->deck->drawCard());
             return false;
@@ -277,7 +280,7 @@ void Game::play()
     cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | ";
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     cout << " Current player index " << this->currentPlayerIndex << " | ";
     cout << " Current Color " << this->currentColor << endl;
 

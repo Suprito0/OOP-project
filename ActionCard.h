@@ -14,9 +14,9 @@ public:
   bool canPlayOn(Card *topCard) override;
   void play(Game *game) override;
   std::string toString() override;
-  int get_number();
-  ActionType get_ActionType();
-  string get_ActionTypeString();
+  int get_number() override;
+  ActionType get_ActionType() override;
+  string get_ActionTypeString() override;
 };
 
 #endif // ACTIONCARD_H

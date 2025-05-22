@@ -14,7 +14,7 @@ public:
   ActionType get_SelectedAction() const;
   void play(Game *game) override;
   std::string toString() override;
-  ActionType get_ActionType();
+  ActionType get_ActionType() override;
 };
 
 #endif // SPECIALACTIONCARD_H

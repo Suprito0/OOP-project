@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "fixed the formatting " 
+	git commit -m "added override" 
 	git push
 
 run :
