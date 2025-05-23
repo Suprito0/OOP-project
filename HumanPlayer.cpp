@@ -52,58 +52,73 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
 Card *HumanPlayer::selectCard()
 {
     int selectedCard = -1;
+    std::string selectedCardString;
     Card *p_selectedCard = nullptr;
-
-    while (selectedCard < 0 || selectedCard > hand.size())
-    { // Loops if selected card is not within boundary
-        std::cout << "What card would you like to play? Choose from Card 1-" << hand.size() << std::endl;
-        std::cin >> selectedCard;
-        if (selectedCard == 0)
-        {
-            this->callUno(true);
-            cout << "You have called UNO!" << endl;
-            std::cout << "What card would you like to play? Choose from Card 1-" << hand.size() << std::endl;
-            std::cin >> selectedCard;
-        }
-        if (std::cin.fail() || selectedCard < 0 || selectedCard > hand.size())
-        {
-            std::cout << "Invalid input. Try again." << std::endl;
-        }
-    }
-
-    p_selectedCard = hand[selectedCard - 1];
-    return p_selectedCard;
-}
-
-Color HumanPlayer::selectColor()
-{
-    std::string newColour;
 
     while (true)
     {
-        std::cout << "What colour would you like it to be?" << std::endl;
-        std::cout << "Choose Red, Green, Blue or Yellow." << std::endl;
-        std::cin >> newColour;
+        std::cout << "What card would you like to play? Choose from Card 1-" << hand.size() << " (Enter 0 to call UNO)" << std::endl;
+        std::cin >> selectedCardString;
 
-        if (newColour == "Red")
+        try
         {
-            return Red;
+            selectedCard = std::stoi(selectedCardString);
+
+            if (selectedCard == 0)
+            {
+                this->callUno(true);
+                std::cout << "You have called UNO!" << std::endl;
+                continue; // Ask again for card
+            }
+
+            if (selectedCard < 1 || selectedCard > hand.size())
+            {
+                std::cout << "Invalid input. Please choose a card number from 1 to " << hand.size() << "." << std::endl;
+            }
+            else
+            {
+                p_selectedCard = hand[selectedCard - 1];
+                break;
+            }
         }
-        else if (newColour == "Green")
+        catch (const std::exception &e)
         {
-            return Green;
-        }
-        else if (newColour == "Blue")
-        {
-            return Blue;
-        }
-        else if (newColour == "Yellow")
-        {
-            return Yellow;
-        }
-        else
-        {
-            std::cout << "Invalid input. Please try again." << std::endl;
+            std::cout << "Invalid input. Please enter a number." << std::endl;
         }
     }
+
+    return p_selectedCard;
 }
+
+// Color HumanPlayer::selectColor()
+// {
+//     std::string newColour;
+
+//     while (true)
+//     {
+//         std::cout << "What colour would you like it to be?" << std::endl;
+//         std::cout << "Choose Red, Green, Blue or Yellow." << std::endl;
+//         std::cin >> newColour;
+
+//         if (newColour == "Red")
+//         {
+//             return Red;
+//         }
+//         else if (newColour == "Green")
+//         {
+//             return Green;
+//         }
+//         else if (newColour == "Blue")
+//         {
+//             return Blue;
+//         }
+//         else if (newColour == "Yellow")
+//         {
+//             return Yellow;
+//         }
+//         else
+//         {
+//             std::cout << "Invalid input. Please try again." << std::endl;
+//         }
+//     }
+// }

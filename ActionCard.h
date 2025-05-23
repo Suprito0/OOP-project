@@ -17,6 +17,7 @@ public:
   int get_number() override;
   ActionType get_ActionType() override;
   string get_ActionTypeString() override;
+  string get_CardTypeString() override;
 };
 
 #endif // ACTIONCARD_H

@@ -15,6 +15,7 @@ class Player
 protected:
     vector<Card *> hand;
     string name;
+    int playerIndex;
     bool isItHuman;
     bool hasCalledUno;
 
@@ -31,6 +32,8 @@ public:
     string getName();
     bool isHuman();
     void displayHand();
+    void setIndex(int index);
+    int getIndex();
 
     Color chooseOptimalColor();
 };

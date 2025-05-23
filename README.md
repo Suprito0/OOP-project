@@ -5,12 +5,17 @@ Bugs:
     Ending on a wild card doesn't end the game.
 
 plan:
-    3rd level inheritance
-    Fix UI( Add user menu, input give feedback/error messages)
-    Fix Bugs
-    make a scoring system
-    store score in a leaderboard on a separate .txt file
-    Add destructors
+    3rd level inheritance (targeted action card)
+        Fix UI( Add user menu, input give feedback/error messages)
+            Fix Bugs
+            make a scoring system
+            store score in a leaderboard on a separate .txt file
+        Add destructors
+                        Needs commenting
+    Makefile
+        Change log
+    Gamemode
+            Testing
 
 Ask tutor:
     Another object can print or display the state of an object on the screen using operator overloading or a custom display function.

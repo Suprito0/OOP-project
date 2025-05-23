@@ -2,6 +2,7 @@
 #define DECK_H
 
 class Card;
+class Game;
 #include "Enum.h"
 #include <vector>
 using std::vector;
@@ -13,8 +14,8 @@ private:
   vector<Card *> discardPile;
 
 public:
-  Deck();
-  void initialize();
+  Deck(Game* game);
+  void initialize(Game* game);
   void shuffle();
   Card *drawCard();
   void addToDiscardPile(Card *card);

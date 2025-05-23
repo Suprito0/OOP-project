@@ -1,8 +1,7 @@
 git :
 	git add .
-	git commit -m "added override" 
+	git commit -m "added SpecialActionCard but not fully functional." 
 	git push
 
-run :
+comp :
 	g++ -std=c++17 -g *.cpp -o a
-	./a

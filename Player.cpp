@@ -65,7 +65,7 @@ void Player::displayHand()
     cout << this->getName() << " : ";
     for (size_t i = 0; i < numCards; i++)
     {
-        std::cout << "Card " << i + 1 << " :" << hand[i]->get_ColorString() << " " << hand[i]->get_CardTypeString() << " | ";
+        std::cout << "Card " << i + 1 << " :" << hand[i]->get_ColorString() << hand[i]->get_CardTypeString() << " | ";
     }
     std::cout << std::endl;
 }
@@ -129,4 +129,12 @@ Color Player::chooseOptimalColor()
 bool Player::getUno()
 {
     return this->hasCalledUno;
+}
+
+void Player::setIndex(int index){
+    this->playerIndex = index;
+}
+
+int Player::getIndex(){
+    return this->playerIndex;
 }

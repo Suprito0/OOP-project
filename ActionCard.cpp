@@ -31,7 +31,7 @@ bool ActionCard::canPlayOn(Card *topCard)
 
 void ActionCard::play(Game *game)
 {
-  std::cout << "Played Action Card: " << toString() << " | ";
+  std::cout << "Played Action Card: " << toString() << " | " << endl;
 
   switch (action)
   {
@@ -64,17 +64,30 @@ void ActionCard::play(Game *game)
     {
       // Ask player to choose a color
       int choice = -1;
+      string choiceString;
 
-      while (choice < 0 || choice > 3)
+      std::cout << "Choose a color:\n";
+      
+      while (true)
       {
-        std::cout << "Choose a color:\n";
-        std::cout << "0. Red\n1. Green\n2. Blue\n3. Yellow\n> ";
-        std::cin >> choice;
+        std::cout << "1. Red\n2. Green\n3. Blue\n4. Yellow\n> ";
+        std::cin >> choiceString;
 
-        if (choice < 0 || choice > 3)
-        {
+        if (choiceString == "1"){
+          choice = 0;
+          break;
+        } else if (choiceString == "2"){
+          choice = 1;
+          break;
+        } else if (choiceString == "3"){
+          choice = 2;
+          break;
+        } else if (choiceString == "4"){
+          choice = 3;
+          break;
+        } else {
           std::cout
-              << "Invalid choice. Please enter a number between 0 and 3.\n";
+              << "Invalid choice. Please enter a number between 1 and 4.\n";
         }
       }
       game->changeColor(static_cast<Color>(choice));
@@ -202,4 +215,8 @@ string ActionCard::get_ActionTypeString()
   default:
     return "Unknown";
   }
+}
+
+string ActionCard::get_CardTypeString() {
+  return this->get_ActionTypeString();
 }

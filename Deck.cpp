@@ -1,19 +1,20 @@
 #include "Deck.h"
 #include "NumberCard.h"
 #include "SpecialActionCard.h"
+#include "Game.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-Deck::Deck()
+Deck::Deck(Game* game)
 {
   std::srand(std::time(0)); // Seed the random generator once in constructor
-  initialize();
+  initialize(game);
 }
 
-void Deck::initialize()
+void Deck::initialize(Game* game)
 {
   cards.clear();
   discardPile.clear();
@@ -50,10 +51,21 @@ void Deck::initialize()
     cards.push_back(new ActionCard(None, Wild_Draw_Four)); // Wild Draw Four
   }
   // 4. SpecialActionCard
-  for (int i = 0; i < 4; ++i)
+  for (Color color : colors)
   {
-    cards.push_back(new SpecialActionCard(None));
+    for (int i = 0; i < 1; ++i)
+    {
+      game->setSpecialCards(new SpecialActionCard(color, Skip));
+      game->setSpecialCards(new SpecialActionCard(color, Reverse));
+      game->setSpecialCards(new SpecialActionCard(color, Draw_Two));
+    }
   }
+
+  cards.insert(cards.end(), game->getSpecialCards()->begin(), game->getSpecialCards()->end());
+
+  // cards.push_back(new SpecialActionCard(None, Wild));
+  // cards.push_back(new SpecialActionCard(None, Wild_Draw_Four));
+
   shuffle();
 }
 
