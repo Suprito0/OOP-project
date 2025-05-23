@@ -23,6 +23,7 @@ protected:
     Color currentColor;
     bool gameOver;
     int drawStack;
+    Player* winner = nullptr;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
@@ -47,6 +48,8 @@ public:
     bool isGameOver();
     void endGame();
     void play();
+    vector<Player*> getPlayers() const;
+    string getWinnerName() const;
 };
 
 #endif // GAME_H

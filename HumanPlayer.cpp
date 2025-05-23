@@ -55,7 +55,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
     std::cout << "4. View Player Info\n";
     std::cout << "5. Exit Game\n";
     std::cout << "======================\n";
-    std::cout << "Enter your choice: ";
+    std::cout << "\nEnter your choice: ";
 
     int choice;
     std::cin >> choice;
@@ -91,6 +91,9 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
             return selectedCard;
           } else {
             std::cout << "  That card can't be played. Try again.\n";
+            if (!hasValidMove(gameRef)) {
+                std::cout << "You have no valid moves. Please draw a card.\n";
+            }
           }
         } else {
           std::cout << "Invalid input. Try again.\n";
@@ -125,7 +128,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
       }
 
       case 4: {  // View player info
-        std::cout << "===== PLAYER INFO =====\n";
+        std::cout << "\n===== PLAYER INFO =====\n";
         std::cout << "Name: " << getName() << std::endl;
         std::cout << "Cards in hand: " << hand.size() << std::endl;
 
@@ -199,3 +202,12 @@ Color HumanPlayer::selectColor() {
 }
 
 void HumanPlayer::setGame(Game* g) { gameRef = g; }
+
+bool HumanPlayer::hasValidMove(Game* game) const {
+    for (Card* card : hand) {
+      if (game->isValidMove(card)) {
+        return true;  // found a playable card
+      }
+    }
+    return false;  // no playable cards
+  }

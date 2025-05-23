@@ -87,11 +87,12 @@ void Game::start() {
       }
     }
     if (checkForWinner()) {
-      break;
+        this->winner = this->players[this->currentPlayerIndex]; // Set the winner
+        break;
     }
   }
   cout << "WINNER----------------------------------------------------- "
-       << this->players[this->currentPlayerIndex]->getName()
+       << this->winner->getName()
        << "------------------------------------------" << endl;
 }
 // void Game::nextTurn();
@@ -229,3 +230,11 @@ void Game::play() {
   }
 }
 // void Game::endGame();
+
+vector<Player*> Game::getPlayers() const {
+    return players;
+}
+
+string Game::getWinnerName() const {
+    return winner ? winner->getName() : "None";
+}

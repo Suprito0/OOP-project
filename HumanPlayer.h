@@ -20,6 +20,7 @@ public:
     Card *selectCard();
     Color selectColor();
     void setGame(Game* g);
+    bool hasValidMove(Game* game) const;
 };
 
 #endif
