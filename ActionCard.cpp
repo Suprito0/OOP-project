@@ -37,7 +37,7 @@ void ActionCard::play(Game *game)
   {
   case Skip:
     cout << " Skipping " << endl;
-    game->skipNextPlayer();
+    game->skipPlayer();
     cout << " Skipped " << endl;
     break;
   case Reverse:
@@ -47,7 +47,7 @@ void ActionCard::play(Game *game)
     break;
   case Draw_Two:
     game->forceDraw(2);
-    game->skipNextPlayer(); // Next player misses turn
+    game->skipPlayer(); // Next player misses turn
     break;
   case Wild:
   case Wild_Draw_Four:
@@ -57,7 +57,7 @@ void ActionCard::play(Game *game)
       cout << "-----------force draw------------" << endl;
       game->forceDraw(4);
       cout << "-----------skipping------------" << endl;
-      game->skipNextPlayer();
+      game->skipPlayer();
     }
 
     if (isHuman)

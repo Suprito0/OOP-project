@@ -40,7 +40,7 @@ public:
     bool checkForWinner();
     void handleSpecialCard(Card *card);
     void reverseDirection();
-    void skipNextPlayer();
+    void skipPlayer();
     void forceDraw(int numCards);
     void changeColor(Color newColor);
     Player *getCurrentPlayer();
@@ -51,8 +51,9 @@ public:
     void updateCurrentCard(Card *card);
     bool isGameOver();
     vector<SpecialActionCard*>* getSpecialCards();
-    void specialActionCheck();
+    void specialActionCheck(Card* prevTopCard);
     void endGame();
+    void specialDraw(int numCards);
 
     void play();
     string colorToString(Color color);

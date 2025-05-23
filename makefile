@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "added SpecialActionCard but not fully functional." 
+	git commit -m "SpecialActionCard works with no noticable bugs." 
 	git push
 
 comp :

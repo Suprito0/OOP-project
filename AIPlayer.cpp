@@ -49,33 +49,33 @@ Card *AIPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
     }
 
     cout << "Bot Selecting Card" << endl;
-    if (this->getHandSize() == 1)
-    {
-        cout << "Bot has called UNO" << endl;
-        this->callUno(true);
-    }
     Card *AICard = strategicCardSelection(topCard, currentColor);
 
     if (AICard != nullptr)
     {
+        if (this->getHandSize() == 1)
+        {
+            cout << "Bot has called UNO" << endl;
+            this->callUno(true);
+        }
         decks->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         // chooseOptimalColor();
         return AICard;
     }
 
-    if (hasValidMove(topCard, currentColor))
-    {
-        for (Card *card : hand)
-        {
-            if (card && card->get_Color() == currentColor)
-            {
-                decks->addToDiscardPile(card);
-                removeCardFromHand(card);
-                return card;
-            }
-        }
-    }
+    // if (hasValidMove(topCard, currentColor))
+    // {
+    //     for (Card *card : hand)
+    //     {
+    //         if (card && card->get_Color() == currentColor)
+    //         {
+    //             decks->addToDiscardPile(card);
+    //             removeCardFromHand(card);
+    //             return card;
+    //         }
+    //     }
+    // }
 
     Card *newCard = decks->drawCard();
     if (newCard)

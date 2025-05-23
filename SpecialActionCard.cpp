@@ -12,6 +12,7 @@ SpecialActionCard::SpecialActionCard(Color color, ActionType type)
   this->targetPlayerIndex = -1;
 }
 
+
 // Randomly select a special action
 // void SpecialActionCard::randAction()
 // {
@@ -38,7 +39,7 @@ SpecialActionCard::SpecialActionCard(Color color, ActionType type)
 //   return selectedAction;
 // }
 
-// Play the randomly selected action
+// Select a player
 void SpecialActionCard::play(Game *game)
 {
   std::cout << "Played Special Action Card: " << toString() << std::endl;
@@ -165,27 +166,26 @@ string SpecialActionCard::get_CardTypeString()
 
 void SpecialActionCard::specialAction(Game *game)
 {
-  if (this->targetPlayerIndex != -1)
+  if (this->targetPlayerIndex != -1 && game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex)
   {
-      if (game->getNextPlayer()->getIndex() == this->targetPlayerIndex)
-      {
-        // bool isHuman = game->getCurrentPlayer()->isHuman();
+    // bool isHuman = game->getCurrentPlayer()->isHuman();
 
-        switch (this->action)
-        {
-        case Reverse:
-          game->reverseDirection();
-          break;
-        case Draw_Two:
-          game->forceDraw(2);
-        case Skip: 
-          break;
-        default:
-          std::cout << "Unknown special action.\n";
-          break;
-        }
-        this->targetPlayerIndex = -1;
-      }
+    switch (this->action)
+    {
+    case Reverse:
+      game->reverseDirection();
+      break;
+    case Draw_Two:
+      game->specialDraw(2);
+    case Skip: 
+    cout << "Special Skip" << endl;
+      break;
+    default:
+      std::cout << "Unknown special action.\n";
+      break;
+    }
+    this->targetPlayerIndex = -1;
+      
   } 
 }
 
