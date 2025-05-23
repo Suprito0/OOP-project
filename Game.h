@@ -50,6 +50,7 @@ public:
     void play();
     vector<Player*> getPlayers() const;
     string getWinnerName() const;
+    ~Game();
 };
 
 #endif // GAME_H

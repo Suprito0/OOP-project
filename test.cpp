@@ -67,7 +67,7 @@ int main() {
     cout << "3. View Player Info\n";
     cout << "4. Exit\n";
     cout << "==================================\n";
-    cout << "Enter your choice: ";
+    cout << "\nEnter your choice: ";
     cin >> choice;
 
     if (choice == 1) {

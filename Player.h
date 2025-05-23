@@ -31,8 +31,8 @@ public:
     string getName();
     bool isHuman();
     void displayHand();
-
     Color chooseOptimalColor();
+    virtual ~Player();
 };
 
 #endif

@@ -20,7 +20,8 @@ Game::Game(string playerName, GameMode *mode) {
     int botNum = 3;
     // cout << "Creating human player" << endl;
     Player *player1 = new HumanPlayer(playerName);
-    ((HumanPlayer *)player1)->setGame(this);  // Let the human player access game data
+    ((HumanPlayer *)player1)
+        ->setGame(this);  // Let the human player access game data
     this->players.push_back(player1);
     for (int i = 0; i < botNum; i++) {
       ostringstream botName;
@@ -87,8 +88,7 @@ void Game::start() {
       }
     }
     if (checkForWinner()) {
-        this->winner = this->players[this->currentPlayerIndex]; // Set the winner
-        break;
+      break;
     }
   }
   cout << "WINNER----------------------------------------------------- "
@@ -112,28 +112,51 @@ bool Game::checkForWinner() {
     std::cerr << "[ERROR] Current player is nullptr." << std::endl;
     return false;
   }
-  if (p->getUno()) {
-    if (p->getHandSize() == 0) {
-      cout << "UNO & 0 cards" << endl;
+  //   if (p->getUno()) {
+  //     if (p->getHandSize() == 0) {
+  //       cout << "UNO & 0 cards" << endl;
+  //       this->winner = p; //set the winner
+  //       return true;
+  //     } else {
+  //       cout << "UNO & non-zero cards" << endl;
+  //       p->callUno(false);
+  //       p->addCardToHand(this->deck->drawCard());
+  //       p->addCardToHand(this->deck->drawCard());
+  //       return false;
+  //     }
+  //   } else {
+  //     if (p->getHandSize() == 0) {
+  //       cout << "No UNO & 0 cards" << endl;
+  //       p->addCardToHand(this->deck->drawCard());
+  //       p->addCardToHand(this->deck->drawCard());
+  //       return false;
+  //     }
+  //   }
+  //   return false;
+  //   ;
+  int handSize = p->getHandSize();
+
+  if (handSize == 0) {
+    if (p->getUno()) {
+      std::cout << "UNO & 0 cards\n";
+      this->winner = p;
       return true;
     } else {
-      cout << "UNO & non-zero cards" << endl;
-      p->callUno(false);
-      p->addCardToHand(this->deck->drawCard());
-      p->addCardToHand(this->deck->drawCard());
-      return false;
-    }
-  } else {
-    if (p->getHandSize() == 0) {
-      cout << "No UNO & 0 cards" << endl;
+      std::cout << "No UNO & 0 cards\n";
       p->addCardToHand(this->deck->drawCard());
       p->addCardToHand(this->deck->drawCard());
       return false;
     }
   }
+
+  // Reset UNO flag if hand size > 1 (player didn't play second-last card)
+  if (handSize > 1 && p->getUno()) {
+    p->callUno(false);
+  }
+
   return false;
-  ;
 }
+
 // void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection() {
   if (this->isClockwise) {
@@ -206,18 +229,48 @@ void Game::updateCurrentCard(Card *card) { this->currentCard = card; }
 bool Game::isGameOver() { return this->gameOver; }
 
 void Game::play() {
-  cout << "--------------------------------------------------------------------"
-          "--------------------------------------------------------------------"
-          "-------------------------"
-       << endl;
-  cout << "Top Card: " << this->currentCard->get_ColorString() << " "
-       << this->currentCard->get_CardTypeString() << " | ";
+  //   cout <<
+  //   "--------------------------------------------------------------------"
+  //           "--------------------------------------------------------------------"
+  //           "-------------------------"
+  //        << endl;
+  //   cout << "Top Card: " << this->currentCard->get_ColorString() << " "
+  //        << this->currentCard->get_CardTypeString() << " | ";
 
-  // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-  cout << " Current player index " << this->currentPlayerIndex << " | ";
-  cout << " Current Color " << this->currentCard->get_ColorString() << endl;
+  //   cout << " Current player index " << this->currentPlayerIndex << " | ";
+  //   cout << " Current Color " << this->currentCard->get_ColorString() <<
+  //   endl;
 
-  cout << players[this->currentPlayerIndex]->getName() << " PLAYING" << endl;
+  //   cout << players[this->currentPlayerIndex]->getName() << " PLAYING" <<
+  //   endl;
+  cout << "\n==================================================\n";
+  cout << "               CURRENT GAME STATE\n";
+  cout << "==================================================\n";
+  cout << "Top Card:       " << this->currentCard->get_ColorString() << " "
+       << this->currentCard->get_CardTypeString() << "\n";
+  // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
+  cout << "Current Color:  ";
+  switch (this->currentColor) {
+    case Red:
+      cout << "Red\n";
+      break;
+    case Green:
+      cout << "Green\n";
+      break;
+    case Blue:
+      cout << "Blue\n";
+      break;
+    case Yellow:
+      cout << "Yellow\n";
+      break;
+    default:
+      cout << "None\n";
+      break;
+  }
+  cout << "Current player index " << this->currentPlayerIndex << endl;
+  cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
+       << "\n";
+  cout << "==================================================\n";
 
   Card *playedCard = players[this->currentPlayerIndex]->playTurn(
       this->currentCard, this->currentColor, this->deck);
@@ -231,10 +284,17 @@ void Game::play() {
 }
 // void Game::endGame();
 
-vector<Player*> Game::getPlayers() const {
-    return players;
-}
+vector<Player *> Game::getPlayers() const { return players; }
 
 string Game::getWinnerName() const {
-    return winner ? winner->getName() : "None";
+  return winner ? winner->getName() : "None";
+}
+
+Game::~Game() {
+  // Clean up dynamically allocated memory
+  delete this->deck;  // Delete the deck object
+  for (Player *player : players) {
+    delete player;  // Delete each player object
+  }
+  players.clear();  // Clear the players vector
 }
