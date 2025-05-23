@@ -36,7 +36,7 @@ string Card::get_ColorString()
   }
 }
 
-int Card::get_TargetPlayerIndex() {}
+int Card::get_TargetPlayerIndex() { return -1;}
 
 // string Card::get_CardTypeString()
 // {

@@ -1,7 +1,6 @@
 # OOP-project
 
 Bugs:
-    SpecialActionCard color change.
     Ending on a wild card doesn't end the game.
 
 plan:

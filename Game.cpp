@@ -31,7 +31,8 @@ Game::Game(string playerName, GameMode *mode)
             botName << "Bot" << i + 1;
             players.push_back(new AIPlayer(botName.str()));
         }
-        for (int i = 0; i<players.size(); i++){
+        for (int i = 0; i < players.size(); i++)
+        {
             players[i]->setIndex(i);
         }
     }
@@ -39,7 +40,7 @@ Game::Game(string playerName, GameMode *mode)
     // this->deck->initialize();
     for (int i = 0; i < 7; i++)
     {
-        for (Player* player : players)
+        for (Player *player : players)
         {
             // cout << "Dealing Card " << i+1 << " to " << player->getName() << endl;
             player->addCardToHand(deck->drawCard());
@@ -68,8 +69,8 @@ void Game::start()
     }
 
     cout << "WINNER ----------------------------------------------------- "
-              << this->getCurrentPlayer()->getName()
-              << " ------------------------------------------" << endl;
+         << this->getCurrentPlayer()->getName()
+         << " ------------------------------------------" << endl;
 }
 
 // void Game::nextTurn();
@@ -85,7 +86,8 @@ void Game::drawCard()
 {
 }
 
-bool Game::isClockwise(){
+bool Game::isClockwise()
+{
     return this->clockwise;
 }
 
@@ -138,11 +140,10 @@ void Game::reverseDirection()
 }
 void Game::skipNextPlayer()
 {
-    int numPlayers = 4; 
+    int numPlayers = 4;
     int direction = this->isClockwise() ? 1 : -1;
 
     this->currentPlayerIndex = (this->currentPlayerIndex + direction + numPlayers) % numPlayers;
-
 }
 void Game::forceDraw(int numCards)
 {
@@ -156,28 +157,28 @@ void Game::changeColor(Color newColor)
     this->currentColor = newColor;
 }
 
-Player* Game::getPreviousPlayer() {
-    int numPlayers = 4; 
+Player *Game::getPreviousPlayer()
+{
+    int numPlayers = 4;
     int direction = this->isClockwise() ? -1 : 1;
 
     int prevIndex = (currentPlayerIndex + direction + numPlayers) % numPlayers;
     return players[prevIndex];
 }
 
-
 Player *Game::getCurrentPlayer()
 {
     return this->players[this->currentPlayerIndex];
 }
 
-Player* Game::getNextPlayer() {
-    int numPlayers = 4; 
+Player *Game::getNextPlayer()
+{
+    int numPlayers = 4;
     int direction = this->isClockwise() ? 1 : -1;
 
     int nextIndex = (currentPlayerIndex + direction + numPlayers) % numPlayers;
     return players[nextIndex];
 }
-
 
 Player *Game::getPlayer(int i)
 {
@@ -218,44 +219,55 @@ void Game::play()
     }
 }
 
-int Game::getCurrentPlayerIndex(){
+int Game::getCurrentPlayerIndex()
+{
     return this->currentPlayerIndex;
 }
 
-string Game::colorToString(Color color){
-switch (color)
-  {
-  case Red:
-    return "Red ";
-  case Green:
-    return "Green ";
-  case Blue:
-    return "Blue ";
-  case Yellow:
-    return "Yellow ";
-  case None:
-    return "None";
-  default:
-    return "Unknown ";
-  }
+string Game::colorToString(Color color)
+{
+    switch (color)
+    {
+    case Red:
+        return "Red ";
+    case Green:
+        return "Green ";
+    case Blue:
+        return "Blue ";
+    case Yellow:
+        return "Yellow ";
+    case None:
+        return "None";
+    default:
+        return "Unknown ";
+    }
 }
 
-void Game::setSpecialCards(SpecialActionCard* specialActionCard){
+void Game::setSpecialCards(SpecialActionCard *specialActionCard)
+{
     specialCards.push_back(specialActionCard);
 }
 
-vector<SpecialActionCard*>* Game::getSpecialCards(){
+vector<SpecialActionCard *> *Game::getSpecialCards()
+{
     return &this->specialCards;
 }
 
-void Game::specialActionCheck() {
+void Game::specialActionCheck()
+{
     bool skip = false;
-    for (SpecialActionCard* card : this->specialCards){
-        card->specialAction(this);
-        if (card->get_TargetPlayerIndex() != 0 && (card->get_ActionType() == Skip || card->get_ActionType() == Draw_Two)){
+    for (SpecialActionCard *card : this->specialCards)
+    {
+        if (card->get_TargetPlayerIndex() == this->getNextPlayer()->getIndex() && (card->get_ActionType() == Skip || card->get_ActionType() == Draw_Two))
+        {
             skip = true;
         }
+        card->specialAction(this);
     }
-    if (skip) { this->skipNextPlayer(); }
+    if (skip && (this->currentCard->get_ActionType() != Skip && this->currentCard->get_ActionType() != Draw_Two))
+    {
+        this->skipNextPlayer();
+        cout << "Special Skip" << endl;
+    }
 }
 // void Game::endGame();

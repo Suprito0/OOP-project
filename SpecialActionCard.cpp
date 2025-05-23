@@ -178,8 +178,7 @@ void SpecialActionCard::specialAction(Game *game)
           break;
         case Draw_Two:
           game->forceDraw(2);
-        // case Skip: 
-        //   game->skipNextPlayer();
+        case Skip: 
           break;
         default:
           std::cout << "Unknown special action.\n";
