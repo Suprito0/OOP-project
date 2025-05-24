@@ -67,25 +67,34 @@ void ActionCard::play(Game *game)
       string choiceString;
 
       std::cout << "Choose a color:\n";
-      
+
       while (true)
       {
         std::cout << "1. Red\n2. Green\n3. Blue\n4. Yellow\n> ";
         std::cin >> choiceString;
 
-        if (choiceString == "1"){
+        if (choiceString == "1")
+        {
           choice = 0;
           break;
-        } else if (choiceString == "2"){
+        }
+        else if (choiceString == "2")
+        {
           choice = 1;
           break;
-        } else if (choiceString == "3"){
+        }
+        else if (choiceString == "3")
+        {
           choice = 2;
           break;
-        } else if (choiceString == "4"){
+        }
+        else if (choiceString == "4")
+        {
           choice = 3;
           break;
-        } else {
+        }
+        else
+        {
           std::cout
               << "Invalid choice. Please enter a number between 1 and 4.\n";
         }
@@ -217,6 +226,7 @@ string ActionCard::get_ActionTypeString()
   }
 }
 
-string ActionCard::get_CardTypeString() {
+string ActionCard::get_CardTypeString()
+{
   return this->get_ActionTypeString();
 }

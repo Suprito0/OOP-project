@@ -18,7 +18,7 @@ public:
   ActionType get_ActionType() override;
   string get_CardTypeString() override;
   int get_TargetPlayerIndex() override;
-  void specialAction(Game* game) override;
+  void specialAction(Game *game) override;
 };
 
 #endif // SPECIALACTIONCARD_H

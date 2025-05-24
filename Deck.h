@@ -14,8 +14,8 @@ private:
   vector<Card *> discardPile;
 
 public:
-  Deck(Game* game);
-  void initialize(Game* game);
+  Deck(Game *game);
+  void initialize(Game *game);
   void shuffle();
   Card *drawCard();
   void addToDiscardPile(Card *card);

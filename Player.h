@@ -36,7 +36,7 @@ public:
     void setIndex(int index);
     int getIndex();
     virtual ~Player();
-    string toLower(const string& str);
+    string toLower(const string &str);
 
     Color chooseOptimalColor();
 };

@@ -212,10 +212,8 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
 
         default:
             std::cout << "Invalid choice. Try again.\n";
-        
+        }
     }
-    
-}
 }
 
 // Card* HumanPlayer::selectCard() {

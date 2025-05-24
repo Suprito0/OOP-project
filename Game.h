@@ -16,7 +16,7 @@ class Game
 {
 protected:
     vector<Player *> players;
-    vector<SpecialActionCard*> specialCards;
+    vector<SpecialActionCard *> specialCards;
     Deck *deck;
     GameMode *gameMode;
     Card *currentCard;
@@ -25,13 +25,13 @@ protected:
     Color currentColor;
     bool gameOver;
     int drawStack;
-    Player* winner = nullptr;
+    Player *winner = nullptr;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
     // void initialize(string playerName, GameMode* mode);
     Game(string playerName, GameMode *mode);
-    void setSpecialCards(SpecialActionCard* specialActionCard);
+    void setSpecialCards(SpecialActionCard *specialActionCard);
     void start();
     void nextTurn();
     bool isValidMove(Card *card);
@@ -51,15 +51,15 @@ public:
     int getCurrentPlayerIndex();
     void updateCurrentCard(Card *card);
     bool isGameOver();
-    vector<SpecialActionCard*>* getSpecialCards();
-    void specialActionCheck(Card* prevTopCard);
+    vector<SpecialActionCard *> *getSpecialCards();
+    void specialActionCheck(Card *prevTopCard);
     void endGame();
     void specialDraw(int numCards);
 
     void play();
     string colorToString(Color color);
 
-    vector<Player*> getPlayers() const;
+    vector<Player *> getPlayers() const;
     string getWinnerName() const;
     ~Game();
 };

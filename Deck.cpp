@@ -8,13 +8,13 @@
 #include <ctime>
 #include <iostream>
 
-Deck::Deck(Game* game)
+Deck::Deck(Game *game)
 {
   std::srand(std::time(0)); // Seed the random generator once in constructor
   initialize(game);
 }
 
-void Deck::initialize(Game* game)
+void Deck::initialize(Game *game)
 {
   cards.clear();
   discardPile.clear();
