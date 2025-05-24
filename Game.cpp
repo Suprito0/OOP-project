@@ -72,9 +72,25 @@ void Game::start()
         specialActionCheck(prevTopCard);
     }
 
-    cout << "WINNER ----------------------------------------------------- "
-         << this->getCurrentPlayer()->getName()
-         << " ------------------------------------------" << endl;
+    //   cout << "WINNER----------------------------------------------------- "
+
+    //        << this->winner->getName()
+
+    //        << "------------------------------------------" << endl;
+
+    std::cout << "\n==================================================\n";
+
+    std::cout << "                   GAME OVER\n";
+
+    std::cout << "==================================================\n";
+
+    std::cout << "                    WINNER\n";
+
+    std::cout << "--------------------------------------------------\n";
+
+    std::cout << "                  " << this->winner->getName() << "\n";
+
+    std::cout << "==================================================\n";
 }
 
 // void Game::nextTurn();
@@ -108,30 +124,35 @@ bool Game::checkForWinner()
         std::cerr << "[ERROR] Current player is nullptr." << std::endl;
         return false;
     }
-  int handSize = p->getHandSize();
+    int handSize = p->getHandSize();
 
-  if (handSize == 0) {
-    if (p->getUno()) {
-      std::cout << "UNO & 0 cards\n";
-      this->winner = p;
-      return true;
-    } else {
-      std::cout << "No UNO & 0 cards\n";
-      p->addCardToHand(this->deck->drawCard());
-      p->addCardToHand(this->deck->drawCard());
-      return false;
+    if (handSize == 0)
+    {
+        if (p->getUno())
+        {
+            std::cout << "UNO & 0 cards\n";
+            this->winner = p;
+            return true;
+        }
+        else
+        {
+            std::cout << "No UNO & 0 cards\n";
+            p->addCardToHand(this->deck->drawCard());
+            p->addCardToHand(this->deck->drawCard());
+            return false;
+        }
     }
-  }
 
-  // Reset UNO flag if hand size > 1 (player didn't play second-last card)
-  if (handSize > 1 && p->getUno()) {
-    cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
-    p->addCardToHand(this->deck->drawCard());
-    p->addCardToHand(this->deck->drawCard());
-    p->callUno(false);
-  }
-  
-  return false;
+    // Reset UNO flag if hand size > 1 (player didn't play second-last card)
+    if (handSize > 1 && p->getUno())
+    {
+        cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
+        p->addCardToHand(this->deck->drawCard());
+        p->addCardToHand(this->deck->drawCard());
+        p->callUno(false);
+    }
+
+    return false;
 }
 // void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection()
@@ -217,17 +238,17 @@ void Game::play()
 
     // cout << this->getCurrentPlayer()->getName() << " PLAYING" << endl;
 
-      cout << "\n==================================================\n";
-  cout << "               CURRENT GAME STATE\n";
-  cout << "==================================================\n";
-  cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_CardTypeString() << "\n";
-  // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
-  cout << "Current Color:  " << colorToString(this->currentColor) << endl;
+    cout << "\n==================================================\n";
+    cout << "               CURRENT GAME STATE\n";
+    cout << "==================================================\n";
+    cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_CardTypeString() << "\n";
+    // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
+    cout << "Current Color:  " << colorToString(this->currentColor) << endl;
     cout << "Current player index " << this->currentPlayerIndex << endl;
-  cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
-       << "\n";
-       cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
-  cout << "==================================================\n";
+    cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
+         << "\n";
+    cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
+    cout << "==================================================\n";
 
     this_thread::sleep_for(std::chrono::milliseconds(2000));
     Card *playedCard = this->getCurrentPlayer()->playTurn(this->currentCard, this->currentColor, this->deck);
@@ -315,16 +336,19 @@ void Game::specialActionCheck(Card *prevTopCard)
 
 vector<Player *> Game::getPlayers() const { return players; }
 
-string Game::getWinnerName() const {
-  return winner ? winner->getName() : "None";
+string Game::getWinnerName() const
+{
+    return winner ? winner->getName() : "None";
 }
 
-Game::~Game() {
-  // Clean up dynamically allocated memory
-  delete this->deck;  // Delete the deck object
-  for (Player *player : players) {
-    delete player;  // Delete each player object
-  }
-  players.clear();  // Clear the players vector
+Game::~Game()
+{
+    // Clean up dynamically allocated memory
+    delete this->deck; // Delete the deck object
+    for (Player *player : players)
+    {
+        delete player; // Delete each player object
+    }
+    players.clear(); // Clear the players vector
 }
 // void Game::endGame();
