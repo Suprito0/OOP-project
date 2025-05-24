@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Card.h"
+#include "Deck.h"
 #include <vector>
 
 class Player {
@@ -11,7 +12,7 @@ class Player {
         bool hasCalledUno;
 
     public:
-        virtual Card* playTurn(Card* topCard, Color currentColor) = 0;
+        virtual Card* playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard) = 0;
         void addCardToHand(Card* card);
         void removeCardFromHand(Card* card);
         bool hasValidMove(Card* topCard, Color currentColor);
