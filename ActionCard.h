@@ -10,7 +10,6 @@ protected:
 
 public:
   ActionCard(Color color, ActionType type);
-  ActionType get_ActionType() const;
   bool canPlayOn(Card *topCard) override;
   void play(Game *game) override;
   std::string toString() override;

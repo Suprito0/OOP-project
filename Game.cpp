@@ -243,7 +243,7 @@ void Game::play()
     cout << "\n==================================================\n";
     cout << "               CURRENT GAME STATE\n";
     cout << "==================================================\n";
-    cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_CardTypeString() << "\n";
+    cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_ActionTypeString() << "\n";
     // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
     cout << "Current Color:  " << colorToString(this->currentColor) << endl;
     cout << "Current player index " << this->currentPlayerIndex << endl;
@@ -253,7 +253,7 @@ void Game::play()
     cout << "==================================================\n";
 
     // this_thread::sleep_for(std::chrono::milliseconds(2000));
-    
+
     Card *playedCard = this->getCurrentPlayer()->playTurn(this->currentCard, this->currentColor, this->deck);
     if (playedCard != nullptr)
     {

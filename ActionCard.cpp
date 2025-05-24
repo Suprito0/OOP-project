@@ -9,7 +9,7 @@ ActionCard::ActionCard(Color color, ActionType ActionType) : Card(color, Action)
   this->action = ActionType;
 }
 
-ActionType ActionCard::get_ActionType() const { return this->action; }
+// ActionType ActionCard::get_ActionType() const { return this->action; }
 
 // Check if card can be played
 bool ActionCard::canPlayOn(Card *topCard)
@@ -229,5 +229,13 @@ string ActionCard::get_ActionTypeString()
 
 string ActionCard::get_CardTypeString()
 {
-  return this->get_ActionTypeString();
+  switch (this->type)
+  {
+  case Action:
+    return "Action";
+  case Special_Action:
+    return "Special_Action";
+  default:
+    return "Unknown";
+  }
 }

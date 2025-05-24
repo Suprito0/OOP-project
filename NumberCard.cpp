@@ -67,9 +67,9 @@ std::string NumberCard::toString()
 int NumberCard::get_number() { return this->number; }
 
 ActionType NumberCard::get_ActionType() { return Wild; }
-string NumberCard::get_ActionTypeString() { return "number"; }
+string NumberCard::get_ActionTypeString() { return to_string(this->get_number()); }
 
 string NumberCard::get_CardTypeString()
 {
-  return to_string(this->get_number());
+  return "Number";
 }

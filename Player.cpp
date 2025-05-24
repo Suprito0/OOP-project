@@ -76,7 +76,7 @@ void Player::displayHand()
     std::cout << "--------------------------------------------\n";
     for (size_t i = 0; i < hand.size(); ++i)
     {
-        std::cout << "Card " << (i + 1) << ": " << hand[i]->get_ColorString() << hand[i]->get_CardTypeString() << "\n";
+        std::cout << "Card " << (i + 1) << ": " << hand[i]->get_ColorString() << hand[i]->get_ActionTypeString() << "\n";
     }
     std::cout << "--------------------------------------------\n";
 }
