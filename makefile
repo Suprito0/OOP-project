@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "Fixed bugs: Draw cards as first cards not working. Special cards not properly stacking" 
+	git commit -m "Added Multiplayer Gamemode" 
 	git push
 
 comp :

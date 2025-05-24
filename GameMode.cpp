@@ -15,13 +15,40 @@ void GameMode::initialize()
     {
         this->winningScore = 0;
         this->allowStacking = false;
-        this->gameModeDescription = "normal Uno rules with no stacking";
+        this->gameModeDescription = "Normal Uno rules with no stacking";
+        this->numOfPlayers = 1;
     }
     else if (modeName == "stacking")
     {
         this->winningScore = 0;
         this->allowStacking = true;
-        this->gameModeDescription = "normal Uno rules with stacking";
+        this->gameModeDescription = "Normal Uno rules with stacking";
+        this->numOfPlayers = 1;
+    }
+    else if (modeName == "multiplayer") {
+        this->winningScore = 0;
+        this->allowStacking = false;
+        this->gameModeDescription = "Normal Uno with multiple human player.";
+        string inputString;
+        while (true){
+            cout << "How many players will be playing?" << endl;
+            cin >> inputString;
+            try
+            {
+                this->numOfPlayers = stoi(inputString);
+                if (this->numOfPlayers >= 1 || this->numOfPlayers <= 4){
+                    break;
+                } else {
+                    cout << "Invalid input. Please choose a number between 1 & 4." << endl;
+                    continue;
+                }
+            }
+            catch (const std::exception &e)
+            {
+                std::cout << "Invalid input. Please enter a number." << std::endl;
+                continue;
+            }
+        }
     }
     else
     {
@@ -57,4 +84,11 @@ void GameMode::getAllowStacking()
     {
         cout << "stacking is allowed" << endl;
     }
+}
+int GameMode::getNumOfPlayers(){
+    return this->numOfPlayers;
+}
+
+GameMode::~GameMode(){
+    
 }

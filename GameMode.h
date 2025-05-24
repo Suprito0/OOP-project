@@ -16,6 +16,7 @@ protected:
     string modeName, gameModeDescription;
     int winningScore;
     bool allowStacking;
+    int numOfPlayers;
 
 public:
     GameMode();
@@ -26,6 +27,9 @@ public:
     string getModeName();
     int getWinningScore();
     void getAllowStacking();
+
+    int getNumOfPlayers();
+    ~GameMode();
 };
 
 #endif

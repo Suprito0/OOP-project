@@ -9,7 +9,7 @@
 #include <thread>
 #include <chrono>
 
-Game::Game(string playerName, GameMode *mode)
+Game::Game(GameMode *mode)
 {
 
     // cout << "Building Deck" << endl;
@@ -19,14 +19,20 @@ Game::Game(string playerName, GameMode *mode)
     this->gameMode = mode;
     this->clockwise = true;
     this->firstTurn = true;
-    if (this->gameMode->getModeName() == "normal")
+    if (this->gameMode->getModeName() == "normal" || this->gameMode->getModeName() == "multiplayer")
     {
-        int botNum = 3;
-        cout << "Creating human player" << endl;
-        Player *player1 = new HumanPlayer(playerName);
-
-        ((HumanPlayer *)player1)->setGame(this); // Let the human player access game data
-        this->players.push_back(player1);
+        int playerNum = this->gameMode->getNumOfPlayers();
+        int botNum = playerNum - 4;
+        
+        for (int i = 0; i < playerNum; i++)
+        {
+            string playerName;
+            cout << "Enter the name of Player " << i+1 << endl;
+            cin >> playerName;
+            cout << "Creating human player" << endl;
+            players.push_back(new HumanPlayer(playerName));
+            ((HumanPlayer *)players[i])->setGame(this); // Let the human player access game data
+        }
         for (int i = 0; i < botNum; i++)
         {
             ostringstream botName;

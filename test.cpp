@@ -58,12 +58,7 @@ void showPlayerInfo(const string &playerName)
 
 int main()
 {
-    GameMode mode;
-    cout << mode.getModeName() << endl;
-
-    string playerName;
-    cout << "Enter your name: ";
-    cin >> playerName;
+    GameMode* mode;
 
     string choiceString;
     int choice;
@@ -71,9 +66,10 @@ int main()
     {
         cout << "\n======= UNO GAME MAIN MENU =======\n";
         cout << "1. Start Game\n";
-        cout << "2. View Rules\n";
-        cout << "3. View Player Info\n";
-        cout << "4. Exit\n";
+        cout << "2. Select Mode\n";
+        cout << "3. View Rules\n";
+        cout << "4. View Player Info\n";
+        cout << "5. Exit\n";
         cout << "==================================\n";
 
         while (true)
@@ -94,8 +90,9 @@ int main()
 
         if (choice == 1)
         {
-            cout << "\nStarting the UNO game for " << playerName << "...\n\n";
-            currentGame = new Game(playerName, &mode);
+            cout << "\nStarting the UNO game" << "...\n\n";
+            mode->initialize();
+            currentGame = new Game(mode);
             gameStarted = true;
             currentGame->start();
             gameOver = true;
@@ -103,20 +100,50 @@ int main()
         }
         else if (choice == 2)
         {
-            showRules();
+            int modeInput;
+            string modeInputString;
+            while (true)
+            {
+                cout << "Select GameMode:\n";
+                cout << "1. Single-Player\n";
+                cout << "2. Multi-Player\n";
+                cin >> modeInputString;
+                try
+                {
+                    modeInput = stoi(modeInputString);
+                    if (modeInput == 1){
+                            delete mode;
+                            mode = new GameMode;
+                            break;
+                        } else if (modeInput == 2){
+                            delete mode;
+                            mode = new GameMode("multiplayer");
+                            break;
+                        }
+                }
+                catch (const exception &e)
+                {
+                    std::cout << "Invalid input. Please enter a number." << std::endl;
+                    continue;
+                }
+            }
         }
         else if (choice == 3)
         {
-            if (playerName.empty())
-            {
-                cout << "You must start a game first to enter your name.\n\n";
-            }
-            else
-            {
-                showPlayerInfo(playerName);
-            }
+            showRules();
         }
-        else if (choice == 4)
+        // else if (choice == 4)
+        // {
+        //     if (playerName.empty())
+        //     {
+        //         cout << "You must start a game first to enter your name.\n\n";
+        //     }
+        //     else
+        //     {
+        //         showPlayerInfo(playerName);
+        //     }
+        // }
+        else if (choice == 5)
         {
             cout << "Exiting UNO Game. Bye!\n";
             break;

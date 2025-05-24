@@ -32,7 +32,7 @@ protected:
 public:
     // void initialize(int numPlayers, GameMode* mode);
     // void initialize(string playerName, GameMode* mode);
-    Game(string playerName, GameMode *mode);
+    Game(GameMode *mode);
     void setSpecialCards(SpecialActionCard *specialActionCard);
     void start();
     void nextTurn();
