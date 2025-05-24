@@ -21,9 +21,10 @@ Game::Game(string playerName, GameMode *mode)
     if (this->gameMode->getModeName() == "normal")
     {
         int botNum = 3;
-        // cout << "Creating human player" << endl;
-        // Player *player1 = new HumanPlayer(playerName);
-        Player *player1 = new AIPlayer("Bot0");
+        cout << "Creating human player" << endl;
+        Player *player1 = new HumanPlayer(playerName);
+
+        ((HumanPlayer *)player1)->setGame(this); // Let the human player access game data
         this->players.push_back(player1);
         for (int i = 0; i < botNum; i++)
         {
@@ -63,7 +64,10 @@ void Game::start()
         Card *prevTopCard = this->currentCard;
         play();
 
-        if (checkForWinner()) {break;}
+        if (checkForWinner())
+        {
+            break;
+        }
         skipPlayer(); // changes currentPlayerIndex to the next player
         specialActionCheck(prevTopCard);
     }
@@ -104,34 +108,30 @@ bool Game::checkForWinner()
         std::cerr << "[ERROR] Current player is nullptr." << std::endl;
         return false;
     }
-    if (p->getUno())
-    {
-        if (p->getHandSize() == 0)
-        {
-            cout << "UNO & 0 cards" << endl;
-            return true;
-        }
-        else
-        {
-            cout << "UNO & non-zero cards" << endl;
-            p->callUno(false);
-            p->addCardToHand(this->deck->drawCard());
-            p->addCardToHand(this->deck->drawCard());
-            return false;
-        }
+  int handSize = p->getHandSize();
+
+  if (handSize == 0) {
+    if (p->getUno()) {
+      std::cout << "UNO & 0 cards\n";
+      this->winner = p;
+      return true;
+    } else {
+      std::cout << "No UNO & 0 cards\n";
+      p->addCardToHand(this->deck->drawCard());
+      p->addCardToHand(this->deck->drawCard());
+      return false;
     }
-    else
-    {
-        if (p->getHandSize() == 0)
-        {
-            cout << "No UNO & 0 cards" << endl;
-            p->addCardToHand(this->deck->drawCard());
-            p->addCardToHand(this->deck->drawCard());
-            return false;
-        }
-    }
-    return false;
-    ;
+  }
+
+  // Reset UNO flag if hand size > 1 (player didn't play second-last card)
+  if (handSize > 1 && p->getUno()) {
+    cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
+    p->addCardToHand(this->deck->drawCard());
+    p->addCardToHand(this->deck->drawCard());
+    p->callUno(false);
+  }
+  
+  return false;
 }
 // void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection()
@@ -205,17 +205,31 @@ bool Game::isGameOver()
 
 void Game::play()
 {
-    cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-    cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | ";
 
-    // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    cout << " Current player index: " << this->currentPlayerIndex << " | ";
-    cout << " Current Color: " << colorToString(this->currentColor) << " | ";
-    cout << " No. of Cards: " << this->getCurrentPlayer()->getHandSize() << " | ";
-    cout << " isClockwise: " << this->clockwise << " | ";
+    // cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+    // cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | ";
 
-    cout << this->getCurrentPlayer()->getName() << " PLAYING" << endl;
+    // // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    // cout << " Current player index: " << this->currentPlayerIndex << " | ";
+    // cout << " Current Color: " << colorToString(this->currentColor) << " | ";
+    // cout << " No. of Cards: " << this->getCurrentPlayer()->getHandSize() << " | ";
+    // cout << " isClockwise: " << this->clockwise << " | ";
 
+    // cout << this->getCurrentPlayer()->getName() << " PLAYING" << endl;
+
+      cout << "\n==================================================\n";
+  cout << "               CURRENT GAME STATE\n";
+  cout << "==================================================\n";
+  cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_CardTypeString() << "\n";
+  // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
+  cout << "Current Color:  " << colorToString(this->currentColor) << endl;
+    cout << "Current player index " << this->currentPlayerIndex << endl;
+  cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
+       << "\n";
+       cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
+  cout << "==================================================\n";
+
+    this_thread::sleep_for(std::chrono::milliseconds(2000));
     Card *playedCard = this->getCurrentPlayer()->playTurn(this->currentCard, this->currentColor, this->deck);
     if (playedCard != nullptr)
     {
@@ -279,7 +293,8 @@ void Game::specialActionCheck(Card *prevTopCard)
                 reverse = true;
                 cout << "Special reverse " << reverse << endl;
             }
-            if (card == this->currentCard) {
+            if (card == this->currentCard)
+            {
 
                 cardIsCurrent = true;
                 cout << "Special Card " << cardIsCurrent << endl;
@@ -290,11 +305,26 @@ void Game::specialActionCheck(Card *prevTopCard)
     if (reverse)
     {
         this->skipPlayer();
-    } 
+    }
     else if (skip && ((this->currentCard->get_ActionType() != Skip && this->currentCard->get_ActionType() != Draw_Two && this->currentCard->get_ActionType() != Wild_Draw_Four) || cardIsCurrent))
     {
         this->skipPlayer();
         cout << "Special Skip game.cpp" << endl;
     }
+}
+
+vector<Player *> Game::getPlayers() const { return players; }
+
+string Game::getWinnerName() const {
+  return winner ? winner->getName() : "None";
+}
+
+Game::~Game() {
+  // Clean up dynamically allocated memory
+  delete this->deck;  // Delete the deck object
+  for (Player *player : players) {
+    delete player;  // Delete each player object
+  }
+  players.clear();  // Clear the players vector
 }
 // void Game::endGame();

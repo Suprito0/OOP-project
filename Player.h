@@ -4,6 +4,7 @@
 #include "Enum.h"
 class Card;
 class Deck;
+#include <cctype>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -34,6 +35,8 @@ public:
     void displayHand();
     void setIndex(int index);
     int getIndex();
+    virtual ~Player();
+    string toLower(const string& str);
 
     Color chooseOptimalColor();
 };

@@ -1,3 +1,4 @@
+#include<algorithm>
 #include "Player.h"
 #include "Card.h"
 #include "Deck.h"
@@ -61,13 +62,23 @@ string Player::getName()
 
 void Player::displayHand()
 {
-    int numCards = hand.size();
-    cout << this->getName() << " : ";
-    for (size_t i = 0; i < numCards; i++)
-    {
-        std::cout << "Card " << i + 1 << " :" << hand[i]->get_ColorString() << hand[i]->get_CardTypeString() << " | ";
-    }
-    std::cout << std::endl;
+  // int numCards = hand.size();
+  // cout << this->getName() << " : ";
+  // for (size_t i = 0; i < numCards; i++)
+  // {
+  //     std::cout << "Card " << i + 1 << " :" << hand[i]->get_ColorString() <<
+  //     " " << hand[i]->get_CardTypeString() << " | ";
+  // }
+  // std::cout << std::endl;
+
+  std::cout << "\n"
+            << this->getName() << "'s Hand:\n";
+  std::cout << "--------------------------------------------\n";
+  for (size_t i = 0; i < hand.size(); ++i)
+  {
+    std::cout << "Card " << (i + 1) << ": " << hand[i]->get_ColorString() << hand[i]->get_CardTypeString() << "\n";
+  }
+  std::cout << "--------------------------------------------\n";
 }
 
 bool Player::isHuman()
@@ -131,10 +142,21 @@ bool Player::getUno()
     return this->hasCalledUno;
 }
 
-void Player::setIndex(int index){
+void Player::setIndex(int index)
+{
     this->playerIndex = index;
 }
 
-int Player::getIndex(){
+int Player::getIndex()
+{
     return this->playerIndex;
 }
+
+string Player::toLower(const string& str) {
+    string lowerStr = str;
+    transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(),
+              [](unsigned char c) { return tolower(c); });
+    return lowerStr;
+}
+
+Player::~Player() {}

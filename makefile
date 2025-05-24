@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "SpecialActionCard works with no noticable bugs." 
+	git commit -m "Added Gloria's UI and made some adjustments to it" 
 	git push
 
 comp :

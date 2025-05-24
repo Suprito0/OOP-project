@@ -25,6 +25,7 @@ protected:
     Color currentColor;
     bool gameOver;
     int drawStack;
+    Player* winner = nullptr;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
@@ -57,6 +58,10 @@ public:
 
     void play();
     string colorToString(Color color);
+
+    vector<Player*> getPlayers() const;
+    string getWinnerName() const;
+    ~Game();
 };
 
 #endif // GAME_H
