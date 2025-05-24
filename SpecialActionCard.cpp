@@ -6,9 +6,10 @@
 #include <ctime>
 #include <iostream>
 
-SpecialActionCard::SpecialActionCard(Color color, ActionType type)
-    : ActionCard(color, type)
+SpecialActionCard::SpecialActionCard(Color color, ActionType actionType)
+    : ActionCard(color, actionType)
 {
+  this->type = Special_Action;
   this->targetPlayerIndex = -1;
 }
 
@@ -39,6 +40,8 @@ SpecialActionCard::SpecialActionCard(Color color, ActionType type)
 // }
 
 // Select a player
+
+
 void SpecialActionCard::play(Game *game)
 {
   std::cout << "Played Special Action Card: " << toString() << std::endl;
@@ -150,11 +153,6 @@ std::string SpecialActionCard::toString()
   }
 
   return colorStr + "Special " + actionStr;
-}
-
-ActionType SpecialActionCard::get_ActionType()
-{
-  return this->selectedAction;
 }
 
 string SpecialActionCard::get_CardTypeString()

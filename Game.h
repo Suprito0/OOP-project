@@ -7,6 +7,7 @@
 using namespace std;
 
 class Card;
+class ActionCard;
 class SpecialActionCard;
 class Player;
 class Deck;
@@ -24,6 +25,7 @@ protected:
     bool clockwise;
     Color currentColor;
     bool gameOver;
+    bool firstTurn;
     int drawStack;
     Player *winner = nullptr;
 
@@ -55,8 +57,10 @@ public:
     void specialActionCheck(Card *prevTopCard);
     void endGame();
     void specialDraw(int numCards);
+    bool isFirstTurn();
 
     void play();
+    void firstActionPlay(ActionCard* card);
     string colorToString(Color color);
 
     vector<Player *> getPlayers() const;

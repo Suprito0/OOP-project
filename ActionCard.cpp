@@ -4,12 +4,12 @@
 
 #include <iostream>
 
-ActionCard::ActionCard(Color color, ActionType type) : Card(color, Action)
+ActionCard::ActionCard(Color color, ActionType ActionType) : Card(color, Action)
 {
-  this->action = type;
+  this->action = ActionType;
 }
 
-ActionType ActionCard::get_ActionType() const { return action; }
+ActionType ActionCard::get_ActionType() const { return this->action; }
 
 // Check if card can be played
 bool ActionCard::canPlayOn(Card *topCard)
@@ -20,7 +20,7 @@ bool ActionCard::canPlayOn(Card *topCard)
   }
 
   // Wild and Wild Draw Four can be played anytime
-  if (action == Wild || action == Wild_Draw_Four || action == topCard->get_ActionType())
+  if (action == Wild || action == Wild_Draw_Four || this->action == topCard->get_ActionType())
   {
     return true;
   }
@@ -46,7 +46,8 @@ void ActionCard::play(Game *game)
     cout << " Reversed " << endl;
     break;
   case Draw_Two:
-    game->forceDraw(2);
+    game->isFirstTurn() ? game->specialDraw(2) : game->specialDraw(2);
+    // game->forceDraw(2);
     game->skipPlayer(); // Next player misses turn
     break;
   case Wild:
@@ -55,7 +56,7 @@ void ActionCard::play(Game *game)
     if (action == Wild_Draw_Four)
     {
       cout << "-----------force draw------------" << endl;
-      game->forceDraw(4);
+      game->isFirstTurn() ? game->specialDraw(4) : game->specialDraw(4);
       cout << "-----------skipping------------" << endl;
       game->skipPlayer();
     }

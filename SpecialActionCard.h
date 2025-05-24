@@ -6,7 +6,6 @@
 class SpecialActionCard : public ActionCard
 {
 private:
-  ActionType selectedAction;
   int targetPlayerIndex;
 
 public:
@@ -15,10 +14,10 @@ public:
   ActionType get_SelectedAction() const;
   void play(Game *game) override;
   std::string toString() override;
-  ActionType get_ActionType() override;
   string get_CardTypeString() override;
   int get_TargetPlayerIndex() override;
   void specialAction(Game *game) override;
+
 };
 
 #endif // SPECIALACTIONCARD_H
