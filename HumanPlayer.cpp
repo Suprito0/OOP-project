@@ -131,6 +131,7 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
                 catch (const std::exception &e)
                 {
                     std::cout << "Invalid input. Please enter a number or type 'back' to go to the Turn Menu." << std::endl;
+                    continue;
                 }
             }
             break;

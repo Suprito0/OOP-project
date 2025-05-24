@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "Added Gloria's UI and made some adjustments to it" 
+	git commit -m "Fixed some bugs with the input" 
 	git push
 
 comp :

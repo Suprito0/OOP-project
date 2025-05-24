@@ -75,18 +75,20 @@ int main()
         cout << "3. View Player Info\n";
         cout << "4. Exit\n";
         cout << "==================================\n";
-        cout << "\nEnter your choice: ";
 
         while (true)
         {
+            cout << "\nEnter your choice: ";
             cin >> choiceString;
             try
             {
                 choice = stoi(choiceString);
+                break;
             }
             catch (const std::exception &e)
             {
                 std::cout << "Invalid input. Please enter a number." << std::endl;
+                continue;
             }
         }
 
