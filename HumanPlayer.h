@@ -3,13 +3,24 @@
 
 #include "Player.h"
 
-class HumanPlayer : public Player {
-    public:
-        Card* playTurn(Card* topCard, Color currentColor, Deck* draw, Deck* discard) override;
-        void displayHand();
-        Card* selectCard();
-        Color selectColor();
+class Game;
+class Card;
+class Deck;
+enum Color;
 
+class HumanPlayer : public Player
+{
+private:
+Game* gameRef = nullptr;
+public:
+    HumanPlayer();
+    HumanPlayer(string name);
+    Card *playTurn(Card *topCard, Color currentColor, Deck *decks) override;
+    // void displayHand();
+    // Card *selectCard();
+    // Color selectColor();
+    void setGame(Game* g);
+    bool hasValidMove(Game* game) const;
 };
 
 #endif
