@@ -32,6 +32,7 @@ public:
     bool isHuman();
     void displayHand();
     Color chooseOptimalColor();
+    int calculateScore();
     virtual ~Player();
 };
 

@@ -109,4 +109,36 @@ Color Player::chooseOptimalColor() {
 
 bool Player::getUno() { return this->hasCalledUno; }
 
+int Player::calculateScore() {   // Calculates score earned by each of the losing players hands'
+  int score = 0;
+  int add = 0;
+  CardType type;
+
+  for (Card* card : hand) {   // Scores vary by type of card remaining
+    type = card->get_CardType();
+
+    switch (type) {
+      case Number:
+      add = card->get_number();
+      score += add;
+      break;
+
+      case Action:
+      add = 20;
+      score += add;
+      break;
+
+      case Wild:
+      add = 50;
+      score += add;
+      break;
+
+      default:
+      break;
+    }
+  }
+
+  return score;
+}
+
 Player::~Player() {}
