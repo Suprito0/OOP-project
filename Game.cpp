@@ -40,7 +40,7 @@ Game::Game(GameMode *mode)
             botName << "Bot" << i + 1;
             players.push_back(new AIPlayer(botName.str()));
         }
-        for (int i = 0; i < players.size(); i++)
+        for (size_t i = 0; i < players.size(); i++)
         {
             // cout << "Assigning Index" << endl;
             players[i]->setIndex(i);
@@ -128,7 +128,7 @@ bool Game::isClockwise()
 
 bool Game::checkForWinner()
 {
-    if (currentPlayerIndex < 0 || currentPlayerIndex >= players.size())
+    if (currentPlayerIndex < 0 || currentPlayerIndex >= static_cast<int>(players.size()))
     {
         std::cerr << "[ERROR] Invalid currentPlayerIndex: " << currentPlayerIndex << std::endl;
         return false;

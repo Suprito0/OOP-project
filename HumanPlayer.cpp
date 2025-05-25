@@ -102,7 +102,7 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
                         continue; // Ask again for card
                     }
 
-                    if (input >= 1 && input <= hand.size())
+                    if (input >= 1 && input <= static_cast<int>(hand.size()))
                     {
                         Card *selectedCard = hand[input - 1];
                         if (selectedCard->canPlayOn(topCard) ||

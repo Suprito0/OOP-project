@@ -22,7 +22,7 @@ public:
     GameMode();
     GameMode(string modeName);
     void initialize();
-    size_t calculateScore(vector<Card *> remainingCards);
+    // size_t calculateScore(vector<Card *> remainingCards);
     string getDescription();
     string getModeName();
     int getWinningScore();

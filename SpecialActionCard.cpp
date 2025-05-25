@@ -179,6 +179,7 @@ void SpecialActionCard::specialAction(Game *game)
       break;
     case Draw_Two:
       game->specialDraw(2);
+      break;
     case Skip:
       cout << "Special Skip" << endl;
       break;

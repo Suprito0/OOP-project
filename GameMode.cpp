@@ -64,12 +64,12 @@ void GameMode::initialize()
         cout << "invalid Gamemode" << endl;
     }
 }
-size_t GameMode::calculateScore(vector<Card *> remainingCards)
-{
-    int score = 0;
-    size_t numOfRemainingCards = remainingCards.size();
-    return numOfRemainingCards;
-}
+// size_t GameMode::calculateScore(vector<Card *> remainingCards)
+// {
+//     int score = 0;
+//     size_t numOfRemainingCards = remainingCards.size();
+//     return numOfRemainingCards;
+// }
 string GameMode::getDescription()
 {
     return this->gameModeDescription;
