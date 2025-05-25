@@ -93,7 +93,7 @@ bool Player::isHuman()
 
 Color Player::chooseOptimalColor()
 {
-    int countRed, countGreen, countBlue, countYellow = 0;
+    int countRed= 0, countGreen= 0, countBlue= 0, countYellow = 0;
     Color currentColour;
 
     for (Card *card : hand)

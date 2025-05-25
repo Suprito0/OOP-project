@@ -19,6 +19,7 @@ void GameMode::initialize()
         this->allowStacking = false;
         this->gameModeDescription = "Normal Uno rules with no stacking";
         this->numOfPlayers = 1;
+        cout << "Single-Player Mode selected.\n";
     }
     else if (modeName == "stacking")
     {
@@ -39,7 +40,7 @@ void GameMode::initialize()
             {
                 this->numOfPlayers = stoi(inputString);
                 if (this->numOfPlayers >= 1 && this->numOfPlayers <= 4){
-                    // cout << "humanPlayers" << this->numOfPlayers << endl;
+                    cout << (numOfPlayers == 1 ? "Single-Player Mode selected.\n" : "Multi-Player Mode selected.\n");
                     break;
                 } else {
                     cout << "Invalid input. Please choose a number between 1 & 4." << endl;

@@ -144,7 +144,6 @@ int main()
                     if (modeInput == 1){
                             delete mode;
                             mode = new GameMode;
-                            cout << "Single-Player Mode selected.\n";
                             break;
                         } else if (modeInput == 2){
                             delete mode;
