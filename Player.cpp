@@ -76,6 +76,11 @@ void Player::displayHand()
     std::cout << "--------------------------------------------\n";
     for (size_t i = 0; i < hand.size(); ++i)
     {
+        if (hand[i]->get_CardType() == Special_Action)
+        {
+            std::cout << "Card " << (i + 1) << ": " << hand[i]->get_ColorString() << "Special " << hand[i]->get_ActionTypeString() << "\n";
+            continue;
+        }
         std::cout << "Card " << (i + 1) << ": " << hand[i]->get_ColorString() << hand[i]->get_ActionTypeString() << "\n";
     }
     std::cout << "--------------------------------------------\n";
@@ -159,6 +164,56 @@ string Player::toLower(const string &str)
               [](unsigned char c)
               { return tolower(c); });
     return lowerStr;
+}
+
+int Player::calculateScore()
+{ // Calculates score earned by each of the losing players hands'
+    int score = 0;
+    int add = 0;
+    CardType type;
+
+    for (Card *card : hand)
+    { // Scores vary by type of card remaining
+        type = card->get_CardType();
+
+        switch (type)
+        {
+        case Number:
+            add = card->get_number();
+            score += add;
+            break;
+
+        case Action:
+            if (card->get_ActionType() == Wild)
+            {
+                add = 40;
+                score += add;
+                break;
+            }
+            else if (card->get_ActionType() == Wild_Draw_Four)
+            {
+                add = 50;
+                score += add;
+                break;
+            }
+            else
+            {
+                add = 20;
+                score += add;
+                break;
+            }
+
+        case Special_Action:
+            add = 30;
+            score += add;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return score;
 }
 
 Player::~Player() {}

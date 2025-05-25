@@ -49,11 +49,17 @@ void SpecialActionCard::play(Game *game)
   string targetPlayerIndexString;
 
   bool isHuman = game->getCurrentPlayer()->isHuman();
+  // cout << isHuman << endl;
+  // if (isHuman || (game->isFirstTurn() && isHuman))
   if (isHuman)
   {
     cout << "Choose which Player to Target- |";
     for (int i = 0; i < 4; i++)
     {
+      if (!game->getPlayer(i)){
+        cerr << "Error: null player reference in SpecialActionCard::play()\n";
+        return;
+      }
       if (i != game->getCurrentPlayerIndex())
       {
         cout << " Player " << i << ": " << game->getPlayer(i)->getName() << " |";

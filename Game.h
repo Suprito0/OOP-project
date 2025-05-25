@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include <fstream>
+#include <sstream>
 #include "Enum.h"
 using namespace std;
 
@@ -28,6 +31,7 @@ protected:
     bool firstTurn;
     int drawStack;
     Player *winner = nullptr;
+    map<string, int> playerScores;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
@@ -51,10 +55,11 @@ public:
     Player *getPreviousPlayer();
     Player *getPlayer(int i);
     int getCurrentPlayerIndex();
+    void setCurrentPlayerIndex(int index);
     void updateCurrentCard(Card *card);
     bool isGameOver();
     vector<SpecialActionCard *> *getSpecialCards();
-    void specialActionCheck(Card *prevTopCard);
+    void specialActionCheck();
     void endGame();
     void specialDraw(int numCards);
     bool isFirstTurn();
@@ -65,6 +70,12 @@ public:
 
     vector<Player *> getPlayers() const;
     string getWinnerName() const;
+
+    void loadScores();
+    void saveScores();
+    void printScores();
+    void updateScores(std::string winnerName);
+
     ~Game();
 };
 

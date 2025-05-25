@@ -36,6 +36,7 @@ void NumberCard::play(Game *game)
   // Implement the logic to handle the effect of the card being played
   std::cout << "Played Number Card: " << toString() << std::endl;
   game->changeColor(this->color);
+  game->isFirstTurn();
 }
 
 // Implement the toString method (return string representation of the card)

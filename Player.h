@@ -38,6 +38,8 @@ public:
     virtual ~Player();
     string toLower(const string &str);
 
+    int calculateScore();
+
     Color chooseOptimalColor();
 };
 

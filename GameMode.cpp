@@ -4,10 +4,12 @@
 GameMode::GameMode()
 {
     this->modeName = "normal";
+    this->initialize();
 }
 GameMode::GameMode(string modeName)
 {
     this->modeName = modeName;
+    this->initialize();
 }
 void GameMode::initialize()
 {
@@ -36,7 +38,8 @@ void GameMode::initialize()
             try
             {
                 this->numOfPlayers = stoi(inputString);
-                if (this->numOfPlayers >= 1 || this->numOfPlayers <= 4){
+                if (this->numOfPlayers >= 1 && this->numOfPlayers <= 4){
+                    // cout << "humanPlayers" << this->numOfPlayers << endl;
                     break;
                 } else {
                     cout << "Invalid input. Please choose a number between 1 & 4." << endl;
@@ -49,6 +52,12 @@ void GameMode::initialize()
                 continue;
             }
         }
+    } else if (modeName == "simulation")
+    {
+        this->winningScore = 0;
+        this->allowStacking = false;
+        this->gameModeDescription = "simulation";
+        this->numOfPlayers = 0;
     }
     else
     {
@@ -89,6 +98,3 @@ int GameMode::getNumOfPlayers(){
     return this->numOfPlayers;
 }
 
-GameMode::~GameMode(){
-    
-}

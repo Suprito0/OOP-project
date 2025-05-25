@@ -19,17 +19,17 @@ Game::Game(GameMode *mode)
     this->gameMode = mode;
     this->clockwise = true;
     this->firstTurn = true;
-    if (this->gameMode->getModeName() == "normal" || this->gameMode->getModeName() == "multiplayer")
+    if (this->gameMode->getModeName() == "normal" || this->gameMode->getModeName() == "multiplayer" || this->gameMode->getModeName() == "simulation")
     {
         int playerNum = this->gameMode->getNumOfPlayers();
-        int botNum = playerNum - 4;
-        
+        int botNum = 4 - playerNum;
+
         for (int i = 0; i < playerNum; i++)
         {
             string playerName;
-            cout << "Enter the name of Player " << i+1 << endl;
+            cout << "Enter the name of Player " << i + 1 << endl;
             cin >> playerName;
-            cout << "Creating human player" << endl;
+            // cout << "Creating human player" << endl;
             players.push_back(new HumanPlayer(playerName));
             ((HumanPlayer *)players[i])->setGame(this); // Let the human player access game data
         }
@@ -42,6 +42,7 @@ Game::Game(GameMode *mode)
         }
         for (int i = 0; i < players.size(); i++)
         {
+            // cout << "Assigning Index" << endl;
             players[i]->setIndex(i);
         }
     }
@@ -57,19 +58,25 @@ Game::Game(GameMode *mode)
     }
     this->deck->addToDiscardPile(this->deck->drawCard());
     this->currentCard = this->deck->get_TopDiscard();
+    // this->currentCard = new SpecialActionCard(Yellow, Skip);
+
+    for (Player *p : players)
+    {
+        playerScores[p->getName()] = 0;
+    }
+
+    loadScores();
 }
 
 void Game::start()
 {
     this->currentCard->play(this);
 
-
     if (!this->isClockwise())
         this->currentPlayerIndex = 3;
 
-    while (!checkForWinner())
+    while (true)
     {
-        Card *prevTopCard = this->currentCard;
         play();
 
         if (checkForWinner())
@@ -77,7 +84,7 @@ void Game::start()
             break;
         }
         skipPlayer(); // changes currentPlayerIndex to the next player
-        specialActionCheck(prevTopCard);
+        specialActionCheck();
     }
 
     //   cout << "WINNER----------------------------------------------------- "
@@ -140,6 +147,11 @@ bool Game::checkForWinner()
         {
             std::cout << "UNO & 0 cards\n";
             this->winner = p;
+            string winnerName = p->getName();
+            updateScores(winnerName);
+            saveScores();
+            printScores();
+            isGameOver();
             return true;
         }
         else
@@ -306,40 +318,58 @@ vector<SpecialActionCard *> *Game::getSpecialCards()
     return &this->specialCards;
 }
 
-void Game::specialActionCheck(Card *prevTopCard)
+void Game::specialActionCheck()
 {
     bool skip = false, reverse = false, cardIsCurrent = false;
+    Player* currentPlayer = this->getCurrentPlayer();
+
+    if (!currentPlayer) {
+        std::cerr << "[ERROR] currentPlayer is nullptr in specialActionCheck." << std::endl;
+        return;
+    }
+
     for (SpecialActionCard *card : this->specialCards)
     {
-        if (card->get_TargetPlayerIndex() == this->getCurrentPlayer()->getIndex())
+        if (!card) {
+            std::cerr << "[WARNING] Found nullptr in specialCards vector.\n";
+            continue;
+        }
+
+        if (card->get_TargetPlayerIndex() == currentPlayer->getIndex())
         {
             if (card->get_ActionType() == Skip || card->get_ActionType() == Draw_Two)
             {
                 skip = true;
-                cout << "Special Skip " << skip << endl;
+                std::cout << "Special Skip " << skip << std::endl;
             }
             else if (card->get_ActionType() == Reverse)
             {
                 reverse = true;
-                cout << "Special reverse " << reverse << endl;
+                std::cout << "Special reverse " << reverse << std::endl;
             }
+
             if (card == this->currentCard)
             {
-
                 cardIsCurrent = true;
-                cout << "Special Card " << cardIsCurrent << endl;
+                std::cout << "Special Card " << cardIsCurrent << std::endl;
             }
+
             card->specialAction(this);
         }
     }
+
     if (reverse)
     {
         this->skipPlayer();
     }
-    else if (skip && ((this->currentCard->get_ActionType() != Skip && this->currentCard->get_ActionType() != Draw_Two && this->currentCard->get_ActionType() != Wild_Draw_Four) || cardIsCurrent))
+    else if (skip &&
+             ((this->currentCard->get_ActionType() != Skip &&
+               this->currentCard->get_ActionType() != Draw_Two &&
+               this->currentCard->get_ActionType() != Wild_Draw_Four) ||
+              cardIsCurrent))
     {
         this->skipPlayer();
-        cout << "Special Skip game.cpp" << endl;
+        std::cout << "Special Skip game.cpp" << std::endl;
     }
 }
 
@@ -350,12 +380,16 @@ string Game::getWinnerName() const
     return winner ? winner->getName() : "None";
 }
 
-bool Game::isFirstTurn() {
+bool Game::isFirstTurn()
+{
     bool temp = this->firstTurn;
     this->firstTurn = false;
     return temp;
 }
 
+void Game::setCurrentPlayerIndex(int index){
+    this->currentPlayerIndex = index;
+}
 // void Game::firstActionPlay(ActionCard* card){
 
 //   std::cout << "Played Action Card: " << card->toString() << " | " << endl;
@@ -480,15 +514,107 @@ bool Game::isFirstTurn() {
 //   this->updateCurrentCard(card); // Set this card as top card
 // }
 
+void Game::loadScores()
+{ // Shows current log of players names' and their respective scores
+    std::ifstream infile("scores.txt");
+
+    if (!infile.is_open())
+    {
+        std::cerr << "scores could not be found or opened; empty scoresheet." << std::endl;
+        return;
+    }
+
+    std::string name;
+    int score;
+
+    while (infile >> name >> score)
+    {
+        playerScores[name] = score;
+    }
+
+    infile.close();
+}
+
+void Game::saveScores()
+{ // Overwrite score of the new winner
+    std::ofstream outfile("scores.txt");
+
+    if (!outfile.is_open())
+    {
+        std::cerr << "scores could not be opened or created; scores not saved." << std::endl;
+    }
+
+    for (auto &entry : playerScores)
+    {
+        outfile << entry.first << " " << entry.second << std::endl;
+    }
+
+    outfile.close();
+}
+
+void Game::printScores()
+{ // Displays current scoreboard
+    std::cout << std::endl;
+    std::cout << "========== SCOREBOARD ==========" << std::endl;
+
+    if (playerScores.empty())
+    {
+        std::cout << "No scores recorded yet." << std::endl;
+    }
+    else
+    {
+        for (auto &entry : playerScores)
+        {
+            std::cout << "   " << entry.first << ": " << entry.second << " points" << std::endl;
+        }
+    }
+
+    std::cout << "====================================" << std::endl;
+}
+
+void Game::updateScores(std::string winnerName)
+{
+    int points = 0;
+
+    for (Player *p : players)
+    {
+        if (p->getName() != winnerName)
+        {
+            points += p->calculateScore();
+        }
+    }
+
+    playerScores[winnerName] += points;
+    std::cout << winnerName << " gains " << points << " points this round!" << std::endl;
+}
 
 Game::~Game()
 {
-    // Clean up dynamically allocated memory
-    delete this->deck; // Delete the deck object
-    for (Player *player : players)
-    {
-        delete player; // Delete each player object
-    }
-    players.clear(); // Clear the players vector
+    // // Delete all players
+    // for (Player* player : players) {
+    //     delete player;
+    // }
+    // players.clear();
+
+    // // Delete all special cards if Game owns them
+    // for (SpecialActionCard* card : specialCards) {
+    //     delete card;
+    // }
+    // specialCards.clear();
+
+    // // // Delete the deck
+    // // delete deck;
+    // // deck = nullptr;
+
+    // // Only delete gameMode if Game owns it
+    // delete gameMode;
+    // gameMode = nullptr;
+
+    // // Delete the current card (if it’s not managed by the deck)
+    // delete currentCard;
+    // currentCard = nullptr;
+
+    // winner = nullptr;
 }
+
 // void Game::endGame();

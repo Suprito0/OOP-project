@@ -29,7 +29,6 @@ public:
     void getAllowStacking();
 
     int getNumOfPlayers();
-    ~GameMode();
 };
 
 #endif

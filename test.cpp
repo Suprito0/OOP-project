@@ -56,9 +56,33 @@ void showPlayerInfo(const string &playerName)
     cout << endl;
 }
 
+void showScoreboard(const string& filename = "scores.txt") {
+    ifstream infile(filename);
+    if (!infile.is_open()) {
+        cerr << "Error: Could not open " << filename << endl;
+        return;
+    }
+
+    cout << "========== SCOREBOARD ==========\n";
+
+    string line;
+    while (getline(infile, line)) {
+        istringstream iss(line);
+        string nameOrIndex;
+        int score;
+
+        if (iss >> nameOrIndex >> score) {
+            cout << "   " << nameOrIndex << ": " << score << " points\n";
+        }
+    }
+
+    cout << "====================================\n";
+    infile.close();
+}
+
 int main()
 {
-    GameMode* mode;
+    GameMode* mode = new GameMode;
 
     string choiceString;
     int choice;
@@ -68,7 +92,7 @@ int main()
         cout << "1. Start Game\n";
         cout << "2. Select Mode\n";
         cout << "3. View Rules\n";
-        cout << "4. View Player Info\n";
+        cout << "4. View Scoreboard\n";
         cout << "5. Exit\n";
         cout << "==================================\n";
 
@@ -90,13 +114,18 @@ int main()
 
         if (choice == 1)
         {
+            if (mode == nullptr){
+                mode = new GameMode;
+            }
             cout << "\nStarting the UNO game" << "...\n\n";
-            mode->initialize();
             currentGame = new Game(mode);
             gameStarted = true;
             currentGame->start();
             gameOver = true;
             winnerName = currentGame->getWinnerName();
+            delete currentGame;
+            delete mode;
+            mode = nullptr;
         }
         else if (choice == 2)
         {
@@ -107,6 +136,7 @@ int main()
                 cout << "Select GameMode:\n";
                 cout << "1. Single-Player\n";
                 cout << "2. Multi-Player\n";
+                cout << "3. Simulation\n";
                 cin >> modeInputString;
                 try
                 {
@@ -114,10 +144,17 @@ int main()
                     if (modeInput == 1){
                             delete mode;
                             mode = new GameMode;
+                            cout << "Single-Player Mode selected.\n";
                             break;
                         } else if (modeInput == 2){
                             delete mode;
                             mode = new GameMode("multiplayer");
+                            cout << "Multi-Player Mode selected.\n";
+                            break;
+                        } else if (modeInput == 3){
+                            delete mode;
+                            mode = new GameMode("simulation");
+                            cout << "Simulation Mode selected.\n";
                             break;
                         }
                 }
@@ -132,17 +169,12 @@ int main()
         {
             showRules();
         }
-        // else if (choice == 4)
-        // {
-        //     if (playerName.empty())
-        //     {
-        //         cout << "You must start a game first to enter your name.\n\n";
-        //     }
-        //     else
-        //     {
-        //         showPlayerInfo(playerName);
-        //     }
-        // }
+        else if (choice == 4)
+        {
+            showScoreboard();
+            // currentGame->loadScores();
+            // currentGame->printScores();
+        }
         else if (choice == 5)
         {
             cout << "Exiting UNO Game. Bye!\n";

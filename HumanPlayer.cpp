@@ -55,7 +55,8 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
         std::cout << "2. Draw a card\n";
         std::cout << "3. View Rules\n";
         std::cout << "4. View Player Info\n";
-        std::cout << "5. Exit Game\n";
+        std::cout << "5. View scoreboard\n";
+        std::cout << "6. Exit Game\n";
         std::cout << "======================\n";
         std::cout << "\nEnter your choice: ";
 
@@ -185,7 +186,11 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
             break;
         }
 
-        case 5: // Exit
+        case 5:
+            gameRef->printScores();
+            break;
+
+        case 6: // Exit
         {
             string willExit;
             while (true)
@@ -209,6 +214,7 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
             }
             std::cout << "\nExiting the game. Goodbye!\n";
             exit(0);
+            break;
         }
 
         default:
