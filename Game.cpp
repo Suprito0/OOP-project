@@ -157,6 +157,7 @@ bool Game::checkForWinner() {
       updateScores(winnerName);
       saveScores();
       printScores();
+      isGameOver();
       return true;
     } else {
       std::cout << "No UNO & 0 cards\n";
@@ -246,8 +247,9 @@ void Game::updateCurrentCard(Card *card) { this->currentCard = card; }
 bool Game::isGameOver() {
   for (auto& entry : playerScores) {
     if (entry.second >= 500) {
-      std::cout << entry.first << " wins the game with" << entry.second << " points!" << std::endl;
-      return true;
+      std::cout << std::endl;
+      std::cout << entry.first << " wins the game with " << entry.second << " points!" << std::endl;
+      exit(0);
     }
   }
   return false;
@@ -348,6 +350,7 @@ void Game::saveScores() {   // Overwrite score of the new winner
 }
 
 void Game::printScores() {   // Displays current scoreboard
+  std::cout << std::endl;
   std::cout << "========== CURRENT SCORES ==========" << std::endl;
 
   if (playerScores.empty()) {
@@ -371,7 +374,7 @@ void Game::updateScores(std::string winnerName) {
   }
 
   playerScores[winnerName] += points;
-  std::cout << winnerName << " gains" << points << " this round!" << std::endl;
+  std::cout << winnerName << " gains " << points << " points this round!" << std::endl;
 }
 
 Game::~Game() {
