@@ -54,6 +54,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
     std::cout << "3. View Rules\n";
     std::cout << "4. View Player Info\n";
     std::cout << "5. Exit Game\n";
+    std::cout << "6. View scoreboard\n";
     std::cout << "======================\n";
     std::cout << "\nEnter your choice: ";
 
@@ -124,7 +125,7 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
         std::cout << "   - Wild Draw Four: choose color + next draws 4\n";
         std::cout << "4. If you can't play, you must draw.\n";
         std::cout
-            << "5. Type 0 before playing your second-last card to call UNO.\n";
+            << "5. Type 'y' before playing your second-last card to call UNO.\n";
         std::cout << std::endl;
         break;
       }
@@ -148,6 +149,9 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
       case 5:  // Exit game
         std::cout << "\nExiting the game. Goodbye!\n";
         exit(0);
+
+      case 6:
+      gameRef->printScores();
 
       default:
         std::cout << "Invalid choice. Try again.\n";
