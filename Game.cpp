@@ -588,33 +588,11 @@ void Game::updateScores(std::string winnerName)
     std::cout << winnerName << " gains " << points << " points this round!" << std::endl;
 }
 
-Game::~Game()
-{
-    // // Delete all players
-    // for (Player* player : players) {
-    //     delete player;
-    // }
-    // players.clear();
-
-    // // Delete all special cards if Game owns them
-    // for (SpecialActionCard* card : specialCards) {
-    //     delete card;
-    // }
-    // specialCards.clear();
-
-    // // // Delete the deck
-    // // delete deck;
-    // // deck = nullptr;
-
-    // // Only delete gameMode if Game owns it
-    // delete gameMode;
-    // gameMode = nullptr;
-
-    // // Delete the current card (if it’s not managed by the deck)
-    // delete currentCard;
-    // currentCard = nullptr;
-
-    // winner = nullptr;
+Game::~Game() {
+  // Clean up dynamically allocated memory
+  delete this->deck;  // Delete the deck object
+  for (Player *player : players) {
+    delete player;  // Delete each player object
+  }
+  players.clear();  // Clear the players vector
 }
-
-// void Game::endGame();
