@@ -41,6 +41,12 @@ Game::Game(string playerName, GameMode *mode) {
   }
   this->deck->addToDiscardPile(this->deck->drawCard());
   this->currentCard = this->deck->get_TopDiscard();
+
+  for (Player* p : players) {
+    playerScores[p->getName()] = 0;
+  }
+
+  loadScores();
 }
 void Game::start() {
   this->currentCard->play(this);
@@ -147,6 +153,10 @@ bool Game::checkForWinner() {
     if (p->getUno()) {
       std::cout << "UNO & 0 cards\n";
       this->winner = p;
+      string winnerName = p->getName();
+      updateScores(winnerName);
+      saveScores();
+      printScores();
       return true;
     } else {
       std::cout << "No UNO & 0 cards\n";
@@ -233,7 +243,15 @@ Player *Game::getPlayer(int i) { return this->players[i]; }
 
 void Game::updateCurrentCard(Card *card) { this->currentCard = card; }
 
-bool Game::isGameOver() { return this->gameOver; }
+bool Game::isGameOver() {
+  for (auto& entry : playerScores) {
+    if (entry.second >= 500) {
+      std::cout << entry.first << " wins the game with" << entry.second << " points!" << std::endl;
+      return true;
+    }
+  }
+  return false;
+}
 
 void Game::play() {
   //   cout <<
@@ -295,6 +313,65 @@ vector<Player *> Game::getPlayers() const { return players; }
 
 string Game::getWinnerName() const {
   return winner ? winner->getName() : "None";
+}
+
+void Game::loadScores() {   // Shows current log of players names' and their respective scores
+  std::ifstream infile("scores.txt");
+
+  if (!infile.is_open()) {
+    std::cerr << "scores could not be found or opened; empty scoresheet." << std::endl;
+    return;
+  }
+
+  std::string name;
+  int score;
+
+  while (infile >> name >> score) {
+    playerScores[name] = score;
+  }
+
+  infile.close();
+}
+
+void Game::saveScores() {   // Overwrite score of the new winner
+  std::ofstream outfile ("scores.txt");
+
+  if (!outfile.is_open()) {
+    std::cerr << "scores could not be opened or created; scores not saved." << std::endl;
+  }
+
+  for (auto& entry : playerScores) {
+    outfile << entry.first << " " << entry.second << std::endl;
+  }
+
+  outfile.close();
+}
+
+void Game::printScores() {   // Displays current scoreboard
+  std::cout << "========== CURRENT SCORES ==========" << std::endl;
+
+  if (playerScores.empty()) {
+    std::cout << "No scores recorded yet." << std::endl;
+  } else {
+    for (auto& entry : playerScores) {
+      std::cout << "   " << entry.first << ": " << entry.second << " points" << std::endl;
+    }
+  }
+
+  std::cout << "====================================" << std::endl;
+}
+
+void Game::updateScores(std::string winnerName) {
+  int points = 0;
+
+  for (Player* p : players) {
+    if (p->getName() != winnerName) {
+      points += p->calculateScore();
+    }
+  }
+
+  playerScores[winnerName] += points;
+  std::cout << winnerName << " gains" << points << " this round!" << std::endl;
 }
 
 Game::~Game() {

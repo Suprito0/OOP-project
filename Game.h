@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include <fstream>
+#include <sstream>
 #include "Enum.h"
 using namespace std;
 
@@ -24,6 +27,7 @@ protected:
     bool gameOver;
     int drawStack;
     Player* winner = nullptr;
+    std::map<std::string, int> playerScores;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
@@ -50,6 +54,10 @@ public:
     void play();
     vector<Player*> getPlayers() const;
     string getWinnerName() const;
+    void loadScores();
+    void saveScores();
+    void printScores();
+    void updateScores(std::string winnerName);
     ~Game();
 };
 
