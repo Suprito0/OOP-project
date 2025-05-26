@@ -1,7 +1,7 @@
 #include "HumanPlayer.h"
 
 #include <iostream>
-
+#include "ActionCard.h"
 #include "Card.h"
 #include "Deck.h"
 #include "Game.h"
@@ -142,8 +142,12 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
         { // Draw a card
             std::cout << " Drawing a card...\n";
             Card *newCard = decks->drawCard();
-            std::cout << "You drew: " << newCard->toString() << std::endl;
 
+            if (!newCard){
+                return new ActionCard(None, Skip);
+            }
+
+            std::cout << "You drew: " << newCard->toString() << std::endl;
             addCardToHand(newCard);
             std::cout << "Turn ended. Next player's turn.\n";
             return nullptr;

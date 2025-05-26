@@ -65,6 +65,7 @@ void Deck::initialize(Game *game)
 
   // cards.push_back(new SpecialActionCard(None, Wild));
   // cards.push_back(new SpecialActionCard(None, Wild_Draw_Four));
+  cout << "SIZE OF DECK " << cards.size() << endl;
 
   shuffle();
 }

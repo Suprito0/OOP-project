@@ -26,7 +26,7 @@ public:
     virtual Card *playTurn(Card *topCard, Color currentColor, Deck *decks) = 0;
     void addCardToHand(Card *card);
     void removeCardFromHand(Card *card);
-    bool hasValidMove(Card *topCard, Color currentColor);
+    // bool hasValidMove(Card *topCard, Color currentColor);
     void callUno(bool uno);
     bool getUno();
     size_t getHandSize();

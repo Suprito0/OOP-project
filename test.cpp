@@ -122,7 +122,9 @@ int main()
             gameStarted = true;
             currentGame->start();
             gameOver = true;
-            winnerName = currentGame->getWinnerName();
+            if(!currentGame->isGameError()){
+                winnerName = currentGame->getWinnerName();
+            }
             delete currentGame;
             delete mode;
             mode = nullptr;
@@ -148,7 +150,6 @@ int main()
                         } else if (modeInput == 2){
                             delete mode;
                             mode = new GameMode("multiplayer");
-                            cout << "Multi-Player Mode selected.\n";
                             break;
                         } else if (modeInput == 3){
                             delete mode;

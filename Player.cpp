@@ -33,17 +33,17 @@ void Player::removeCardFromHand(Card *card)
     }
 }
 
-bool Player::hasValidMove(Card *topCard, Color currentColor)
-{
-    for (Card *card : hand)
-    {
-        if (card->canPlayOn(topCard) || card->get_Color() == currentColor)
-        {
-            return true;
-        }
-    }
-    return false;
-}
+// bool Player::hasValidMove(Card *topCard, Color currentColor)
+// {
+//     for (Card *card : hand)
+//     {
+//         if (card->canPlayOn(topCard) || card->get_Color() == currentColor)
+//         {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 void Player::callUno(bool uno)
 {

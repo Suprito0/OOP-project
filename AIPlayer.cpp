@@ -1,5 +1,6 @@
 #include "AIPlayer.h"
 #include "Card.h"
+#include "ActionCard.h"
 #include "Deck.h"
 
 AIPlayer::AIPlayer()
@@ -85,7 +86,8 @@ Card *AIPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
     }
     else
     {
-        std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
+        return new ActionCard(None, Skip);
+        // std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
     }
 
     return nullptr;

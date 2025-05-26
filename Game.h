@@ -32,6 +32,7 @@ protected:
     int drawStack;
     Player *winner = nullptr;
     map<string, int> playerScores;
+    bool gameError;
 
 public:
     // void initialize(int numPlayers, GameMode* mode);
@@ -63,7 +64,8 @@ public:
     void endGame();
     void specialDraw(int numCards);
     bool isFirstTurn();
-
+    
+    bool isGameError();
     void play();
     void firstActionPlay(ActionCard* card);
     string colorToString(Color color);

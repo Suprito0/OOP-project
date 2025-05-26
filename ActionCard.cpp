@@ -195,6 +195,7 @@ void ActionCard::play(Game *game)
         game->skipPlayer();
       
     }
+    if (game->isGameError()) {return;}
 
     Color chosenColor;
 
