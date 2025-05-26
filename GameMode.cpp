@@ -17,7 +17,7 @@ void GameMode::initialize()
 {
     if (modeName == "normal")
     {
-        this->winningScore = 0;
+        // this->winningScore = 0;
         this->allowStacking = false;
         this->gameModeDescription = "Normal Uno rules with no stacking";
         this->numOfPlayers = 1;
@@ -25,14 +25,14 @@ void GameMode::initialize()
     }
     else if (modeName == "stacking")
     {
-        this->winningScore = 0;
+        // this->winningScore = 0;
         this->allowStacking = true;
         this->gameModeDescription = "Normal Uno rules with stacking";
         this->numOfPlayers = 1;
     }
     else if (modeName == "multiplayer")
     {
-        this->winningScore = 0;
+        // this->winningScore = 0;
         this->allowStacking = false;
         this->gameModeDescription = "Normal Uno with multiple human player.";
         string inputString;
@@ -63,7 +63,7 @@ void GameMode::initialize()
     }
     else if (modeName == "simulation")
     {
-        this->winningScore = 0;
+        // this->winningScore = 0;
         this->allowStacking = false;
         this->gameModeDescription = "simulation";
         this->numOfPlayers = 0;
@@ -88,10 +88,10 @@ string GameMode::getModeName()
 {
     return this->modeName;
 }
-int GameMode::getWinningScore()
-{
-    return this->winningScore;
-}
+// int GameMode::getWinningScore()
+// {
+//     return this->winningScore;
+// }
 void GameMode::getAllowStacking()
 {
     if (this->allowStacking == false)
@@ -112,7 +112,7 @@ bool GameMode::getIsFast()
 {
     return this->isFast;
 }
-void GameMode::setIsFast()
+void GameMode::setIsFast(bool turn)
 {
-    this->isFast = !this->isFast;
+    this->isFast = turn;
 }

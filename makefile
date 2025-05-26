@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "Fixed formatting" 
+	git commit -m "Fixed bug with score display" 
 	git push
 
 # Makefile for UNO Game Project (flat directory structure)

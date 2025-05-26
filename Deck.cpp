@@ -136,11 +136,13 @@ Deck::~Deck()
   {
     delete card;
   }
+  this->cards.clear();
   for (Card *card : discardPile)
   {
-    if (!card)
+    if (card)
     {
-      delete card;
+      // delete card;
     }
   }
+  this->discardPile.clear();
 }

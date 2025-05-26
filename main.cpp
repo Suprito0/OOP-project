@@ -68,6 +68,8 @@ void showScoreboard(const string &filename = "scores.txt")
     cout << "========== SCOREBOARD ==========\n";
 
     string line;
+    bool hasScores = false;  // Track if any valid score line was found
+
     while (getline(infile, line))
     {
         istringstream iss(line);
@@ -76,8 +78,14 @@ void showScoreboard(const string &filename = "scores.txt")
 
         if (iss >> nameOrIndex >> score)
         {
+            hasScores = true;
             cout << "   " << nameOrIndex << ": " << score << " points\n";
         }
+    }
+
+    if (!hasScores)
+    {
+        cout << "   No scores recorded yet." << endl;
     }
 
     cout << "====================================\n";
@@ -90,6 +98,7 @@ int main()
 
     string choiceString;
     int choice;
+    bool fastMode = false;
     while (true)
     {
         cout << "\n======= UNO GAME MAIN MENU =======\n";
@@ -132,8 +141,6 @@ int main()
                 winnerName = currentGame->getWinnerName();
             }
             delete currentGame;
-            delete mode;
-            mode = nullptr;
         }
         else if (choice == 2)
         {
@@ -157,24 +164,28 @@ int main()
                     {
                         delete mode;
                         mode = new GameMode;
+                        mode->setIsFast(fastMode);
                         break;
                     }
                     else if (modeInput == 2)
                     {
                         delete mode;
                         mode = new GameMode("multiplayer");
+                        mode->setIsFast(fastMode);
                         break;
                     }
                     else if (modeInput == 3)
                     {
                         delete mode;
                         mode = new GameMode("simulation");
+                        mode->setIsFast(fastMode);
                         cout << "Simulation Mode selected.\n";
                         break;
                     }
                     else if (modeInput == 4)
                     {
-                        mode->setIsFast();
+                        mode->setIsFast(!mode->getIsFast());
+                        fastMode = mode->getIsFast();
                         cout << (mode->getIsFast() ? "Fast-mode is On\n" : "Fast-mode is Off\n");
                     }
                     else

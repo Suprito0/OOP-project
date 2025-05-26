@@ -145,6 +145,7 @@ bool Game::isClockwise()
 
 bool Game::checkForWinner()
 {
+    if (this->gameOver){ return true;}
     if (this->gameError)
     {
         return false;
@@ -173,7 +174,7 @@ bool Game::checkForWinner()
             updateScores(winnerName);
             saveScores();
             printScores();
-            isGameOver();
+            this->gameOver = true;
             return true;
         }
         else
@@ -205,6 +206,8 @@ bool Game::checkForWinner()
             if (drawnCard)
             {
                 p->addCardToHand(drawnCard);
+            } else {
+                
                 this->gameError = true;
             }
         }
@@ -301,7 +304,7 @@ void Game::play()
         return;
     }
 
-    if (this->gameMode->getIsFast())
+    if (!this->gameMode->getIsFast())
     {
         this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
@@ -321,10 +324,11 @@ void Game::play()
     cout << "Current player index " << this->currentPlayerIndex << endl;
     cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
          << "\n";
+    cout << "No. of Cards :      " << this->getCurrentPlayer()->getHandSize() << endl;
     cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
     cout << "==================================================\n";
 
-    if (this->gameMode->getIsFast())
+    if (!this->gameMode->getIsFast())
     {
         this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
@@ -415,7 +419,7 @@ void Game::specialActionCheck()
             }
             else if (card->get_ActionType() == Reverse)
             {
-                reverse = true;
+                reverse = !reverse;
                 std::cout << "Special reverse " << reverse << std::endl;
             }
 
