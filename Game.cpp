@@ -1,28 +1,28 @@
 #include "Game.h"
-#include "HumanPlayer.h"
+
+#include <chrono>
+#include <regex>
+#include <thread>
+
 #include "AIPlayer.h"
 #include "Card.h"
 #include "Deck.h"
 #include "GameMode.h"
+#include "HumanPlayer.h"
 #include "SpecialActionCard.h"
-
-#include <thread>
-#include <chrono>
-#include <regex>
 
 Game::Game(GameMode *mode)
 {
-
-    // cout << "Building Deck" << endl;
     this->deck = new Deck(this);
-
     this->gameOver = false;
     this->gameError = false;
     this->currentPlayerIndex = 0;
     this->gameMode = mode;
     this->clockwise = true;
     this->firstTurn = true;
-    if (this->gameMode->getModeName() == "normal" || this->gameMode->getModeName() == "multiplayer" || this->gameMode->getModeName() == "simulation")
+    if (this->gameMode->getModeName() == "normal" ||
+        this->gameMode->getModeName() == "multiplayer" ||
+        this->gameMode->getModeName() == "simulation")
     {
         int playerNum = this->gameMode->getNumOfPlayers();
         int botNum = 4 - playerNum;
@@ -33,7 +33,8 @@ Game::Game(GameMode *mode)
             while (true)
             {
                 cout << "Enter the name of Player " << i + 1 << ": ";
-                getline(cin >> ws, playerName); // read full line with leading whitespace trimmed
+                getline(cin >> ws,
+                        playerName); // read full line with leading whitespace trimmed
 
                 // Reject if name contains escape sequences or is empty
                 if (playerName.empty())
@@ -42,10 +43,12 @@ Game::Game(GameMode *mode)
                     continue;
                 }
 
-                // Regex to allow only letters, numbers, and underscores (change as needed)
+                // Regex to allow only letters, numbers, and underscores (change as
+                // needed)
                 if (!regex_match(playerName, regex("^[a-zA-Z0-9_]+$")))
                 {
-                    cout << "Name must contain only letters, numbers, or underscores. Try again.\n";
+                    cout << "Name must contain only letters, numbers, or underscores. "
+                            "Try again.\n";
                     continue;
                 }
 
@@ -53,34 +56,30 @@ Game::Game(GameMode *mode)
             }
 
             players.push_back(new HumanPlayer(playerName));
-            ((HumanPlayer *)players[i])->setGame(this); // Let the human player access game data
+            ((HumanPlayer *)players[i])
+                ->setGame(this); // Let the human player access game data
         }
         for (int i = 0; i < botNum; i++)
         {
             ostringstream botName;
-            // cout << "Creating Bot " << i+1 << endl;
             botName << "Bot" << i + 1;
             players.push_back(new AIPlayer(botName.str()));
         }
         for (size_t i = 0; i < players.size(); i++)
         {
-            // cout << "Assigning Index" << endl;
             players[i]->setIndex(i);
         }
     }
 
-    // this->deck->initialize();
     for (int i = 0; i < 7; i++)
     {
         for (Player *player : players)
         {
-            // cout << "Dealing Card " << i+1 << " to " << player->getName() << endl;
             player->addCardToHand(deck->drawCard());
         }
     }
     this->deck->addToDiscardPile(this->deck->drawCard());
     this->currentCard = this->deck->get_TopDiscard();
-    // this->currentCard = new SpecialActionCard(Yellow, Skip);
 
     for (Player *p : players)
     {
@@ -111,56 +110,63 @@ void Game::start()
         {
             break;
         }
+        this->tempPlayerIndex = this->currentPlayerIndex;
         skipPlayer(); // changes currentPlayerIndex to the next player
         specialActionCheck();
     }
 
-    std::cout << "\n==================================================\n";
+    cout << "\n==================================================\n";
 
-    std::cout << "                   GAME OVER\n";
+    cout << "                   GAME OVER\n";
 
-    std::cout << "==================================================\n";
+    cout << "==================================================\n";
 
-    std::cout << "                    WINNER\n";
+    cout << "                    WINNER\n";
 
-    std::cout << "--------------------------------------------------\n";
+    cout << "--------------------------------------------------\n";
 
-    std::cout << "                  " << this->winner->getName() << "\n";
+    cout << "                  " << this->winner->getName() << "\n";
 
-    std::cout << "==================================================\n";
+    cout << "==================================================\n";
+    for (Player *player : this->players)
+    {
+        for (Card *card : player->getHand())
+        {
+            player->removeCardFromHand(card);
+            this->deck->addToDiscardPile(card);
+        }
+    }
 }
 
-// void Game::nextTurn();
 bool Game::isValidMove(Card *card)
 {
-    return card->canPlayOn(this->currentCard) || card->get_Color() == this->currentColor;
+    return card->canPlayOn(this->currentCard) ||
+           card->get_Color() == this->currentColor;
 }
-void Game::playCard(Card *card)
-{
-    this->deck->addToDiscardPile(card);
-}
-bool Game::isClockwise()
-{
-    return this->clockwise;
-}
+bool Game::isClockwise() { return this->clockwise; }
 
 bool Game::checkForWinner()
 {
-    if (this->gameOver){ return true;}
+    if (this->gameOver)
+    {
+        return true;
+    }
     if (this->gameError)
     {
         return false;
     }
 
-    if (currentPlayerIndex < 0 || currentPlayerIndex >= static_cast<int>(players.size()))
+    if (currentPlayerIndex < 0 ||
+        currentPlayerIndex >= static_cast<int>(players.size()))
     {
-        std::cerr << "[ERROR] Invalid currentPlayerIndex: " << currentPlayerIndex << std::endl;
+        cerr << "[ERROR] Invalid currentPlayerIndex: " << currentPlayerIndex
+             << endl;
         return false;
     }
     Player *p = players[currentPlayerIndex];
     if (!p)
     {
-        std::cerr << "[ERROR] Current player is nullptr." << std::endl;
+        cerr << "[ERROR] Current player is nullptr." << endl;
         return false;
     }
     int handSize = p->getHandSize();
@@ -169,7 +175,7 @@ bool Game::checkForWinner()
     {
         if (p->getUno())
         {
-            std::cout << "UNO & 0 cards\n";
+            cout << "UNO & 0 cards\n";
             this->winner = p;
             string winnerName = p->getName();
             updateScores(winnerName);
@@ -180,7 +186,7 @@ bool Game::checkForWinner()
         }
         else
         {
-            std::cout << "No UNO & 0 cards\n";
+            cout << "No UNO & 0 cards\n";
             for (int i = 0; i < 2; i++)
             {
                 Card *drawnCard = this->deck->drawCard();
@@ -207,8 +213,9 @@ bool Game::checkForWinner()
             if (drawnCard)
             {
                 p->addCardToHand(drawnCard);
-            } else {
-                
+            }
+            else
+            {
                 this->gameError = true;
             }
         }
@@ -217,16 +224,14 @@ bool Game::checkForWinner()
 
     return false;
 }
-void Game::reverseDirection()
-{
-    this->clockwise = !this->clockwise;
-}
+void Game::reverseDirection() { this->clockwise = !this->clockwise; }
 void Game::skipPlayer()
 {
     int numPlayers = 4;
     int direction = this->isClockwise() ? 1 : -1;
 
-    this->currentPlayerIndex = (this->currentPlayerIndex + direction + numPlayers) % numPlayers;
+    this->currentPlayerIndex =
+        (this->currentPlayerIndex + direction + numPlayers) % numPlayers;
 }
 void Game::forceDraw(int numCards)
 {
@@ -241,24 +246,22 @@ void Game::forceDraw(int numCards)
         this->getNextPlayer()->addCardToHand(drawnCard);
     }
 }
-void Game::specialDraw(int numCards)
+void Game::specialDraw(int numCards, int playerIndex)
 {
-    Card *drawnCard = this->deck->drawCard();
-    if (!drawnCard)
-    {
-        this->gameError = true;
-        return;
-    }
     for (int i = 0; i < numCards; i++)
     {
-        this->getCurrentPlayer()->addCardToHand(drawnCard);
+        Card *drawnCard = this->deck->drawCard();
+        if (!drawnCard)
+        {
+            this->gameError = true;
+            return;
+        }
+
+        this->getPlayer(playerIndex)->addCardToHand(drawnCard);
     }
 }
 
-void Game::changeColor(Color newColor)
-{
-    this->currentColor = newColor;
-}
+void Game::changeColor(Color newColor) { this->currentColor = newColor; }
 
 Player *Game::getPreviousPlayer()
 {
@@ -283,20 +286,11 @@ Player *Game::getNextPlayer()
     return players[nextIndex];
 }
 
-Player *Game::getPlayer(int i)
-{
-    return this->players[i];
-}
+Player *Game::getPlayer(int i) { return this->players[i]; }
 
-void Game::updateCurrentCard(Card *card)
-{
-    this->currentCard = card;
-}
+void Game::updateCurrentCard(Card *card) { this->currentCard = card; }
 
-bool Game::isGameOver()
-{
-    return this->gameOver;
-}
+bool Game::isGameOver() { return this->gameOver; }
 
 void Game::play()
 {
@@ -307,7 +301,7 @@ void Game::play()
 
     if (!this->gameMode->getIsFast())
     {
-        this_thread::sleep_for(std::chrono::milliseconds(1000));
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 
     cout << "\n==================================================\n";
@@ -315,30 +309,36 @@ void Game::play()
     cout << "==================================================\n";
     if (this->currentCard->get_CardType() == Special_Action)
     {
-        cout << "Top Card:       " << this->currentCard->get_ColorString() << "Special " << this->currentCard->get_ActionTypeString() << "\n";
+        cout << "Top Card:       " << this->currentCard->get_ColorString()
+             << "Special " << this->currentCard->get_ActionTypeString() << "\n";
     }
     else
     {
-        cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_ActionTypeString() << "\n";
+        cout << "Top Card:       " << this->currentCard->get_ColorString()
+             << this->currentCard->get_ActionTypeString() << "\n";
     }
     cout << "Current Color:  " << colorToString(this->currentColor) << endl;
     cout << "Current player index " << this->currentPlayerIndex << endl;
     cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
          << "\n";
-    cout << "No. of Cards :      " << this->getCurrentPlayer()->getHandSize() << endl;
-    cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
+    cout << "No. of Cards :      " << this->getCurrentPlayer()->getHandSize()
+         << endl;
+    cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise")
+         << endl;
     cout << "==================================================\n";
 
     if (!this->gameMode->getIsFast())
     {
-        this_thread::sleep_for(std::chrono::milliseconds(1000));
+        this_thread::sleep_for(chrono::milliseconds(1000));
     }
 
-    Card *playedCard = this->getCurrentPlayer()->playTurn(this->currentCard, this->currentColor, this->deck);
+    Card *playedCard = this->getCurrentPlayer()->playTurn(
+        this->currentCard, this->currentColor, this->deck);
 
     if (playedCard != nullptr)
     {
-        if (playedCard->get_ActionType() == Skip && playedCard->get_Color() == None)
+        if (playedCard->get_ActionType() == Skip &&
+            playedCard->get_Color() == None)
         {
             this->gameError = true;
             delete playedCard;
@@ -353,10 +353,7 @@ void Game::play()
     }
 }
 
-int Game::getCurrentPlayerIndex()
-{
-    return this->currentPlayerIndex;
-}
+int Game::getCurrentPlayerIndex() { return this->currentPlayerIndex; }
 
 string Game::colorToString(Color color)
 {
@@ -399,7 +396,8 @@ void Game::specialActionCheck()
 
     if (!currentPlayer)
     {
-        std::cerr << "[ERROR] currentPlayer is nullptr in specialActionCheck." << std::endl;
+        cerr << "[ERROR] currentPlayer is nullptr in specialActionCheck."
+             << endl;
         return;
     }
 
@@ -407,27 +405,36 @@ void Game::specialActionCheck()
     {
         if (!card)
         {
-            std::cerr << "[WARNING] Found nullptr in specialCards vector.\n";
+            cerr << "[WARNING] Found nullptr in specialCards vector.\n";
             continue;
+        }
+        if (card->get_TargetPlayerIndex() == this->tempPlayerIndex && this->willSkip)
+        {
+            if (card->get_ActionType() == Reverse)
+            {
+                this->reverseDirection();
+            }
+            card->specialAction(this);
         }
 
         if (card->get_TargetPlayerIndex() == currentPlayer->getIndex())
         {
-            if (card->get_ActionType() == Skip || card->get_ActionType() == Draw_Two)
+            if (card->get_ActionType() == Skip ||
+                card->get_ActionType() == Draw_Two)
             {
                 skip = true;
-                std::cout << "Special Skip " << skip << std::endl;
+                cout << "Special Skip " << skip << endl;
             }
             else if (card->get_ActionType() == Reverse)
             {
                 reverse = !reverse;
-                std::cout << "Special reverse " << reverse << std::endl;
+                cout << "Special reverse " << reverse << endl;
             }
 
             if (card == this->currentCard)
             {
                 cardIsCurrent = true;
-                std::cout << "Special Card " << cardIsCurrent << std::endl;
+                cout << "Special Card " << cardIsCurrent << endl;
             }
 
             card->specialAction(this);
@@ -438,18 +445,24 @@ void Game::specialActionCheck()
     {
         this->skipPlayer();
     }
-    else if (skip &&
-             ((this->currentCard->get_ActionType() != Skip &&
-               this->currentCard->get_ActionType() != Draw_Two &&
-               this->currentCard->get_ActionType() != Wild_Draw_Four) ||
-              cardIsCurrent))
+    else if (skip && (this->willSkip ||
+                      cardIsCurrent))
     {
         this->skipPlayer();
-        std::cout << "Special Skip game.cpp" << std::endl;
+        cout << "Special Skip game.cpp" << endl;
     }
+    this->willSkip = false;
+    this->tempPlayerIndex = -2;
 }
 
+int Game::getTempPlayerIndex() { return this->tempPlayerIndex; }
+
 vector<Player *> Game::getPlayers() const { return players; }
+
+void Game::setWillSkip(bool willSkip)
+{
+    this->willSkip = willSkip;
+}
 
 string Game::getWinnerName() const
 {
@@ -468,70 +481,99 @@ void Game::setCurrentPlayerIndex(int index)
     this->currentPlayerIndex = index;
 }
 
-bool Game::isGameError()
-{
-    return this->gameError;
-}
+bool Game::isGameError() { return this->gameError; }
 
 void Game::loadScores()
-{ // Shows current log of players names' and their respective scores
-    std::ifstream infile("scores.txt");
+{
+    ifstream infile("scores.txt");
 
     if (!infile.is_open())
     {
-        std::cerr << "scores could not be found or opened; empty scoresheet." << std::endl;
+        cerr << "scores could not be found or opened; empty scoresheet."
+             << endl;
         return;
     }
 
-    std::string name;
+    string name;
     int score;
 
     while (infile >> name >> score)
     {
-        playerScores[name] = score;
+        playerScores[name] += score; // Accumulate scores if needed
     }
 
     infile.close();
 }
 
 void Game::saveScores()
-{ // Overwrite score of the new winner
-    std::ofstream outfile("scores.txt");
+{
+    ofstream outfile("scores.txt", ios::app); // Append mode
 
     if (!outfile.is_open())
     {
-        std::cerr << "scores could not be opened or created; scores not saved." << std::endl;
+        cerr << "scores could not be opened or created; scores not saved."
+             << endl;
+        return;
     }
 
     for (auto &entry : playerScores)
     {
-        outfile << entry.first << " " << entry.second << std::endl;
+        outfile << entry.first << " " << entry.second << endl;
     }
 
     outfile.close();
 }
 
 void Game::printScores()
-{ // Displays current scoreboard
-    std::cout << std::endl;
-    std::cout << "========== SCOREBOARD ==========" << std::endl;
-
-    if (playerScores.empty())
+{
+    ifstream infile("scores.txt");
+    if (!infile)
     {
-        std::cout << "No scores recorded yet." << std::endl;
+        cerr << "Could not open scores.txt\n";
+        return;
+    }
+
+    vector<pair<string, int>> scoreList;
+    string name;
+    int score;
+    size_t numOfEntries;
+
+    // Read name and score pairs from file
+    while (infile >> name >> score)
+    {
+        scoreList.push_back(make_pair(name, score));
+    }
+    infile.close();
+
+    // Sort in descending order of scores
+    sort(scoreList.begin(), scoreList.end(),
+         [](const pair<string, int> &a, const pair<string, int> &b)
+         {
+             return a.second > b.second;
+         });
+
+    if (scoreList.size() > 10)
+    {
+        numOfEntries = 10;
     }
     else
     {
-        for (auto &entry : playerScores)
-        {
-            std::cout << "   " << entry.first << ": " << entry.second << " points" << std::endl;
-        }
+        numOfEntries = scoreList.size();
     }
 
-    std::cout << "====================================" << std::endl;
+    // Print the sorted scores
+    cout << "High Scores:\n";
+    if (numOfEntries == 0)
+    {
+        cout << "\n NO SCORES RECORDED YET \n";
+    }
+    for (size_t i = 0; i < numOfEntries; ++i)
+    {
+        cout << i + 1 << ". " << scoreList[i].first << ": " << scoreList[i].second << "\n";
+    }
 }
 
-void Game::updateScores(std::string winnerName)
+void Game::updateScores(string winnerName)
 {
     int points = 0;
 
@@ -543,8 +585,11 @@ void Game::updateScores(std::string winnerName)
         }
     }
 
-    playerScores[winnerName] += points;
-    std::cout << winnerName << " gains " << points << " points this round!" << std::endl;
+    playerScores.clear(); // Keep only this round's winner
+    playerScores[winnerName] = points;
+
+    cout << winnerName << " gains " << points << " points this round!"
+         << endl;
 }
 
 Game::~Game()

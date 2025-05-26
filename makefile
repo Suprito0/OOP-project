@@ -1,18 +1,18 @@
 git :
 	git add .
-	git commit -m "Initialized GameOver" 
+	git commit -m "Added the leaderboard and Cleaned up the code a bit." 
 	git push
 
 # Makefile for UNO Game Project (flat directory structure)
 
 # Compiler settings
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++17 -Wall -Wextra
 
 # Source files
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE = uno_game
+EXECUTABLE = unoGame
 
 # Main target
 all: $(EXECUTABLE)

@@ -34,6 +34,53 @@ void showRules()
     cout << "7. UNO rule: Type 0 BEFORE playing your last card to call UNO.\n\n";
 }
 
+void printScores()
+{
+    ifstream infile("scores.txt");
+    if (!infile)
+    {
+        cerr << "Could not open scores.txt\n";
+        return;
+    }
+
+    vector<pair<string, int>> scoreList;
+    string name;
+    int score;
+    size_t numOfEntries;
+
+    // Read name and score pairs from file
+    while (infile >> name >> score)
+    {
+        scoreList.push_back(make_pair(name, score));
+    }
+    infile.close();
+
+    // Sort in descending order of scores
+    sort(scoreList.begin(), scoreList.end(),
+         [](const pair<string, int> &a, const pair<string, int> &b)
+         {
+             return a.second > b.second;
+         });
+    if (scoreList.size() > 10)
+    {
+        numOfEntries = 10;
+    }
+    else
+    {
+        numOfEntries = scoreList.size();
+    }
+
+    // Print the sorted scores
+    cout << "High Scores:\n";
+    if (numOfEntries == 0) {
+        cout << "\n NO SCORES RECORDED YET \n";
+    }
+    for (size_t i = 0; i < numOfEntries; ++i)
+    {
+        cout << i + 1 << ". " << scoreList[i].first << ": " << scoreList[i].second << "\n";
+    }
+}
+
 void showPlayerInfo(const string &playerName)
 {
     cout << "\n===== PLAYER INFO =====\n";
@@ -54,42 +101,6 @@ void showPlayerInfo(const string &playerName)
         }
     }
     cout << endl;
-}
-
-void showScoreboard(const string &filename = "scores.txt")
-{
-    ifstream infile(filename);
-    if (!infile.is_open())
-    {
-        cerr << "Error: Could not open " << filename << endl;
-        return;
-    }
-
-    cout << "========== SCOREBOARD ==========\n";
-
-    string line;
-    bool hasScores = false;  // Track if any valid score line was found
-
-    while (getline(infile, line))
-    {
-        istringstream iss(line);
-        string nameOrIndex;
-        int score;
-
-        if (iss >> nameOrIndex >> score)
-        {
-            hasScores = true;
-            cout << "   " << nameOrIndex << ": " << score << " points\n";
-        }
-    }
-
-    if (!hasScores)
-    {
-        cout << "   No scores recorded yet." << endl;
-    }
-
-    cout << "====================================\n";
-    infile.close();
 }
 
 int main()
@@ -118,9 +129,9 @@ int main()
                 choice = stoi(choiceString);
                 break;
             }
-            catch (const std::exception &e)
+            catch (const exception &e)
             {
-                std::cout << "Invalid input. Please enter a number." << std::endl;
+                cout << "Invalid input. Please enter a number." << endl;
                 continue;
             }
         }
@@ -195,7 +206,7 @@ int main()
                 }
                 catch (const exception &e)
                 {
-                    std::cout << "Invalid input. Please enter a number." << std::endl;
+                    cout << "Invalid input. Please enter a number." << endl;
                     continue;
                 }
             }
@@ -206,7 +217,7 @@ int main()
         }
         else if (choice == 4)
         {
-            showScoreboard();
+            printScores();
             // currentGame->loadScores();
             // currentGame->printScores();
         }

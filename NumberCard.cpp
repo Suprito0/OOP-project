@@ -1,14 +1,13 @@
 #include "NumberCard.h"
-#include "Game.h"
 
 #include <iostream>
+
+#include "Game.h"
 
 NumberCard::NumberCard(Color color, int num) : Card(color, Number)
 {
   this->number = num;
 }
-
-int NumberCard::get_Number() const { return number; }
 
 // Implement the canPlayOn method (checks if the top card matches the number or
 // color)
@@ -23,7 +22,7 @@ bool NumberCard::canPlayOn(Card *topCard)
   {
     // Compare number or color directly
     NumberCard *topNumberCard = dynamic_cast<NumberCard *>(topCard);
-    return topNumberCard && (topNumberCard->get_Number() == number ||
+    return topNumberCard && (topNumberCard->get_number() == number ||
                              topNumberCard->get_Color() == color);
   }
 
@@ -34,15 +33,15 @@ bool NumberCard::canPlayOn(Card *topCard)
 void NumberCard::play(Game *game)
 {
   // Implement the logic to handle the effect of the card being played
-  std::cout << "Played Number Card: " << toString() << std::endl;
+  cout << "Played Number Card: " << toString() << endl;
   game->changeColor(this->color);
   game->isFirstTurn();
 }
 
 // Implement the toString method (return string representation of the card)
-std::string NumberCard::toString()
+string NumberCard::toString()
 {
-  std::string colorStr;
+  string colorStr;
   switch (color)
   {
   case Red:
@@ -62,15 +61,13 @@ std::string NumberCard::toString()
     break;
   }
 
-  return colorStr + " " + std::to_string(number);
+  return colorStr + " " + to_string(number);
 }
 
 int NumberCard::get_number() { return this->number; }
 
 ActionType NumberCard::get_ActionType() { return Wild; }
-string NumberCard::get_ActionTypeString() { return to_string(this->get_number()); }
-
-string NumberCard::get_CardTypeString()
+string NumberCard::get_ActionTypeString()
 {
-  return "Number";
+  return to_string(this->get_number());
 }

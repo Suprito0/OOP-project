@@ -1,10 +1,11 @@
 #include "SpecialActionCard.h"
-#include "Game.h"
-#include "Player.h"
 
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+
+#include "Game.h"
+#include "Player.h"
 
 SpecialActionCard::SpecialActionCard(Color color, ActionType actionType)
     : ActionCard(color, actionType)
@@ -15,13 +16,12 @@ SpecialActionCard::SpecialActionCard(Color color, ActionType actionType)
 
 void SpecialActionCard::play(Game *game)
 {
-  std::cout << "Played Special Action Card: " << toString() << std::endl;
+  cout << "Played Special Action Card: " << toString() << endl;
 
   string targetPlayerIndexString;
 
   bool isHuman = game->getCurrentPlayer()->isHuman();
-  // cout << isHuman << endl;
-  // if (isHuman || (game->isFirstTurn() && isHuman))
+
   if (isHuman)
   {
     cout << "Choose which Player to Target- |";
@@ -34,11 +34,13 @@ void SpecialActionCard::play(Game *game)
       }
       if (i != game->getCurrentPlayerIndex())
       {
-        cout << " Player " << i << ": " << game->getPlayer(i)->getName() << " |";
+        cout << " Player " << i << ": " << game->getPlayer(i)->getName()
+             << " |";
       }
       else
       {
-        cout << " Player " << i << ": " << game->getPlayer(i)->getName() << "(You) |";
+        cout << " Player " << i << ": " << game->getPlayer(i)->getName()
+             << "(You) |";
       }
     }
     cout << endl;
@@ -87,13 +89,14 @@ void SpecialActionCard::play(Game *game)
   }
 
   game->changeColor(this->get_Color());
-  cout << game->getCurrentPlayer()->getName() << " has targetted " << game->getPlayer(this->targetPlayerIndex)->getName() << endl;
+  cout << game->getCurrentPlayer()->getName() << " has targetted "
+       << game->getPlayer(this->targetPlayerIndex)->getName() << endl;
   game->updateCurrentCard(this);
 }
 // Convert to string
-std::string SpecialActionCard::toString()
+string SpecialActionCard::toString()
 {
-  std::string colorStr;
+  string colorStr;
   switch (color)
   {
   case Red:
@@ -113,7 +116,7 @@ std::string SpecialActionCard::toString()
     break;
   }
 
-  std::string actionStr;
+  string actionStr;
   switch (this->action)
   {
   case Skip:
@@ -133,34 +136,32 @@ std::string SpecialActionCard::toString()
   return colorStr + "Special " + actionStr;
 }
 
-string SpecialActionCard::get_CardTypeString()
-{
-  return "Special " + this->get_ActionTypeString();
-}
-
 void SpecialActionCard::specialAction(Game *game)
 {
-  if (this->targetPlayerIndex != -1 && game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex)
+  if (this->targetPlayerIndex != -1 &&
+      (game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex||
+       game->getTempPlayerIndex() == this->targetPlayerIndex))
   {
-    // bool isHuman = game->getCurrentPlayer()->isHuman();
-
     switch (this->action)
     {
     case Reverse:
       game->reverseDirection();
       break;
     case Draw_Two:
-      game->specialDraw(2);
+      game->specialDraw( 2, this->targetPlayerIndex);
       break;
     case Skip:
       cout << "Special Skip" << endl;
       break;
     default:
-      std::cout << "Unknown special action.\n";
+      cout << "Unknown special action.\n";
       break;
     }
     this->targetPlayerIndex = -1;
   }
 }
 
-int SpecialActionCard::get_TargetPlayerIndex() { return this->targetPlayerIndex; }
+int SpecialActionCard::get_TargetPlayerIndex()
+{
+  return this->targetPlayerIndex;
+}

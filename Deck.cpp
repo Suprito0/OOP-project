@@ -1,37 +1,38 @@
 #include "Deck.h"
-#include "NumberCard.h"
-#include "SpecialActionCard.h"
-#include "Game.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
+#include "Game.h"
+#include "NumberCard.h"
+#include "SpecialActionCard.h"
+
 Deck::Deck(Game *game)
 {
-  std::srand(std::time(0)); // Seed the random generator once in constructor
+  srand(time(0)); // Seed the random generator once in constructor
   initialize(game);
 }
 
 void Deck::initialize(Game *game)
 {
-  cards.clear();
+  drawPile.clear();
   discardPile.clear();
   // UNO standard colors
-  std::vector<Color> colors = {Red, Green, Blue, Yellow};
+  vector<Color> colors = {Red, Green, Blue, Yellow};
   // 1. Number Cards (0-9)
   // for (Color color : colors) : range-based for loop
   for (Color color : colors)
   {
     // One 0 per color
-    cards.push_back(new NumberCard(color, 0));
+    drawPile.push_back(new NumberCard(color, 0));
 
     // Two of each 1-9 per color
     for (int i = 1; i <= 9; ++i)
     {
-      cards.push_back(new NumberCard(color, i));
-      cards.push_back(new NumberCard(color, i));
+      drawPile.push_back(new NumberCard(color, i));
+      drawPile.push_back(new NumberCard(color, i));
     }
   }
   // 2. Action Cards (Skip, Reverse, Draw Two)
@@ -39,16 +40,16 @@ void Deck::initialize(Game *game)
   {
     for (int i = 0; i < 2; ++i)
     {
-      cards.push_back(new ActionCard(color, Skip));
-      cards.push_back(new ActionCard(color, Reverse));
-      cards.push_back(new ActionCard(color, Draw_Two));
+      drawPile.push_back(new ActionCard(color, Skip));
+      drawPile.push_back(new ActionCard(color, Reverse));
+      drawPile.push_back(new ActionCard(color, Draw_Two));
     }
   }
   // 3. Wild Cards
   for (int i = 0; i < 4; ++i)
   {
-    cards.push_back(new ActionCard(None, Wild));           // Wild
-    cards.push_back(new ActionCard(None, Wild_Draw_Four)); // Wild Draw Four
+    drawPile.push_back(new ActionCard(None, Wild));           // Wild
+    drawPile.push_back(new ActionCard(None, Wild_Draw_Four)); // Wild Draw Four
   }
   // 4. SpecialActionCard
   for (Color color : colors)
@@ -57,41 +58,43 @@ void Deck::initialize(Game *game)
     {
       game->setSpecialCards(new SpecialActionCard(color, Skip));
       game->setSpecialCards(new SpecialActionCard(color, Reverse));
-      game->setSpecialCards(new SpecialActionCard(color, Draw_Two)); // Adding their address to the Game class
+      game->setSpecialCards(new SpecialActionCard(
+          color, Draw_Two)); // Adding their address to the Game class
     }
   }
 
   // Adding the SpecialActionCard set from Game class to the draw deck
-  cards.insert(cards.end(), game->getSpecialCards()->begin(), game->getSpecialCards()->end());
+  drawPile.insert(drawPile.end(), game->getSpecialCards()->begin(),
+                  game->getSpecialCards()->end());
 
   shuffle();
 }
 
 void Deck::shuffle()
 {
-  for (size_t i = 0; i < cards.size(); ++i)
+  for (size_t i = 0; i < drawPile.size(); ++i)
   {
-    int j = i + rand() % (cards.size() - i); // random index between i and end
-    std::swap(cards[i], cards[j]);           // swap elements
+    int j = i + rand() % (drawPile.size() - i); // random index between i and end
+    swap(drawPile[i], drawPile[j]);             // swap elements
   }
 }
 
 Card *Deck::drawCard()
 {
-  if (cards.empty())
+  if (drawPile.empty())
   {
     reshuffleIfNeeded(); // Refill the deck from discard pile
   }
 
   // check after reshuffling attempt
-  if (cards.empty())
+  if (drawPile.empty())
   {
-    std::cout << "No cards left to draw!" << std::endl;
+    cout << "No cards left to draw!" << endl;
     return nullptr;
   }
 
-  Card *top = cards.back();
-  cards.pop_back();
+  Card *top = drawPile.back();
+  drawPile.pop_back();
   return top;
 }
 
@@ -106,43 +109,56 @@ Card *Deck::get_TopDiscard() const
 
 void Deck::reshuffleIfNeeded()
 {
-  if (cards.empty() && discardPile.size() > 1)
+  if (drawPile.empty() && discardPile.size() > 1)
   {
     Card *top = discardPile.back(); // Keep top discard
     discardPile.pop_back();         // Remove it temporarily
 
     // Move rest of discard pile back to deck
-    cards = discardPile;
+    drawPile = discardPile;
     discardPile.clear();
     discardPile.push_back(top); // Keep top card on discard pile
 
     shuffle();
-    std::cout << "Deck reshuffled from discard pile." << std::endl;
+    cout << "Deck reshuffled from discard pile." << endl;
   }
 }
 
-int Deck::get_DeckSize() const { return cards.size(); }
-
-int Deck::get_DiscardSize() const { return discardPile.size(); }
-
-vector<Card *> Deck::get_cards() { return cards; }
-
-vector<Card *> Deck::get_discardPile() { return discardPile; }
+bool Deck::isInList(vector<Card *> &deletedCards, Card *card)
+{
+  for (Card *c : deletedCards)
+  {
+    if (c == card)
+      return true;
+  }
+  return false;
+}
 
 Deck::~Deck()
 {
-  cout << "deleting Draw Pile" << endl;
-  for (Card *card : cards)
+
+  vector<Card *> deletedCards;
+
+  // Go through draw pile
+  for (Card *card : this->drawPile)
   {
-    delete card;
-  }
-  this->cards.clear();
-  for (Card *card : discardPile)
-  {
-    if (card)
+    if (!isInList(deletedCards, card))
     {
-      // delete card;
+      deletedCards.push_back(card);
+      delete card;
+    }
+  }
+  this->drawPile.clear();
+
+  // Go through discard pile
+  for (Card *card : this->discardPile)
+  {
+    if (!isInList(deletedCards, card))
+    {
+      deletedCards.push_back(card);
+      delete card;
     }
   }
   this->discardPile.clear();
+  deletedCards.clear();
 }

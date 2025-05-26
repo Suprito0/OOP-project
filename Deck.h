@@ -3,14 +3,15 @@
 
 class Card;
 class Game;
-#include "Enum.h"
 #include <vector>
+
+#include "Enum.h"
 using std::vector;
 
 class Deck
 {
 private:
-  vector<Card *> cards;
+  vector<Card *> drawPile;
   vector<Card *> discardPile;
 
 public:
@@ -20,11 +21,8 @@ public:
   Card *drawCard();
   void addToDiscardPile(Card *card);
   Card *get_TopDiscard() const;
-  vector<Card *> get_cards();
-  vector<Card *> get_discardPile();
   void reshuffleIfNeeded();
-  int get_DeckSize() const;
-  int get_DiscardSize() const;
+  bool isInList(vector<Card *> &list, Card *card);
   ~Deck();
 };
 

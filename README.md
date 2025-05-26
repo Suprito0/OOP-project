@@ -16,4 +16,8 @@ plan:
     Gamemode
             Testing
 
-Ask tutor:
+:
+    do the leaderboard
+    update the writing of files.
+    do the scoring mode
+    fix the SAC bug

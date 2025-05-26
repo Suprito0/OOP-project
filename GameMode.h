@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "Enum.h"
 class Card;
 
@@ -13,25 +14,18 @@ using namespace std;
 class GameMode
 {
 protected:
-    string modeName, gameModeDescription;
-    bool allowStacking;
-    int numOfPlayers;
-    bool isFast;
+  string modeName;
+  int numOfPlayers;
+  bool isFast;
 
 public:
-    GameMode();
-    GameMode(string modeName);
-    void initialize();
-    // size_t calculateScore(vector<Card *> remainingCards);
-    string getDescription();
-    string getModeName();
-    int getWinningScore();
-    void getAllowStacking();
-    bool getIsFast();
-
-    void setIsFast(bool turn);
-
-    int getNumOfPlayers();
+  GameMode();
+  GameMode(string modeName);
+  void initialize();
+  string getModeName();
+  bool getIsFast();
+  void setIsFast(bool turn);
+  int getNumOfPlayers();
 };
 
 #endif

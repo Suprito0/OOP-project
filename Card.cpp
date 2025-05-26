@@ -1,4 +1,5 @@
 #include "Card.h"
+
 #include "Game.h"
 
 Card::Card(Color color, CardType type)
@@ -37,23 +38,6 @@ string Card::get_ColorString()
 }
 
 int Card::get_TargetPlayerIndex() { return -1; }
-
-// string Card::get_CardTypeString()
-// {
-//   switch (type)
-//   {
-//   case Number:
-//     return to_string(this->get_number());
-//   case Action:
-//     return this->get_ActionTypeString();
-//   case Special_Action:
-//     return "Special Action";
-//   default:
-//     return "Unknown";
-//   }
-// }
-
-void Card::set_Color(Color newColor) { color = newColor; }
 
 void Card::specialAction(Game * /*game*/) {}
 

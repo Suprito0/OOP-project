@@ -11,8 +11,7 @@ private:
 public:
   SpecialActionCard(Color color, ActionType type);
   void play(Game *game) override;
-  std::string toString() override;
-  string get_CardTypeString() override;
+  string toString() override;
   int get_TargetPlayerIndex() override;
   void specialAction(Game *game) override;
 };
