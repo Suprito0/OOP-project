@@ -3,12 +3,11 @@
 
 #include "Card.h"
 
-class NumberCard : public Card
-{
-private:
+class NumberCard : public Card {
+ private:
   int number;
 
-public:
+ public:
   NumberCard(Color color, int num);
   int get_Number() const;
   bool canPlayOn(Card *topCard) override;
@@ -17,6 +16,7 @@ public:
   int get_number() override;
   ActionType get_ActionType() override;
   string get_ActionTypeString() override;
+  string get_CardTypeString() override;
 };
 
-#endif // NUMBERCARD_H
+#endif  // NUMBERCARD_H

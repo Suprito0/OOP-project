@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "ActionCard.h"
 #include "Card.h"
 #include "Deck.h"
 #include "Game.h"
@@ -10,41 +11,7 @@ HumanPlayer::HumanPlayer() : Player() { this->isItHuman = true; }
 
 HumanPlayer::HumanPlayer(string name) : Player(name) { this->isItHuman = true; }
 
-// Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
-// {
-//     displayHand(); // Show hand
-
-//     if (hasValidMove(topCard, currentColor) == true)
-//     { // Check if there is a valid move
-//         Card *playCard = nullptr;
-
-//         while (true)
-//         {
-//             playCard = selectCard();
-
-//             if (playCard->canPlayOn(topCard) || playCard->get_Color() ==
-//             currentColor)
-//             {
-//                 decks->addToDiscardPile(playCard);
-//                 removeCardFromHand(playCard);
-//                 return playCard;
-//             }
-//             else
-//             {
-//                 std::cout << "That can't be played! Try again." << std::endl;
-//                 // Loops while card selected cannot be played
-//             }
-//         }
-//     }
-//     else
-//     {
-//         std::cout << "You have no playable cards! Drawing card." <<
-//         std::endl; Card *newCard = decks->drawCard(); addCardToHand(newCard);
-//         return nullptr;
-//     }
-// }
-
-Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
+Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks) {
   while (true) {
     displayHand();
 
@@ -53,60 +20,86 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
     std::cout << "2. Draw a card\n";
     std::cout << "3. View Rules\n";
     std::cout << "4. View Player Info\n";
-    std::cout << "5. Exit Game\n";
+    std::cout << "5. View scoreboard\n";
+    std::cout << "6. Exit Game\n";
     std::cout << "======================\n";
     std::cout << "\nEnter your choice: ";
 
-    int choice;
-    std::cin >> choice;
+    int choice = -1;
+    string choiceString;
+    std::cin >> choiceString;
+    try {
+      choice = stoi(choiceString);
+    } catch (const std::exception &e) {
+      std::cout << "Invalid input. Please enter a number." << std::endl;
+      continue;
+    }
 
     switch (choice) {
       case 1: {  // Play a card
 
-        int input;
-        std::cout << "Select a card to play (1-" << hand.size() << "): ";
-        std::cin >> input;
+        int input = -100;
+        std::string inputString;
+        while (true) {
+          cout << "Type 'back' to go to the Turn Menu." << endl;
+          std::cout << "Select a card to play (1-" << hand.size() << "): ";
+          std::cin >> inputString;
 
-        if (input >= 1 && input <= hand.size()) {
-          Card* selectedCard = hand[input - 1];
-          if (selectedCard->canPlayOn(topCard) ||
-              selectedCard->get_Color() == currentColor ||
-              selectedCard->get_Color() == None) {
-            removeCardFromHand(selectedCard);
-            decks->addToDiscardPile(selectedCard);
-
-            //  Now check if only 1 card remains → prompt UNO
-            if (hand.size() == 1) {
-              char unoChoice;
-              std::cout << "You have one card left! Call UNO now? (y/n): ";
-              std::cin >> unoChoice;
-              if (unoChoice == 'y' || unoChoice == 'Y') {
-                this->callUno(true);
-                std::cout << "UNO CALLED!\n";
-              } else {
-                this->callUno(false);  // not called
-              }
-            }
-
-            return selectedCard;
-          } else {
-            std::cout << "\nWarning: That card can't be played. Try again.\n";
-            if (!hasValidMove(gameRef)) {
-              std::cout << "You have no valid moves. Please draw a card.\n";
-              std::cout << std::endl;
-            }
+          if (this->toLower(inputString) == "back" ||
+              this->toLower(inputString) == "bac" ||
+              this->toLower(inputString) == "ba" ||
+              this->toLower(inputString) == "b") {
+            break;
           }
-        } else {
-          std::cout << "Invalid input. Try again.\n";
+
+          try {
+            input = std::stoi(inputString);
+
+            if (input == 0) {
+              this->callUno(true);
+              std::cout << "You have called UNO!" << std::endl;
+              continue;  // Ask again for card
+            }
+
+            if (input >= 1 && input <= static_cast<int>(hand.size())) {
+              Card *selectedCard = hand[input - 1];
+              if (selectedCard->canPlayOn(topCard) ||
+                  selectedCard->get_Color() == currentColor ||
+                  selectedCard->get_Color() == None) {
+                removeCardFromHand(selectedCard);
+                decks->addToDiscardPile(selectedCard);
+
+                return selectedCard;
+              } else {
+                std::cout
+                    << "\nWarning: That card can't be played. Try again.\n";
+                if (!hasValidMove(gameRef)) {
+                  std::cout << "You have no valid moves. Please draw a card.\n";
+                  std::cout << std::endl;
+                }
+              }
+            } else {
+              std::cout << "Invalid input. Try again.\n";
+            }
+          } catch (const std::exception &e) {
+            std::cout << "Invalid input. Please enter a number or type 'back' "
+                         "to go to the Turn Menu."
+                      << std::endl;
+            continue;
+          }
         }
         break;
       }
 
       case 2: {  // Draw a card
         std::cout << " Drawing a card...\n";
-        Card* newCard = decks->drawCard();
-        std::cout << "You drew: " << newCard->toString() << std::endl;
+        Card *newCard = decks->drawCard();
 
+        if (!newCard) {
+          return new ActionCard(None, Skip);
+        }
+
+        std::cout << "You drew: " << newCard->toString() << std::endl;
         addCardToHand(newCard);
         std::cout << "Turn ended. Next player's turn.\n";
         return nullptr;
@@ -145,9 +138,31 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
         break;
       }
 
-      case 5:  // Exit game
+      case 5:
+        gameRef->printScores();
+        break;
+
+      case 6:  // Exit
+      {
+        string willExit;
+        while (true) {
+          cout << "You are trying to exit the game. Continue? (y/n)\n";
+          cin >> willExit;
+          willExit = this->toLower(willExit);
+
+          if (willExit == "y" || willExit == "n") {
+            break;
+          } else {
+            cout << "Invalid Input\n";
+          }
+        }
+        if (willExit == "n") {
+          continue;
+        }
         std::cout << "\nExiting the game. Goodbye!\n";
         exit(0);
+        break;
+      }
 
       default:
         std::cout << "Invalid choice. Try again.\n";
@@ -155,58 +170,10 @@ Card* HumanPlayer::playTurn(Card* topCard, Color currentColor, Deck* decks) {
   }
 }
 
-// Card* HumanPlayer::selectCard() {
-//   int selectedCard = -1;
-//   Card* p_selectedCard = nullptr;
+void HumanPlayer::setGame(Game *g) { gameRef = g; }
 
-//   while (selectedCard < 0 ||
-//          selectedCard >
-//              hand.size()) {  // Loops if selected card is not within boundary
-//     std::cout << "What card would you like to play? Choose from Card 1-"
-//               << hand.size() << std::endl;
-//     std::cin >> selectedCard;
-//     if (selectedCard == 0) {
-//       this->callUno(true);
-//       cout << "You have called UNO!" << endl;
-//       std::cout << "What card would you like to play? Choose from Card 1-"
-//                 << hand.size() << std::endl;
-//       std::cin >> selectedCard;
-//     }
-//     if (std::cin.fail() || selectedCard < 0 || selectedCard > hand.size()) {
-//       std::cout << "Invalid input. Try again." << std::endl;
-//     }
-//   }
-
-//   p_selectedCard = hand[selectedCard - 1];
-//   return p_selectedCard;
-// }
-
-// Color HumanPlayer::selectColor() {
-//   std::string newColour;
-
-//   while (true) {
-//     std::cout << "What colour would you like it to be?" << std::endl;
-//     std::cout << "Choose Red, Green, Blue or Yellow." << std::endl;
-//     std::cin >> newColour;
-
-//     if (newColour == "Red") {
-//       return Red;
-//     } else if (newColour == "Green") {
-//       return Green;
-//     } else if (newColour == "Blue") {
-//       return Blue;
-//     } else if (newColour == "Yellow") {
-//       return Yellow;
-//     } else {
-//       std::cout << "Invalid input. Please try again." << std::endl;
-//     }
-//   }
-// }
-
-void HumanPlayer::setGame(Game* g) { gameRef = g; }
-
-bool HumanPlayer::hasValidMove(Game* game) const {
-  for (Card* card : hand) {
+bool HumanPlayer::hasValidMove(Game *game) const {
+  for (Card *card : hand) {
     if (game->isValidMove(card)) {
       return true;  // found a playable card
     }

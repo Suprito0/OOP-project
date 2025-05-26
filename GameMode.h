@@ -5,27 +5,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "Enum.h"
 class Card;
 
 using namespace std;
 
-class GameMode
-{
-protected:
-    string modeName, gameModeDescription;
-    int winningScore;
-    bool allowStacking;
+class GameMode {
+ protected:
+  string modeName, gameModeDescription;
+  bool allowStacking;
+  int numOfPlayers;
+  bool isFast;
 
-public:
-    GameMode();
-    GameMode(string modeName);
-    void initialize();
-    size_t calculateScore(vector<Card *> remainingCards);
-    string getDescription();
-    string getModeName();
-    int getWinningScore();
-    void getAllowStacking();
+ public:
+  GameMode();
+  GameMode(string modeName);
+  void initialize();
+  string getDescription();
+  string getModeName();
+  void getAllowStacking();
+  bool getIsFast();
+  void setIsFast(bool turn);
+  int getNumOfPlayers();
 };
 
 #endif
