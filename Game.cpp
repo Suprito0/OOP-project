@@ -16,6 +16,7 @@ Game::Game(GameMode *mode)
     // cout << "Building Deck" << endl;
     this->deck = new Deck(this);
 
+    this->gameOver = false;
     this->gameError = false;
     this->currentPlayerIndex = 0;
     this->gameMode = mode;
