@@ -56,9 +56,11 @@ void showPlayerInfo(const string &playerName)
     cout << endl;
 }
 
-void showScoreboard(const string& filename = "scores.txt") {
+void showScoreboard(const string &filename = "scores.txt")
+{
     ifstream infile(filename);
-    if (!infile.is_open()) {
+    if (!infile.is_open())
+    {
         cerr << "Error: Could not open " << filename << endl;
         return;
     }
@@ -66,12 +68,14 @@ void showScoreboard(const string& filename = "scores.txt") {
     cout << "========== SCOREBOARD ==========\n";
 
     string line;
-    while (getline(infile, line)) {
+    while (getline(infile, line))
+    {
         istringstream iss(line);
         string nameOrIndex;
         int score;
 
-        if (iss >> nameOrIndex >> score) {
+        if (iss >> nameOrIndex >> score)
+        {
             cout << "   " << nameOrIndex << ": " << score << " points\n";
         }
     }
@@ -82,7 +86,7 @@ void showScoreboard(const string& filename = "scores.txt") {
 
 int main()
 {
-    GameMode* mode = new GameMode;
+    GameMode *mode = new GameMode;
 
     string choiceString;
     int choice;
@@ -114,7 +118,8 @@ int main()
 
         if (choice == 1)
         {
-            if (mode == nullptr){
+            if (mode == nullptr)
+            {
                 mode = new GameMode;
             }
             cout << "\nStarting the UNO game" << "...\n\n";
@@ -122,7 +127,8 @@ int main()
             gameStarted = true;
             currentGame->start();
             gameOver = true;
-            if(!currentGame->isGameError()){
+            if (!currentGame->isGameError())
+            {
                 winnerName = currentGame->getWinnerName();
             }
             delete currentGame;
@@ -135,28 +141,46 @@ int main()
             string modeInputString;
             while (true)
             {
-                cout << "Select GameMode:\n";
-                cout << "1. Single-Player\n";
+                cout << "\nSelect GameMode:\n";
+                cout << "1. Single-Player (default)\n";
                 cout << "2. Multi-Player\n";
                 cout << "3. Simulation\n";
+                cout << "4. Fast mode";
+                cout << (mode->getIsFast() ? " (On)\n\n" : " (Off)\n\n");
+                cout << "Enter your choice: ";
                 cin >> modeInputString;
+                cout << endl;
                 try
                 {
                     modeInput = stoi(modeInputString);
-                    if (modeInput == 1){
-                            delete mode;
-                            mode = new GameMode;
-                            break;
-                        } else if (modeInput == 2){
-                            delete mode;
-                            mode = new GameMode("multiplayer");
-                            break;
-                        } else if (modeInput == 3){
-                            delete mode;
-                            mode = new GameMode("simulation");
-                            cout << "Simulation Mode selected.\n";
-                            break;
-                        }
+                    if (modeInput == 1)
+                    {
+                        delete mode;
+                        mode = new GameMode;
+                        break;
+                    }
+                    else if (modeInput == 2)
+                    {
+                        delete mode;
+                        mode = new GameMode("multiplayer");
+                        break;
+                    }
+                    else if (modeInput == 3)
+                    {
+                        delete mode;
+                        mode = new GameMode("simulation");
+                        cout << "Simulation Mode selected.\n";
+                        break;
+                    }
+                    else if (modeInput == 4)
+                    {
+                        mode->setIsFast();
+                        cout << (mode->getIsFast() ? "Fast-mode is On\n" : "Fast-mode is Off\n");
+                    }
+                    else
+                    {
+                        cout << "Invalid input. Please try again." << endl;
+                    }
                 }
                 catch (const exception &e)
                 {

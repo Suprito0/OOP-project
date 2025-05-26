@@ -57,15 +57,12 @@ void Deck::initialize(Game *game)
     {
       game->setSpecialCards(new SpecialActionCard(color, Skip));
       game->setSpecialCards(new SpecialActionCard(color, Reverse));
-      game->setSpecialCards(new SpecialActionCard(color, Draw_Two));
+      game->setSpecialCards(new SpecialActionCard(color, Draw_Two)); // Adding their address to the Game class
     }
   }
 
+  // Adding the SpecialActionCard set from Game class to the draw deck
   cards.insert(cards.end(), game->getSpecialCards()->begin(), game->getSpecialCards()->end());
-
-  // cards.push_back(new SpecialActionCard(None, Wild));
-  // cards.push_back(new SpecialActionCard(None, Wild_Draw_Four));
-  cout << "SIZE OF DECK " << cards.size() << endl;
 
   shuffle();
 }
@@ -134,12 +131,16 @@ vector<Card *> Deck::get_discardPile() { return discardPile; }
 
 Deck::~Deck()
 {
+  cout << "deleting Draw Pile" << endl;
   for (Card *card : cards)
   {
     delete card;
   }
   for (Card *card : discardPile)
   {
-    delete card;
+    if (!card)
+    {
+      delete card;
+    }
   }
 }

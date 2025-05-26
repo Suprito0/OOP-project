@@ -3,11 +3,13 @@
 
 GameMode::GameMode()
 {
+    this->isFast = false;
     this->modeName = "normal";
     this->initialize();
 }
 GameMode::GameMode(string modeName)
 {
+    this->isFast = false;
     this->modeName = modeName;
     this->initialize();
 }
@@ -28,21 +30,26 @@ void GameMode::initialize()
         this->gameModeDescription = "Normal Uno rules with stacking";
         this->numOfPlayers = 1;
     }
-    else if (modeName == "multiplayer") {
+    else if (modeName == "multiplayer")
+    {
         this->winningScore = 0;
         this->allowStacking = false;
         this->gameModeDescription = "Normal Uno with multiple human player.";
         string inputString;
-        while (true){
-            cout << "How many players will be playing?" << endl;
+        while (true)
+        {
+            cout << "How many human players will be playing? (1-4)" << endl;
             cin >> inputString;
             try
             {
                 this->numOfPlayers = stoi(inputString);
-                if (this->numOfPlayers >= 1 && this->numOfPlayers <= 4){
-                    cout << (numOfPlayers == 1 ? "Single-Player Mode selected.\n" : "Multi-Player Mode selected.\n");
+                if (this->numOfPlayers >= 1 && this->numOfPlayers <= 4)
+                {
+                    cout << (numOfPlayers == 1 ? "\nSingle-Player Mode selected.\n" : "\nMulti-Player Mode selected.\n");
                     break;
-                } else {
+                }
+                else
+                {
                     cout << "Invalid input. Please choose a number between 1 & 4." << endl;
                     continue;
                 }
@@ -53,7 +60,8 @@ void GameMode::initialize()
                 continue;
             }
         }
-    } else if (modeName == "simulation")
+    }
+    else if (modeName == "simulation")
     {
         this->winningScore = 0;
         this->allowStacking = false;
@@ -95,7 +103,16 @@ void GameMode::getAllowStacking()
         cout << "stacking is allowed" << endl;
     }
 }
-int GameMode::getNumOfPlayers(){
+int GameMode::getNumOfPlayers()
+{
     return this->numOfPlayers;
 }
 
+bool GameMode::getIsFast()
+{
+    return this->isFast;
+}
+void GameMode::setIsFast()
+{
+    this->isFast = !this->isFast;
+}

@@ -64,10 +64,10 @@ public:
     void endGame();
     void specialDraw(int numCards);
     bool isFirstTurn();
-    
+
     bool isGameError();
     void play();
-    void firstActionPlay(ActionCard* card);
+    void firstActionPlay(ActionCard *card);
     string colorToString(Color color);
 
     vector<Player *> getPlayers() const;

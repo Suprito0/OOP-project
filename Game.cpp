@@ -8,6 +8,7 @@
 
 #include <thread>
 #include <chrono>
+#include <regex>
 
 Game::Game(GameMode *mode)
 {
@@ -28,9 +29,28 @@ Game::Game(GameMode *mode)
         for (int i = 0; i < playerNum; i++)
         {
             string playerName;
-            cout << "Enter the name of Player " << i + 1 << endl;
-            cin >> playerName;
-            // cout << "Creating human player" << endl;
+            while (true)
+            {
+                cout << "Enter the name of Player " << i + 1 << ": ";
+                getline(cin >> ws, playerName); // read full line with leading whitespace trimmed
+
+                // Reject if name contains escape sequences or is empty
+                if (playerName.empty())
+                {
+                    cout << "Name cannot be empty. Try again.\n";
+                    continue;
+                }
+
+                // Regex to allow only letters, numbers, and underscores (change as needed)
+                if (!regex_match(playerName, regex("^[a-zA-Z0-9_]+$")))
+                {
+                    cout << "Name must contain only letters, numbers, or underscores. Try again.\n";
+                    continue;
+                }
+
+                break; // valid name
+            }
+
             players.push_back(new HumanPlayer(playerName));
             ((HumanPlayer *)players[i])->setGame(this); // Let the human player access game data
         }
@@ -79,7 +99,8 @@ void Game::start()
     while (true)
     {
         play();
-        if (this->gameError){
+        if (this->gameError)
+        {
             cout << "===========GAME HAS BEEN TERMINATED===========\n";
             cout << "Reason: Draw deck is empty.\n";
             return;
@@ -92,12 +113,6 @@ void Game::start()
         skipPlayer(); // changes currentPlayerIndex to the next player
         specialActionCheck();
     }
-
-    //   cout << "WINNER----------------------------------------------------- "
-
-    //        << this->winner->getName()
-
-    //        << "------------------------------------------" << endl;
 
     std::cout << "\n==================================================\n";
 
@@ -130,7 +145,10 @@ bool Game::isClockwise()
 
 bool Game::checkForWinner()
 {
-    if (this->gameError) { return false;}
+    if (this->gameError)
+    {
+        return false;
+    }
 
     if (currentPlayerIndex < 0 || currentPlayerIndex >= static_cast<int>(players.size()))
     {
@@ -167,7 +185,9 @@ bool Game::checkForWinner()
                 if (drawnCard)
                 {
                     p->addCardToHand(drawnCard);
-                } else {
+                }
+                else
+                {
                     this->gameError = true;
                 }
             }
@@ -180,20 +200,19 @@ bool Game::checkForWinner()
     {
         cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
         for (int i = 0; i < 2; i++)
+        {
+            Card *drawnCard = this->deck->drawCard();
+            if (drawnCard)
             {
-                Card *drawnCard = this->deck->drawCard();
-                if (drawnCard)
-                {
-                    p->addCardToHand(drawnCard);
-                    this->gameError = true;
-                }
+                p->addCardToHand(drawnCard);
+                this->gameError = true;
             }
+        }
         p->callUno(false);
     }
 
     return false;
 }
-// void Game::handleSpecialCard(Card* card);
 void Game::reverseDirection()
 {
     this->clockwise = !this->clockwise;
@@ -207,8 +226,9 @@ void Game::skipPlayer()
 }
 void Game::forceDraw(int numCards)
 {
-    Card* drawnCard = this->deck->drawCard();
-    if(!drawnCard) {
+    Card *drawnCard = this->deck->drawCard();
+    if (!drawnCard)
+    {
         this->gameError = true;
         return;
     }
@@ -219,8 +239,9 @@ void Game::forceDraw(int numCards)
 }
 void Game::specialDraw(int numCards)
 {
-    Card* drawnCard = this->deck->drawCard();
-    if(!drawnCard) {
+    Card *drawnCard = this->deck->drawCard();
+    if (!drawnCard)
+    {
         this->gameError = true;
         return;
     }
@@ -275,24 +296,27 @@ bool Game::isGameOver()
 
 void Game::play()
 {
-    if (this->gameError) { return;}
+    if (this->gameError)
+    {
+        return;
+    }
 
-    // cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-    // cout << "Top Card: " << this->currentCard->get_ColorString() << " " << this->currentCard->get_CardTypeString() << " | ";
-
-    // // std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    // cout << " Current player index: " << this->currentPlayerIndex << " | ";
-    // cout << " Current Color: " << colorToString(this->currentColor) << " | ";
-    // cout << " No. of Cards: " << this->getCurrentPlayer()->getHandSize() << " | ";
-    // cout << " isClockwise: " << this->clockwise << " | ";
-
-    // cout << this->getCurrentPlayer()->getName() << " PLAYING" << endl;
+    if (this->gameMode->getIsFast())
+    {
+        this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
 
     cout << "\n==================================================\n";
     cout << "               CURRENT GAME STATE\n";
     cout << "==================================================\n";
-    cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_ActionTypeString() << "\n";
-    // cout << "Current Color:  " << this->currentCard->get_ColorString() << "\n";
+    if (this->currentCard->get_CardType() == Special_Action)
+    {
+        cout << "Top Card:       " << this->currentCard->get_ColorString() << "Special " << this->currentCard->get_ActionTypeString() << "\n";
+    }
+    else
+    {
+        cout << "Top Card:       " << this->currentCard->get_ColorString() << this->currentCard->get_ActionTypeString() << "\n";
+    }
     cout << "Current Color:  " << colorToString(this->currentColor) << endl;
     cout << "Current player index " << this->currentPlayerIndex << endl;
     cout << "Current Player: " << players[this->currentPlayerIndex]->getName()
@@ -300,13 +324,17 @@ void Game::play()
     cout << "Direction: " << (this->clockwise ? "Clockwise" : "Anti-Clockwise") << endl;
     cout << "==================================================\n";
 
-    // this_thread::sleep_for(std::chrono::milliseconds(2000));
+    if (this->gameMode->getIsFast())
+    {
+        this_thread::sleep_for(std::chrono::milliseconds(1000));
+    }
 
     Card *playedCard = this->getCurrentPlayer()->playTurn(this->currentCard, this->currentColor, this->deck);
-    
+
     if (playedCard != nullptr)
     {
-        if (playedCard->get_ActionType() == Skip && playedCard->get_Color() == None){
+        if (playedCard->get_ActionType() == Skip && playedCard->get_Color() == None)
+        {
             this->gameError = true;
             delete playedCard;
             return;
@@ -356,7 +384,10 @@ vector<SpecialActionCard *> *Game::getSpecialCards()
 
 void Game::specialActionCheck()
 {
-    if (this->gameError) { return;}
+    if (this->gameError)
+    {
+        return;
+    }
 
     bool skip = false, reverse = false, cardIsCurrent = false;
     Player *currentPlayer = this->getCurrentPlayer();
@@ -432,133 +463,10 @@ void Game::setCurrentPlayerIndex(int index)
     this->currentPlayerIndex = index;
 }
 
-bool Game::isGameError(){
+bool Game::isGameError()
+{
     return this->gameError;
 }
-
-// void Game::firstActionPlay(ActionCard* card){
-
-//   std::cout << "Played Action Card: " << card->toString() << " | " << endl;
-
-//   switch (card->get_ActionType())
-//   {
-//   case Skip:
-//     cout << " Skipping " << endl;
-//     this->skipPlayer();
-//     cout << " Skipped " << endl;
-//     break;
-//   case Reverse:
-//     cout << " Reversing " << endl;
-//     this->reverseDirection();
-//     cout << " Reversed " << endl;
-//     break;
-//   case Draw_Two:
-//     this->specialDraw(2);
-//     this->skipPlayer(); // Next player misses turn
-//     break;
-//   case Wild:
-//   case Wild_Draw_Four:
-//     bool isHuman = this->getCurrentPlayer()->isHuman();
-//     if (card->get_ActionType() == Wild_Draw_Four)
-//     {
-//       cout << "-----------force draw------------" << endl;
-//       this->specialDraw(4);
-//       cout << "-----------skipping------------" << endl;
-//       this->skipPlayer();
-//     }
-
-//     if (isHuman)
-//     {
-//       // Ask player to choose a color
-//       int choice = -1;
-//       string choiceString;
-
-//       std::cout << "Choose a color:\n";
-
-//       while (true)
-//       {
-//         std::cout << "1. Red\n2. Green\n3. Blue\n4. Yellow\n> ";
-//         std::cin >> choiceString;
-
-//         if (choiceString == "1")
-//         {
-//           choice = 0;
-//           break;
-//         }
-//         else if (choiceString == "2")
-//         {
-//           choice = 1;
-//           break;
-//         }
-//         else if (choiceString == "3")
-//         {
-//           choice = 2;
-//           break;
-//         }
-//         else if (choiceString == "4")
-//         {
-//           choice = 3;
-//           break;
-//         }
-//         else
-//         {
-//           std::cout
-//               << "Invalid choice. Please enter a number between 1 and 4.\n";
-//         }
-//       }
-//       this->changeColor(static_cast<Color>(choice));
-
-//       // Show color confirmation
-//       switch (choice)
-//       {
-//       case 0:
-//         std::cout << "Color changed to Red.\n";
-//         break;
-//       case 1:
-//         std::cout << "Color changed to Green.\n";
-//         break;
-//       case 2:
-//         std::cout << "Color changed to Blue.\n";
-//         break;
-//       case 3:
-//         std::cout << "Color changed to Yellow.\n";
-//         break;
-//       default:
-//         std::cout << "Invalid choice.\n";
-//         break;
-//       }
-
-//       break;
-//     }
-//     else
-//     {
-//       Color choice = this->getCurrentPlayer()->chooseOptimalColor();
-//       this->changeColor(choice);
-//       switch (choice)
-//       {
-//       case Red:
-//         std::cout << "Color changed to Red.\n";
-//         break;
-//       case Green:
-//         std::cout << "Color changed to Green.\n";
-//         break;
-//       case Blue:
-//         std::cout << "Color changed to Blue.\n";
-//         break;
-//       case Yellow:
-//         std::cout << "Color changed to Yellow.\n";
-//         break;
-//       default:
-//         std::cout << "Invalid choice.\n";
-//         break;
-//       }
-
-//       break;
-//     }
-//   }
-
-//   this->updateCurrentCard(card); // Set this card as top card
-// }
 
 void Game::loadScores()
 { // Shows current log of players names' and their respective scores

@@ -55,6 +55,6 @@ int Card::get_TargetPlayerIndex() { return -1; }
 
 void Card::set_Color(Color newColor) { color = newColor; }
 
-void Card::specialAction(Game* /*game*/) {}
+void Card::specialAction(Game * /*game*/) {}
 
 Card::~Card() {}

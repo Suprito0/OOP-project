@@ -177,7 +177,7 @@ void ActionCard::play(Game *game)
 
   case Draw_Two:
     game->isFirstTurn() ? game->specialDraw(2) : game->forceDraw(2);
-      game->skipPlayer();
+    game->skipPlayer();
     break;
 
   case Wild:
@@ -190,12 +190,13 @@ void ActionCard::play(Game *game)
       std::cout << "-----------Force Draw------------\n";
       game->isFirstTurn() ? game->specialDraw(4) : game->forceDraw(4);
 
-
-        std::cout << "-----------Skipping------------\n";
-        game->skipPlayer();
-      
+      std::cout << "-----------Skipping------------\n";
+      game->skipPlayer();
     }
-    if (game->isGameError()) {return;}
+    if (game->isGameError())
+    {
+      return;
+    }
 
     Color chosenColor;
 
@@ -210,10 +211,26 @@ void ActionCard::play(Game *game)
         std::cout << "1. Red\n2. Green\n3. Blue\n4. Yellow\n> ";
         std::cin >> input;
 
-        if (input == "1") { choice = 0; break; }
-        else if (input == "2") { choice = 1; break; }
-        else if (input == "3") { choice = 2; break; }
-        else if (input == "4") { choice = 3; break; }
+        if (input == "1")
+        {
+          choice = 0;
+          break;
+        }
+        else if (input == "2")
+        {
+          choice = 1;
+          break;
+        }
+        else if (input == "3")
+        {
+          choice = 2;
+          break;
+        }
+        else if (input == "4")
+        {
+          choice = 3;
+          break;
+        }
 
         std::cout << "Invalid choice. Please enter a number between 1 and 4.\n";
       }
@@ -230,11 +247,21 @@ void ActionCard::play(Game *game)
     // Confirmation message
     switch (chosenColor)
     {
-    case Red:    std::cout << "Color changed to Red.\n"; break;
-    case Green:  std::cout << "Color changed to Green.\n"; break;
-    case Blue:   std::cout << "Color changed to Blue.\n"; break;
-    case Yellow: std::cout << "Color changed to Yellow.\n"; break;
-    default:     std::cout << "Invalid color.\n"; break;
+    case Red:
+      std::cout << "Color changed to Red.\n";
+      break;
+    case Green:
+      std::cout << "Color changed to Green.\n";
+      break;
+    case Blue:
+      std::cout << "Color changed to Blue.\n";
+      break;
+    case Yellow:
+      std::cout << "Color changed to Yellow.\n";
+      break;
+    default:
+      std::cout << "Invalid color.\n";
+      break;
     }
 
     break;
@@ -242,7 +269,8 @@ void ActionCard::play(Game *game)
   }
 
   game->updateCurrentCard(this); // Set this card as top card
-  if(game->checkForWinner() && (this->get_ActionType() == Skip || this->get_ActionType() == Wild_Draw_Four || this->get_ActionType() == Draw_Two)){
+  if (game->checkForWinner() && (this->get_ActionType() == Skip || this->get_ActionType() == Wild_Draw_Four || this->get_ActionType() == Draw_Two))
+  {
     game->setCurrentPlayerIndex(game->getPreviousPlayer()->getIndex());
   }
 }

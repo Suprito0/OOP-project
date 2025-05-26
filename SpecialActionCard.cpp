@@ -13,35 +13,6 @@ SpecialActionCard::SpecialActionCard(Color color, ActionType actionType)
   this->targetPlayerIndex = -1;
 }
 
-// Randomly select a special action
-// void SpecialActionCard::randAction()
-// {
-//   // Only choose among these actions for special effect
-//   int actionIndex = std::rand() % 3; // 0, 1, or 2
-
-//   switch (actionIndex)
-//   {
-//   case 0:
-//     selectedAction = Skip;
-//     break;
-//   case 1:
-//     selectedAction = Reverse;
-//     break;
-//   case 2:
-//     selectedAction = Draw_Two;
-//     break;
-//   }
-// }
-
-// Return the selected random action
-// ActionType SpecialActionCard::get_SelectedAction() const
-// {
-//   return selectedAction;
-// }
-
-// Select a player
-
-
 void SpecialActionCard::play(Game *game)
 {
   std::cout << "Played Special Action Card: " << toString() << std::endl;
@@ -56,7 +27,8 @@ void SpecialActionCard::play(Game *game)
     cout << "Choose which Player to Target- |";
     for (int i = 0; i < 4; i++)
     {
-      if (!game->getPlayer(i)){
+      if (!game->getPlayer(i))
+      {
         cerr << "Error: null player reference in SpecialActionCard::play()\n";
         return;
       }
@@ -192,67 +164,3 @@ void SpecialActionCard::specialAction(Game *game)
 }
 
 int SpecialActionCard::get_TargetPlayerIndex() { return this->targetPlayerIndex; }
-
-// // Ask player to choose a new color
-// if (isHuman)
-// {
-//   // Ask player to choose a color
-//   int choice = -1;
-
-//   while (choice < 0 || choice > 3)
-//   {
-//     std::cout << "Choose a color:\n";
-//     std::cout << "0. Red\n1. Green\n2. Blue\n3. Yellow\n> ";
-//     std::cin >> choice;
-
-//     if (choice < 0 || choice > 3)
-//     {
-//       std::cout
-//           << "Invalid choice. Please enter a number between 0 and 3.\n";
-//     }
-//   }
-//   game->changeColor(static_cast<Color>(choice));
-
-//   // Show color confirmation
-//   switch (choice)
-//   {
-//   case 0:
-//     std::cout << "Color changed to Red.\n";
-//     break;
-//   case 1:
-//     std::cout << "Color changed to Green.\n";
-//     break;
-//   case 2:
-//     std::cout << "Color changed to Blue.\n";
-//     break;
-//   case 3:
-//     std::cout << "Color changed to Yellow.\n";
-//     break;
-//   default:
-//     std::cout << "Invalid choice.\n";
-//     break;
-//   }
-// }
-// else
-// {
-//   Color choice = game->getCurrentPlayer()->chooseOptimalColor();
-//   game->changeColor(choice);
-//   switch (choice)
-//   {
-//   case Red:
-//     std::cout << "Color changed to Red.\n";
-//     break;
-//   case Green:
-//     std::cout << "Color changed to Green.\n";
-//     break;
-//   case Blue:
-//     std::cout << "Color changed to Blue.\n";
-//     break;
-//   case Yellow:
-//     std::cout << "Color changed to Yellow.\n";
-//     break;
-//   default:
-//     std::cout << "Invalid choice.\n";
-//     break;
-//   }
-// }

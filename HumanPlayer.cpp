@@ -143,7 +143,8 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
             std::cout << " Drawing a card...\n";
             Card *newCard = decks->drawCard();
 
-            if (!newCard){
+            if (!newCard)
+            {
                 return new ActionCard(None, Skip);
             }
 

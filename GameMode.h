@@ -17,6 +17,7 @@ protected:
     int winningScore;
     bool allowStacking;
     int numOfPlayers;
+    bool isFast;
 
 public:
     GameMode();
@@ -27,6 +28,9 @@ public:
     string getModeName();
     int getWinningScore();
     void getAllowStacking();
+    bool getIsFast();
+
+    void setIsFast();
 
     int getNumOfPlayers();
 };

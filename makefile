@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "Error handling for empty draw deck" 
+	git commit -m "Fixed formatting" 
 	git push
 
 # Makefile for UNO Game Project (flat directory structure)
