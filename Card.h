@@ -25,7 +25,7 @@ public:
   virtual int get_number() = 0;
   virtual ActionType get_ActionType() = 0;
   virtual string get_ActionTypeString() = 0;
-  virtual void specialAction(Game *game);
+  virtual void specialAction(Game *game, bool willSkip);
   virtual int get_TargetPlayerIndex();
   virtual ~Card();
 };

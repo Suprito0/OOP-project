@@ -52,8 +52,8 @@ void ActionCard::play(Game *game)
     break;
 
   case Draw_Two:
-    game->isFirstTurn() ? game->specialDraw(2,game->getCurrentPlayerIndex()) : game->forceDraw(2);
-      cout << "Skipping " << targetPlayerName << "'s turn\n";
+    game->isFirstTurn() ? game->specialDraw(2, game->getCurrentPlayerIndex()) : game->forceDraw(2);
+    cout << "Skipping " << targetPlayerName << "'s turn\n";
     game->skipPlayer();
     game->setWillSkip(true);
     break;
@@ -71,7 +71,7 @@ void ActionCard::play(Game *game)
 
       cout << "Skipping " << targetPlayerName << "'s turn\n";
       game->skipPlayer();
-    game->setWillSkip(true);
+      game->setWillSkip(true);
     }
     if (game->isGameError())
     {

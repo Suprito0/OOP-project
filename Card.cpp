@@ -39,6 +39,6 @@ string Card::get_ColorString()
 
 int Card::get_TargetPlayerIndex() { return -1; }
 
-void Card::specialAction(Game * /*game*/) {}
+void Card::specialAction(Game * /*game*/, bool /*willskip*/) {}
 
 Card::~Card() {}

@@ -26,7 +26,7 @@ clean:
 
 # Run the program
 run: all
-	gdb ./$(EXECUTABLE)
+	./$(EXECUTABLE)
 
 # Debug build
 debug: CXXFLAGS += -g

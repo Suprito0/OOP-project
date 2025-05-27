@@ -13,7 +13,7 @@ public:
   void play(Game *game) override;
   string toString() override;
   int get_TargetPlayerIndex() override;
-  void specialAction(Game *game) override; // plays on the targetted player
+  void specialAction(Game *game, bool willSkip) override; // plays on the targetted player
 };
 
 #endif // SPECIALACTIONCARD_H

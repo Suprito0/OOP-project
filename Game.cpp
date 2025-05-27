@@ -54,7 +54,7 @@ Game::Game(GameMode *mode)
     for (int i = 0; i < botNum; i++) // initializes the bots
     {
         ostringstream botName;
-        botName << "Bot " << i + 1;
+        botName << "Bot-" << i + 1;
         players.push_back(new AIPlayer(botName.str()));
     }
     for (size_t i = 0; i < players.size(); i++) // stores the index in player object for later
@@ -102,7 +102,6 @@ void Game::start()
         {
             break;
         }
-        this->tempPlayerIndex = this->currentPlayerIndex; // temporarily stores the currentPlayerIndex
         skipPlayer();                                     // changes currentPlayerIndex to the next player's index
         specialActionCheck();
     }
@@ -217,30 +216,50 @@ bool Game::checkForWinner()
              << endl;
         return false;
     }
-    Player *player = players[currentPlayerIndex];
-    if (!player)
+    for (Player *player : this->players)
     {
-        cerr << "[ERROR] Current player is nullptr." << endl;
-        return false;
-    }
-    int handSize = player->getHandSize();
-
-    if (handSize == 0)
-    {
-        if (player->getUno())
+        if (!player)
         {
-            cout << "UNO & 0 cards\n";
-            this->winner = player;
-            string winnerName = player->getName();
-            updateScores(winnerName);
-            saveScores();
-            printScores();
-            this->gameOver = true;
-            return true;
+            cerr << "[ERROR] Current player is nullptr." << endl;
+            return false;
         }
-        else
+        int handSize = player->getHandSize();
+
+        if (handSize == 0)
         {
-            cout << "No UNO & 0 cards\n";
+            if (player->getUno())
+            {
+                cout << "UNO & 0 cards\n";
+                this->winner = player;
+                string winnerName = player->getName();
+                updateScores(winnerName);
+                saveScores();
+                printScores();
+                this->gameOver = true;
+                return true;
+            }
+            else
+            {
+                cout << "No UNO & 0 cards\n";
+                for (int i = 0; i < 2; i++)
+                {
+                    Card *drawnCard = this->deck->drawCard();
+                    if (drawnCard)
+                    {
+                        player->addCardToHand(drawnCard);
+                    }
+                    else
+                    {
+                        this->gameError = true;
+                    }
+                }
+            }
+        }
+
+        // Reset UNO flag if hand size > 1 (player didn't play second-last card)
+        if (handSize > 1 && player->getUno())
+        {
+            cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
             for (int i = 0; i < 2; i++)
             {
                 Card *drawnCard = this->deck->drawCard();
@@ -253,27 +272,8 @@ bool Game::checkForWinner()
                     this->gameError = true;
                 }
             }
-            return false;
+            player->callUno(false);
         }
-    }
-
-    // Reset UNO flag if hand size > 1 (player didn't play second-last card)
-    if (handSize > 1 && player->getUno())
-    {
-        cout << "You called UNO but you have more than 1 card. Drawing 2 Cards\n";
-        for (int i = 0; i < 2; i++)
-        {
-            Card *drawnCard = this->deck->drawCard();
-            if (drawnCard)
-            {
-                player->addCardToHand(drawnCard);
-            }
-            else
-            {
-                this->gameError = true;
-            }
-        }
-        player->callUno(false);
     }
 
     return false;
@@ -289,14 +289,14 @@ void Game::skipPlayer()
 }
 void Game::forceDraw(int numCards)
 {
+    for (int i = 0; i < numCards; i++)
+    {
     Card *drawnCard = this->deck->drawCard();
     if (!drawnCard)
     {
         this->gameError = true;
         return;
     }
-    for (int i = 0; i < numCards; i++)
-    {
         this->getNextPlayer()->addCardToHand(drawnCard);
     }
 }
@@ -401,13 +401,13 @@ void Game::specialActionCheck()
             cerr << "[WARNING] Found nullptr in specialCards vector.\n";
             continue;
         }
-        if (card->get_TargetPlayerIndex() == this->tempPlayerIndex && this->willSkip)
+        if (card->get_TargetPlayerIndex() == this->getPreviousPlayer()->getIndex() && this->willSkip)
         {
             if (card->get_ActionType() == Reverse)
             {
                 this->reverseDirection();
             }
-            card->specialAction(this);
+            card->specialAction(this, this->willSkip);
         }
 
         if (card->get_TargetPlayerIndex() == currentPlayer->getIndex())
@@ -430,7 +430,7 @@ void Game::specialActionCheck()
                 cout << "Special Card " << cardIsCurrent << endl;
             }
 
-            card->specialAction(this);
+            card->specialAction(this, this->willSkip);
         }
     }
 
@@ -438,17 +438,14 @@ void Game::specialActionCheck()
     {
         this->skipPlayer();
     }
-    else if (skip && (this->willSkip ||
+    else if (skip && (!this->willSkip ||
                       cardIsCurrent))
     {
         this->skipPlayer();
         cout << "Special Skip game.cpp" << endl;
     }
     this->willSkip = false;
-    this->tempPlayerIndex = -2;
 }
-
-int Game::getTempPlayerIndex() { return this->tempPlayerIndex; }
 
 vector<Player *> Game::getPlayers() const { return players; }
 
@@ -570,11 +567,11 @@ void Game::updateScores(string winnerName)
 {
     int points = 0;
 
-    for (Player *p : players)
+    for (Player *player : players)
     {
-        if (p->getName() != winnerName)
+        if (player->getName() != winnerName)
         {
-            points += p->calculateScore();
+            points += player->calculateScore();
         }
     }
 
@@ -587,11 +584,10 @@ void Game::updateScores(string winnerName)
 
 Game::~Game()
 {
-    // Clean up dynamically allocated memory
     delete this->deck; // Delete the deck object
     for (Player *player : players)
     {
-        delete player; // Delete each player object
+        delete player;
     }
-    players.clear(); // Clear the players vector
+    players.clear();
 }

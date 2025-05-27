@@ -136,11 +136,11 @@ string SpecialActionCard::toString()
   return colorStr + "Special " + actionStr;
 }
 
-void SpecialActionCard::specialAction(Game *game)
+void SpecialActionCard::specialAction(Game *game, bool willSkip)
 {
   if (this->targetPlayerIndex != -1 &&
-      (game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex||
-       game->getTempPlayerIndex() == this->targetPlayerIndex))
+      (game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex ||
+       (game->getPreviousPlayer()->getIndex() == this->targetPlayerIndex && willSkip)))
   {
     switch (this->action)
     {
@@ -148,7 +148,7 @@ void SpecialActionCard::specialAction(Game *game)
       game->reverseDirection();
       break;
     case Draw_Two:
-      game->specialDraw( 2, this->targetPlayerIndex);
+      game->specialDraw(2, this->targetPlayerIndex);
       break;
     case Skip:
       cout << "Special Skip" << endl;

@@ -33,7 +33,6 @@ protected:
     Color currentColor;                       // stores the color of the play
     bool gameOver;                            // indicates if the game if over or not
     bool firstTurn;                           // indication of the first turn
-    int tempPlayerIndex;                      // stores a player's index temporarily which is needed in the function specialActionCheck
     Player *winner;                           // stores the Player object who won
     map<string, int> playerScores;            // stores the scores of the players
     bool gameError;                           // indicates if there the draw pile is empty or not

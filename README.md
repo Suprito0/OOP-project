@@ -226,7 +226,7 @@ Actual Implementation
 -Primary focus on game logic implementation
 - Prioritized timeline for core functionality
 -GUI development time reallocated to logic refinement 
- 
+ ~
 Justification
 Advantages:
 -Improved Core Quality: More time devoted to game logic results in better functionality
