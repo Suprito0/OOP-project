@@ -6,13 +6,13 @@ class Deck;
 class Card;
 enum Color;
 
-class AIPlayer : public Player {
- public:
-  AIPlayer();
-  AIPlayer(string name);
-  Card *playTurn(Card *topCard, Color currentColor, Deck *decks) override;
-  Card *strategicCardSelection(Card *topCard, Color currentColor);
-  int get_number();
+class AIPlayer : public Player
+{
+public:
+    AIPlayer();            // default constructor
+    AIPlayer(string name); // constructor
+    Card *playTurn(Card *topCard, Color currentColor, Deck *decks) override;
+    Card *strategicCardSelection(Card *topCard, Color currentColor); // selects a card to play
 };
 
 #endif

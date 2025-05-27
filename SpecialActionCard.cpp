@@ -7,149 +7,179 @@
 #include "Game.h"
 #include "Player.h"
 
-// Constructor: initializes a special action card with color and action type
+// Constructor: Initializes the special action card with a color and action type.
+// Sets the card type to Special_Action and initializes the target player index to -1 (no target yet).
 SpecialActionCard::SpecialActionCard(Color color, ActionType actionType)
-    : ActionCard(color, actionType) {
+    : ActionCard(color, actionType)
+{
   this->type = Special_Action;
   this->targetPlayerIndex = -1;
 }
 
-// This function is called when the card is played
-void SpecialActionCard::play(Game *game) {
-  std::cout << "Played Special Action Card: " << toString() << std::endl;
+// play(): Called when this card is played by a player.
+// Allows the human or AI to choose a target player for the action.
+void SpecialActionCard::play(Game *game)
+{
+  cout << "Played Special Action Card: " << toString() << endl;
 
   string targetPlayerIndexString;
 
+  // Check if the current player is a human or AI
   bool isHuman = game->getCurrentPlayer()->isHuman();
 
-  if (isHuman) {
-    // Show all players for target selection
+  if (isHuman)
+  {
+    // Display all players for the human to choose a target
     cout << "Choose which Player to Target- |";
-    for (int i = 0; i < 4; i++) {
-      if (!game->getPlayer(i)) {
+    for (int i = 0; i < 4; i++)
+    {
+      if (!game->getPlayer(i))
+      {
         cerr << "Error: null player reference in SpecialActionCard::play()\n";
         return;
       }
-      // Mark the current player as "(You)"
-      if (i != game->getCurrentPlayerIndex()) {
+      // Show each player and mark the current player as "(You)"
+      if (i != game->getCurrentPlayerIndex())
+      {
         cout << " Player " << i << ": " << game->getPlayer(i)->getName()
              << " |";
-      } else {
+      }
+      else
+      {
         cout << " Player " << i << ": " << game->getPlayer(i)->getName()
              << "(You) |";
       }
     }
     cout << endl;
 
-    // Let human player input a valid target
-    while (true) {
+    // Ask the human player to enter a valid player index (0-3)
+    while (true)
+    {
       cin >> targetPlayerIndexString;
-      if (targetPlayerIndexString == "0") {
+      if (targetPlayerIndexString == "0")
+      {
         this->targetPlayerIndex = 0;
         break;
-      } else if (targetPlayerIndexString == "1") {
+      }
+      else if (targetPlayerIndexString == "1")
+      {
         this->targetPlayerIndex = 1;
         break;
-      } else if (targetPlayerIndexString == "2") {
+      }
+      else if (targetPlayerIndexString == "2")
+      {
         this->targetPlayerIndex = 2;
         break;
-      } else if (targetPlayerIndexString == "3") {
+      }
+      else if (targetPlayerIndexString == "3")
+      {
         this->targetPlayerIndex = 3;
         break;
-      } else {
+      }
+      else
+      {
         cout << "Invalid Input. Please try again." << endl;
       }
     }
-  } else {
-    // Randomly choose a valid target for bot player
-    while (true) {
+  }
+  else
+  {
+    // For AI player: choose a random player (not itself) as target
+    while (true)
+    {
       srand(time(nullptr));
       int randomIndex = rand() % 4;
-      // Ensure bot doesn't target itself
-      if (game->getCurrentPlayerIndex() != randomIndex) {
+      if (game->getCurrentPlayerIndex() != randomIndex)
+      {
         this->targetPlayerIndex = randomIndex;
         break;
       }
     }
   }
-  // Change current color to the card's color
+
+  // Change the game's current color to the card's color
   game->changeColor(this->get_Color());
-  // Show who is targeted
+  // Show the targeting result
   cout << game->getCurrentPlayer()->getName() << " has targetted "
        << game->getPlayer(this->targetPlayerIndex)->getName() << endl;
-  // Update the top card in the game
+  // Set this card as the top card in the game
   game->updateCurrentCard(this);
 }
 
-// Convert card information into a string like "Red Special Draw Two"
-std::string SpecialActionCard::toString() {
-  std::string colorStr;
-  switch (color) {
-    case Red:
-      colorStr = "Red ";
-      break;
-    case Green:
-      colorStr = "Green ";
-      break;
-    case Blue:
-      colorStr = "Blue ";
-      break;
-    case Yellow:
-      colorStr = "Yellow ";
-      break;
-    default:
-      colorStr = "None";
-      break;
+// toString(): Returns a string representation of the special action card.
+// Format: "Red Special Skip", "Green Special Reverse", etc.
+string SpecialActionCard::toString()
+{
+  string colorStr;
+  switch (color)
+  {
+  case Red:
+    colorStr = "Red ";
+    break;
+  case Green:
+    colorStr = "Green ";
+    break;
+  case Blue:
+    colorStr = "Blue ";
+    break;
+  case Yellow:
+    colorStr = "Yellow ";
+    break;
+  default:
+    colorStr = "None";
+    break;
   }
 
-  std::string actionStr;
-  switch (this->action) {
-    case Skip:
-      actionStr = "Skip";
-      break;
-    case Reverse:
-      actionStr = "Reverse";
-      break;
-    case Draw_Two:
-      actionStr = "Draw Two";
-      break;
-    default:
-      actionStr = "Unknown";
-      break;
+  string actionStr;
+  switch (this->action)
+  {
+  case Skip:
+    actionStr = "Skip";
+    break;
+  case Reverse:
+    actionStr = "Reverse";
+    break;
+  case Draw_Two:
+    actionStr = "Draw Two";
+    break;
+  default:
+    actionStr = "Unknown";
+    break;
   }
 
   return colorStr + "Special " + actionStr;
 }
 
-string SpecialActionCard::get_CardTypeString() {
-  return "Special " + this->get_ActionTypeString();
-}
-
-// This function is called by Game class to apply the effect of this special card
-void SpecialActionCard::specialAction(Game *game) {
-  // Only apply effect if current or skipped player is the target
+// specialAction(): Called later to apply the effect of the card to the targeted player.
+// If it's that player's turn (or will be skipped), apply the corresponding action.
+void SpecialActionCard::specialAction(Game *game, bool willSkip)
+{
   if (this->targetPlayerIndex != -1 &&
-      game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex) {
-    switch (this->action) {
-      case Reverse:
-        game->reverseDirection();
-        break;
-      case Draw_Two:
-        game->specialDraw(2);
-        break;
-      case Skip:
-        cout << "Special Skip" << endl;
-        break;
-      default:
-        std::cout << "Unknown special action.\n";
-        break;
+      (game->getCurrentPlayer()->getIndex() == this->targetPlayerIndex ||
+       (game->getPreviousPlayer()->getIndex() == this->targetPlayerIndex && willSkip)))
+  {
+    switch (this->action)
+    {
+    case Reverse:
+      game->reverseDirection();
+      break;
+    case Draw_Two:
+      game->specialDraw(2, this->targetPlayerIndex);
+      break;
+    case Skip:
+      cout << "Special Skip" << endl;
+      break;
+    default:
+      cout << "Unknown special action.\n";
+      break;
     }
-    // Reset target after action is done
+    // Reset target after action is applied
     this->targetPlayerIndex = -1;
   }
 }
 
-// Getter for target player index
-int SpecialActionCard::get_TargetPlayerIndex() {
+// get_TargetPlayerIndex(): Returns the index of the currently targeted player
+int SpecialActionCard::get_TargetPlayerIndex()
+{
   return this->targetPlayerIndex;
 }

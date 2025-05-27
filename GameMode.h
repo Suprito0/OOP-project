@@ -11,23 +11,21 @@ class Card;
 
 using namespace std;
 
-class GameMode {
- protected:
-  string modeName, gameModeDescription;
-  bool allowStacking;
-  int numOfPlayers;
-  bool isFast;
+class GameMode
+{
+protected:
+  string modeName;  // Stores name of Mode
+  int numOfPlayers; // Stores number of human player
+  bool isFast;      // If fast mode is on or not
 
- public:
-  GameMode();
-  GameMode(string modeName);
-  void initialize();
-  string getDescription();
-  string getModeName();
-  void getAllowStacking();
-  bool getIsFast();
-  void setIsFast(bool turn);
-  int getNumOfPlayers();
+public:
+  GameMode();                // default constructor
+  GameMode(string modeName); // constructor
+  void initialize();         // initializes the object according to its name
+  string getModeName();      // returns modeName
+  bool getIsFast();          // returns isFast
+  void setIsFast(bool turn); // sets isFast
+  int getNumOfPlayers();     // returns NumOfPlayers
 };
 
 #endif

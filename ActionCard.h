@@ -3,19 +3,19 @@
 
 #include "Card.h"
 
-class ActionCard : public Card {
- protected:
-  ActionType action;
+class ActionCard : public Card
+{
+protected:
+  ActionType action; // stores the Action
 
- public:
-  ActionCard(Color color, ActionType type);
+public:
+  ActionCard(Color color, ActionType type); // Constructor
   bool canPlayOn(Card *topCard) override;
   void play(Game *game) override;
-  std::string toString() override;
+  string toString() override;
   int get_number() override;
   ActionType get_ActionType() override;
   string get_ActionTypeString() override;
-  string get_CardTypeString() override;
 };
 
-#endif  // ACTIONCARD_H
+#endif // ACTIONCARD_H

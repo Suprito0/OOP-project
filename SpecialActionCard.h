@@ -3,17 +3,17 @@
 
 #include "ActionCard.h"
 
-class SpecialActionCard : public ActionCard {
- private:
-  int targetPlayerIndex;
+class SpecialActionCard : public ActionCard
+{
+private:
+  int targetPlayerIndex; // Index of the player being targetted
 
- public:
+public:
   SpecialActionCard(Color color, ActionType type);
   void play(Game *game) override;
-  std::string toString() override;
-  string get_CardTypeString() override;
+  string toString() override;
   int get_TargetPlayerIndex() override;
-  void specialAction(Game *game) override;
+  void specialAction(Game *game, bool willSkip) override; // plays on the targetted player
 };
 
-#endif  // SPECIALACTIONCARD_H
+#endif // SPECIALACTIONCARD_H

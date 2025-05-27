@@ -8,24 +8,22 @@ class Game;
 #include "Enum.h"
 using std::vector;
 
-class Deck {
- private:
-  vector<Card *> cards;
+class Deck
+{
+private:
+  vector<Card *> drawPile;
   vector<Card *> discardPile;
 
- public:
-  Deck(Game *game);
-  void initialize(Game *game);
-  void shuffle();
-  Card *drawCard();
-  void addToDiscardPile(Card *card);
-  Card *get_TopDiscard() const;
-  vector<Card *> get_cards();
-  vector<Card *> get_discardPile();
-  void reshuffleIfNeeded();
-  int get_DeckSize() const;
-  int get_DiscardSize() const;
+public:
+  Deck(Game *game);                                // Constructor
+  void initialize(Game *game);                     // populates the drawPile with cards
+  void shuffle();                                  // shuffles the draw pile
+  Card *drawCard();                                // draws a card from the drawpile
+  void addToDiscardPile(Card *card);               // adds a card to the discard pile
+  Card *get_TopDiscard() const;                    // gets the most recent played card
+  void reshuffleIfNeeded();                        // moves the discard pile to the draw pile and reshuffles it
+  bool isInList(vector<Card *> &list, Card *card); // checks if a pointer to a card object is already deleted or not
   ~Deck();
 };
 
-#endif  // DECK_H
+#endif // DECK_H

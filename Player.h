@@ -11,32 +11,34 @@ class Deck;
 
 using namespace std;
 
-class Player {
- protected:
-  vector<Card *> hand;
-  string name;
-  int playerIndex;
-  bool isItHuman;
-  bool hasCalledUno;
+class Player
+{
+protected:
+  vector<Card *> hand; // stores the cards which are dealt to the player
+  string name;         // name of the player
+  int playerIndex;     // index of the player in the vector stored on the Game object
+  bool isItHuman;      // indicates if it is human
+  bool hasCalledUno;   // indicates if it has called uno
 
- public:
-  Player();
-  Player(string name);
-  virtual Card *playTurn(Card *topCard, Color currentColor, Deck *decks) = 0;
-  void addCardToHand(Card *card);
-  void removeCardFromHand(Card *card);
-  void callUno(bool uno);
-  bool getUno();
-  size_t getHandSize();
-  string getName();
-  bool isHuman();
-  void displayHand();
-  void setIndex(int index);
-  int getIndex();
-  virtual ~Player();
-  string toLower(const string &str);
-  int calculateScore();
-  Color chooseOptimalColor();
+public:
+  Player();                                                                   // default constructor
+  Player(string name);                                                        // constructor
+  virtual Card *playTurn(Card *topCard, Color currentColor, Deck *decks) = 0; // Player plays their turn
+  void addCardToHand(Card *card);                                             // add card from drawPile to hand
+  void removeCardFromHand(Card *card);                                        // removes card from hand and puts it in the discard pile
+  void callUno(bool uno);                                                     // sets hasCalledUno
+  bool getUno();                                                              // checks if the player has called uno
+  size_t getHandSize();                                                       // returns the size of the hand
+  string getName();                                                           // returns the name of the player
+  bool isHuman();                                                             // checks if player is human or AI
+  void displayHand();                                                         // displays the player's hand on the terminal
+  void setIndex(int index);                                                   // sets the index of the player
+  int getIndex();                                                             // returns the index of the player
+  string toLower(const string &str);                                          // converts string to lower case
+  int calculateScore();                                                       // calculates the player's score
+  vector<Card *> getHand();                                                   // returns the player's hand
+  Color chooseOptimalColor();                                                 // chooses a color based on the hand
+  virtual ~Player();                                                          // destructor
 };
 
 #endif
