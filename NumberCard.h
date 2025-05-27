@@ -10,8 +10,8 @@ private:
 
 public:
   NumberCard(Color color, int num);
-  bool canPlayOn(Card *topCard) override; 
-  void play(Game *game) override; //play the card (number cards has no other effect)
+  bool canPlayOn(Card *topCard) override;
+  void play(Game *game) override; // play the card (number cards has no other effect)
   string toString() override;
   int get_number() override;
   ActionType get_ActionType() override;

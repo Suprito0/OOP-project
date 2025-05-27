@@ -6,13 +6,13 @@
 class SpecialActionCard : public ActionCard
 {
 private:
-  int targetPlayerIndex;//Index of the player being targetted
+  int targetPlayerIndex; // Index of the player being targetted
 
 public:
   SpecialActionCard(Color color, ActionType type);
   void play(Game *game) override;
   string toString() override;
-  int get_TargetPlayerIndex() override; 
+  int get_TargetPlayerIndex() override;
   void specialAction(Game *game) override; // plays on the targetted player
 };
 

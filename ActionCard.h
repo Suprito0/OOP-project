@@ -6,10 +6,10 @@
 class ActionCard : public Card
 {
 protected:
-  ActionType action; //stores the Action
+  ActionType action; // stores the Action
 
 public:
-  ActionCard(Color color, ActionType type);
+  ActionCard(Color color, ActionType type); // Constructor
   bool canPlayOn(Card *topCard) override;
   void play(Game *game) override;
   string toString() override;
