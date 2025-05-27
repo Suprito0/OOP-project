@@ -1,5 +1,6 @@
 #include "AIPlayer.h"
 #include "Card.h"
+#include "ActionCard.h"
 #include "Deck.h"
 
 AIPlayer::AIPlayer()
@@ -49,33 +50,33 @@ Card *AIPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
     }
 
     cout << "Bot Selecting Card" << endl;
-    if (this->getHandSize() == 1)
-    {
-        cout << "Bot has called UNO" << endl;
-        this->callUno(true);
-    }
     Card *AICard = strategicCardSelection(topCard, currentColor);
 
     if (AICard != nullptr)
     {
+        if (this->getHandSize() == 1)
+        {
+            cout << "Bot has called UNO" << endl;
+            this->callUno(true);
+        }
         decks->addToDiscardPile(AICard);
         removeCardFromHand(AICard);
         // chooseOptimalColor();
         return AICard;
     }
 
-    if (hasValidMove(topCard, currentColor))
-    {
-        for (Card *card : hand)
-        {
-            if (card && card->get_Color() == currentColor)
-            {
-                decks->addToDiscardPile(card);
-                removeCardFromHand(card);
-                return card;
-            }
-        }
-    }
+    // if (hasValidMove(topCard, currentColor))
+    // {
+    //     for (Card *card : hand)
+    //     {
+    //         if (card && card->get_Color() == currentColor)
+    //         {
+    //             decks->addToDiscardPile(card);
+    //             removeCardFromHand(card);
+    //             return card;
+    //         }
+    //     }
+    // }
 
     Card *newCard = decks->drawCard();
     if (newCard)
@@ -85,7 +86,8 @@ Card *AIPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
     }
     else
     {
-        std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
+        return new ActionCard(None, Skip);
+        // std::cerr << "[WARN] Tried to draw a card, but deck is empty!" << std::endl;
     }
 
     return nullptr;

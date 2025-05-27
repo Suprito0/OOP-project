@@ -22,35 +22,39 @@ string Card::get_ColorString()
   switch (color)
   {
   case Red:
-    return "Red";
+    return "Red ";
   case Green:
-    return "Green";
+    return "Green ";
   case Blue:
-    return "Blue";
+    return "Blue ";
   case Yellow:
-    return "Yellow";
+    return "Yellow ";
   case None:
     return "";
   default:
-    return "Unknown";
+    return "Unknown ";
   }
 }
 
-string Card::get_CardTypeString()
-{
-  switch (type)
-  {
-  case Number:
-    return to_string(this->get_number());
-  case Action:
-    return this->get_ActionTypeString();
-  case Special_Action:
-    return "Special Action";
-  default:
-    return "Unknown";
-  }
-}
+int Card::get_TargetPlayerIndex() { return -1; }
+
+// string Card::get_CardTypeString()
+// {
+//   switch (type)
+//   {
+//   case Number:
+//     return to_string(this->get_number());
+//   case Action:
+//     return this->get_ActionTypeString();
+//   case Special_Action:
+//     return "Special Action";
+//   default:
+//     return "Unknown";
+//   }
+// }
 
 void Card::set_Color(Color newColor) { color = newColor; }
+
+void Card::specialAction(Game * /*game*/) {}
 
 Card::~Card() {}

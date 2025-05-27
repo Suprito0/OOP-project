@@ -11,7 +11,8 @@ enum Color;
 class HumanPlayer : public Player
 {
 private:
-Game* gameRef = nullptr;
+    Game *gameRef = nullptr;
+
 public:
     HumanPlayer();
     HumanPlayer(string name);
@@ -19,8 +20,8 @@ public:
     // void displayHand();
     // Card *selectCard();
     // Color selectColor();
-    void setGame(Game* g);
-    bool hasValidMove(Game* game) const;
+    void setGame(Game *g);
+    bool hasValidMove(Game *game) const;
 };
 
 #endif
