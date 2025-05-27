@@ -1,7 +1,7 @@
 #include "GameMode.h"
 
 #include "Card.h"
-
+// constructor sets ifFast, modeName and runs the initialize function
 GameMode::GameMode()
 {
   this->isFast = false;
@@ -14,6 +14,8 @@ GameMode::GameMode(string modeName)
   this->modeName = modeName;
   this->initialize();
 }
+
+// sets the numOfPlayers according to the modeName
 void GameMode::initialize()
 {
   if (modeName == "normal")
@@ -66,4 +68,5 @@ string GameMode::getModeName() { return this->modeName; }
 int GameMode::getNumOfPlayers() { return this->numOfPlayers; }
 
 bool GameMode::getIsFast() { return this->isFast; }
+
 void GameMode::setIsFast(bool turn) { this->isFast = turn; }

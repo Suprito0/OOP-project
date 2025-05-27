@@ -1,6 +1,6 @@
 git :
 	git add .
-	git commit -m "Added the leaderboard and Cleaned up the code a bit." 
+	git commit -m "Added comments" 
 	git push
 
 # Makefile for UNO Game Project (flat directory structure)

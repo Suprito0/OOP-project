@@ -201,7 +201,7 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
   }
 }
 
-void HumanPlayer::setGame(Game *g) { gameRef = g; }
+void HumanPlayer::setGame(Game *game) { gameRef = game; }
 
 bool HumanPlayer::hasValidMove(Game *game) const
 {

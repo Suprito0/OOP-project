@@ -14,18 +14,18 @@ using namespace std;
 class GameMode
 {
 protected:
-  string modeName;
-  int numOfPlayers;
-  bool isFast;
+  string modeName;  // Stores name of Mode
+  int numOfPlayers; // Stores number of human player
+  bool isFast;      // If fast mode is on or not
 
 public:
-  GameMode();
-  GameMode(string modeName);
-  void initialize();
-  string getModeName();
-  bool getIsFast();
-  void setIsFast(bool turn);
-  int getNumOfPlayers();
+  GameMode();                // default constructor
+  GameMode(string modeName); // constructor
+  void initialize();         // initializes the object according to its name
+  string getModeName();      // returns modeName
+  bool getIsFast();          // returns isFast
+  void setIsFast(bool turn); // sets isFast
+  int getNumOfPlayers();     // returns NumOfPlayers
 };
 
 #endif

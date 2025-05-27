@@ -6,7 +6,7 @@
 class ActionCard : public Card
 {
 protected:
-  ActionType action;
+  ActionType action; //stores the Action
 
 public:
   ActionCard(Color color, ActionType type);
