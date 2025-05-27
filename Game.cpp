@@ -102,7 +102,7 @@ void Game::start()
         {
             break;
         }
-        skipPlayer();                                     // changes currentPlayerIndex to the next player's index
+        skipPlayer(); // changes currentPlayerIndex to the next player's index
         specialActionCheck();
     }
     // Game Over screen
@@ -291,12 +291,12 @@ void Game::forceDraw(int numCards)
 {
     for (int i = 0; i < numCards; i++)
     {
-    Card *drawnCard = this->deck->drawCard();
-    if (!drawnCard)
-    {
-        this->gameError = true;
-        return;
-    }
+        Card *drawnCard = this->deck->drawCard();
+        if (!drawnCard)
+        {
+            this->gameError = true;
+            return;
+        }
         this->getNextPlayer()->addCardToHand(drawnCard);
     }
 }

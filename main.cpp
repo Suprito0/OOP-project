@@ -72,7 +72,8 @@ void printScores()
 
     // Print the sorted scores
     cout << "High Scores:\n";
-    if (numOfEntries == 0) {
+    if (numOfEntries == 0)
+    {
         cout << "\n NO SCORES RECORDED YET \n";
     }
     for (size_t i = 0; i < numOfEntries; ++i)
