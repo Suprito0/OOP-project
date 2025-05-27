@@ -1,16 +1,11 @@
-git :
-	git add .
-	git commit -m "Added comments" 
-	git push
-
-# Makefile for UNO Game Project (flat directory structure)
+# Makefile for UNO Game Project 
 
 # Compiler settings
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 
 # Source files
-SOURCES = $(wildcard *.cpp)
+SOURCES = ActionCard.cpp AIPlayer.cpp Card.cpp Deck.cpp Game.cpp GameMode.cpp HumanPlayer.cpp main.cpp NumberCard.cpp Player.cpp SpecialActionCard.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 EXECUTABLE = unoGame
 
