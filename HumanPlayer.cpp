@@ -130,18 +130,21 @@ Card *HumanPlayer::playTurn(Card *topCard, Color currentColor, Deck *decks)
     case 3:
     { // View rules
       cout << "\n===== UNO RULES =====\n";
-      cout << "1. Match top card by number, color, or action.\n";
-      cout << "2. Wild and Wild Draw Four can be played anytime.\n";
-      cout << "3. Action Cards:\n";
-      cout << "   - Skip: skip next player\n";
-      cout << "   - Reverse: change direction\n";
-      cout << "   - Draw Two: next draws 2 cards\n";
-      cout << "   - Wild: choose the next color\n";
-      cout << "   - Wild Draw Four: choose color + next draws 4\n";
-      cout << "4. If you can't play, you must draw.\n";
-      cout
-          << "5. Type 0 before playing your second-last card to call UNO.\n";
-      cout << endl;
+      cout << "1. Each player starts with 7 cards.\n";
+      cout << "2. The objective is to be the first player to get rid of all cards.\n";
+      cout << "3. On your turn, match the top card by number, color, or action.\n";
+      cout << "   Wild and Wild Draw Four cards can be played at any time.\n";
+      cout << "4. If you can't play, draw a card.\n";
+      cout << "5. Action cards:\n";
+      cout << "   - Skip: Next player loses a turn\n";
+      cout << "   - Reverse: Reverses direction\n";
+      cout << "   - Draw Two: Next player draws 2 cards and skips turn\n";
+      cout << "   - Wild: You choose the next color\n";
+      cout << "   - Wild Draw Four: Choose a color and next player draws 4 + skips\n";
+      cout << "6. Special Action card (your custom rule):\n";
+      cout << "   - Choose an action card and target a player of your choice\n";
+      cout << "   - The action will take effect when it is that player's turn\n";
+      cout << "7. UNO rule: Type 0 BEFORE playing your last card to call UNO.\n\n";
       break;
     }
 

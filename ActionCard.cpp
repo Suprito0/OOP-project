@@ -42,10 +42,9 @@ void ActionCard::play(Game *game)
   switch (action)
   {
   case Skip:
-    cout << "Skipping\n";
     game->skipPlayer();
     game->setWillSkip(true);
-    cout << "Skipped\n";
+    cout << "Skipping " << targetPlayerName << "'s turn\n";
     break;
 
   case Reverse:

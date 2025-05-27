@@ -21,7 +21,6 @@ void GameMode::initialize()
   if (modeName == "normal")
   {
     this->numOfPlayers = 1;
-    cout << "Single-Player Mode selected.\n";
   }
   else if (modeName == "multiplayer")
   {

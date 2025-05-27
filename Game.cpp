@@ -427,7 +427,7 @@ void Game::specialActionCheck()
             if (card == this->currentCard)
             {
                 cardIsCurrent = true;
-                cout << "Special Card " << cardIsCurrent << endl;
+                // cout << "Special Card " << cardIsCurrent << endl;
             }
 
             card->specialAction(this, this->willSkip);
@@ -442,7 +442,6 @@ void Game::specialActionCheck()
                       cardIsCurrent))
     {
         this->skipPlayer();
-        cout << "Special Skip game.cpp" << endl;
     }
     this->willSkip = false;
 }

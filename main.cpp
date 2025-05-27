@@ -31,6 +31,7 @@ void showRules()
     cout << "   - Wild Draw Four: Choose a color and next player draws 4 + skips\n";
     cout << "6. Special Action card (your custom rule):\n";
     cout << "   - Choose an action card and target a player of your choice\n";
+    cout << "   - The action will take effect when it is that player's turn\n";
     cout << "7. UNO rule: Type 0 BEFORE playing your last card to call UNO.\n\n";
 }
 
@@ -176,6 +177,7 @@ int main()
                     {
                         delete mode;
                         mode = new GameMode;
+                        cout << "Single-Player Mode selected.\n";
                         mode->setIsFast(fastMode);
                         break;
                     }
@@ -218,21 +220,38 @@ int main()
         }
         else if (choice == 4)
         {
-            printScores();
-            // currentGame->loadScores();
-            // currentGame->printScores();
+            printScores(); //prints the scoreboard
         }
         else if (choice == 5)
         {
-            cout << "Exiting UNO Game. Bye!\n";
-            break;
-        }
-        else
-        {
-            cout << "Invalid choice. Please try again.\n";
-        }
-    }
+            string willExit;
+            while (true)
+            {
+                cout << "You are trying to exit the game. Continue? (y/n)\n";
+                cin >> willExit;
 
-    delete currentGame; // clean up game pointer
-    return 0;
+                if (willExit == "y" || willExit == "n" || willExit == "Y" || willExit == "N")
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "Invalid Input\n";
+                }
+            }
+            if (willExit == "n" || willExit == "N")
+            {
+                continue;
+            }
+            cout << "\nExiting the game. Goodbye!\n";
+            exit(0);
+            break;
+    }
+    else
+    {
+        cout << "Invalid choice. Please try again.\n";
+    }
+}
+
+return 0;
 }
